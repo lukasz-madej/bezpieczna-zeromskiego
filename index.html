@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Społeczna inicjatywa mieszkańców Otwocka na rzecz bezpiecznej ulicy Żeromskiego. Analizujemy projekt przebudowy i dbamy o bezpieczeństwo." />
+  <title>Bezpieczna Żeromskiego – Otwock</title>
+  <link rel="icon" href="img/logo.png" type="image/png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">
+        <img src="img/logo.png" alt="Logo Bezpieczna Żeromskiego" />
+        <span class="nav-brand-text">
+          <strong>Bezpieczna Żeromskiego</strong>
+          <em>Otwock</em>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#inicjatywa">O inicjatywie</a></li>
+        <li><a href="#stanowisko">Stanowisko</a></li>
+        <li><a href="#problemy">Problemy</a></li>
+        <li><a href="#mapa">Mapa</a></li>
+        <li><a href="#popieraja">Popierają nas</a></li>
+        <li><a href="#projekt">Projekt</a></li>
+        <li><a href="#petycja" class="nav-cta">Petycja</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════ HERO ══════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-bg" style="background-image: url('img/banner.png');"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-label">Inicjatywa mieszkańców · Otwock</p>
+      <h1>Projekt już jest.<br><span>Teraz czas zadbać<br>o bezpieczeństwo.</span></h1>
+      <p class="hero-sub">
+        Powiat Otwocki przygotował projekt budowy ciągu pieszo-rowerowego
+        i zwężenia ul. Żeromskiego. Chcemy pokazać mieszkańcom, co dokładnie
+        ma powstać i wspólnie zadbać o to, by inwestycja rzeczywiście poprawiła bezpieczeństwo.
+      </p>
+      <div class="hero-btns">
+        <a href="#projekt" class="btn btn-orange">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Zobacz projekt
+        </a>
+        <a href="#petycja" class="btn btn-outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Dołącz do inicjatywy
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ INICJATYWA ════════════════════════ -->
+  <section id="inicjatywa" class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Kim jesteśmy</span>
+        <h2>O inicjatywie</h2>
+        <p class="section-desc">Oddolna inicjatywa mieszkańców na rzecz poprawy bezpieczeństwa ul. Żeromskiego w Otwocku.</p>
+
+      </div>
+      <div class="cards-3">
+
+        <div class="card card-blue">
+          <div class="card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <h3>Co robimy?</h3>
+          <p>Analizujemy publicznie dostępny projekt przebudowy ul. Żeromskiego i przedstawiamy jego najważniejsze elementy w sposób zrozumiały dla mieszkańców.</p>
+        </div>
+
+        <div class="card card-outlined">
+          <div class="card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          </div>
+          <h3>Czego <em>nie</em> robimy?</h3>
+          <ul>
+            <li>Nie blokujemy inwestycji.</li>
+            <li>Nie opóźniamy inwestycji.</li>
+            <li>Nie sprzeciwiamy się budowie ciągu pieszo-rowerowego.</li>
+          </ul>
+        </div>
+
+        <div class="card card-green">
+          <div class="card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3>Czego oczekujemy?</h3>
+          <p>Kompleksowych rozwiązań poprawiających bezpieczeństwo na <strong>całym odcinku ulicy</strong> - od Teklina aż do Laskowej.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════ PETYCJA ═══════════════════════════ -->
+  <section id="petycja" class="section section-navy section-petycja">
+    <div class="container">
+      <div class="petycja-inner">
+        <img src="img/logo.png" alt="Logo" class="petycja-logo" />
+        <h2>Popierasz bezpieczną Żeromskiego?</h2>
+        <p>Podpisz petycję dotyczącą kompleksowej poprawy bezpieczeństwa w ramach realizowanej inwestycji dla ulicy Żeromskiego, <strong>od Teklina do Laskowej</strong>.<br /><br />Im więcej podpisów, tym łatwiej będzie nam wnioskować o konkretne rozwiązania.</p>
+
+        <div class="petycja-counter" id="petycjaCounter">
+          <span class="petycja-counter-num" id="petycjaCounterNum">–</span>
+          <span class="petycja-counter-label">podpisów</span>
+        </div>
+
+        <a href="https://www.petycjeonline.com/wprowadzenie_skutecznych_dziaa_poprawiajcych_bezpieczestwo_na_ulicy_eromskiego_w_otwocku" class="btn btn-orange btn-large">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Podpisz petycję
+        </a>
+        <p class="petycja-note">Udostępnij sąsiadom z Żeromskiego i rodzicom z SP8</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ STANOWISKO ════════════════════════ -->
+  <section id="stanowisko" class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag tag-gold">Nasze stanowisko</span>
+        <h2>Co popieramy, a czego się domagamy</h2>
+      </div>
+      <div class="stance-grid">
+        <div class="stance-col stance-green">
+          <h3>Popieramy</h3>
+          <ul>
+            <li>Budowę ciągu pieszo-rowerowego</li>
+            <li>Modernizację ul. Żeromskiego</li>
+            <li>Poprawę infrastruktury dla pieszych i rowerzystów</li>
+          </ul>
+        </div>
+
+        <div class="stance-col stance-red">
+          <h3>Nie chcemy</h3>
+          <ul>
+            <li>Pozornych rozwiązań</li>
+            <li>Pomijania głosu mieszkańców</li>
+            <li>Powstawania nowych zagrożeń</li>
+          </ul>
+        </div>
+
+        <div class="stance-col stance-blue">
+          <h3>Chcemy</h3>
+          <ul>
+            <li>Bezpiecznych przejść dla pieszych</li>
+            <li>Ochrony dzieci w rejonie SP8</li>
+            <li>Uspokojenia ruchu</li>
+            <li>Bezpiecznej infrastruktury rowerowej</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ PROBLEMY ══════════════════════════ -->
+  <section id="problemy" class="section section-navy">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag tag-green">Kluczowe kwestie</span>
+        <h2>Najważniejsze problemy</h2>
+      </div>
+      <div class="problems-grid">
+
+        <div class="problem-card">
+          <div class="problem-icon" style="background:#fef3e2;">🏫</div>
+          <div>
+            <h4>Bezpieczeństwo przy SP8</h4>
+            <p>Dzieci codziennie przekraczają ulicę w godzinach największego natężenia ruchu.</p>
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon" style="background:#fde8e8;">🚗</div>
+          <div>
+            <h4>Prędkość pojazdów</h4>
+            <p>Mieszkańcy wielokrotnie zgłaszają przypadki przekraczania dozwolonej prędkości.</p>
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon" style="background:#fde8e8;">⚠️</div>
+          <div>
+            <h4>Niebezpieczne wyprzedzanie</h4>
+            <p>Szczególnie widoczne na długich prostych odcinkach ulicy.</p>
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon" style="background:#e8f0fe;">🚲</div>
+          <div>
+            <h4>Ruch rowerowy</h4>
+            <p>Nowa infrastruktura musi być bezpieczna zarówno dla dzieci, jak i dorosłych.</p>
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon" style="background:#e8f5e9;">🏗️</div>
+          <div>
+            <h4>Nowe inwestycje</h4>
+            <p>Przewidywany wzrost liczby samochodów wymaga myślenia perspektywicznego.</p>
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon" style="background:#f3e5f5;">🚌</div>
+          <div>
+            <h4>Dojścia do przystanków</h4>
+            <p>Przejścia dla pieszych i dojścia do przystanków komunikacji wymagają poprawy.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ PROJEKT ═══════════════════════════ -->
+  <section id="projekt" class="section section-white">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Dokumentacja</span>
+        <h2>Analiza projektu</h2>
+        <p class="section-desc">Dokumentacja projektowa jest publicznie dostępna. Rozkładamy ją na czynniki pierwsze, żeby każdy mieszkaniec wiedział, co dokładnie ma powstać.</p>
+      </div>
+
+      <!-- Status bar -->
+      <div class="status-bar">
+        <div class="status-item status-done">
+          <span class="status-dot"></span>
+          <span>Projekt gotowy</span>
+        </div>
+        <div class="status-divider"></div>
+        <div class="status-item status-active">
+          <span class="status-dot"></span>
+          <span>Poszukiwany wykonawca</span>
+        </div>
+        <div class="status-divider"></div>
+        <div class="status-item status-pending">
+          <span class="status-dot"></span>
+          <span>Budowa</span>
+        </div>
+      </div>
+
+      <!-- Segment overview -->
+      <div class="segment-card">
+        <div class="segment-badge">Pełny odcinek projektu</div>
+        <h3>Skrzyżowanie z ul. Jałowcową – skrzyżowanie z ul. Laskową</h3>
+        <p>Projekt obejmuje 4 segmenty. Analizujemy każdy z nich osobno, publikując rysunki z dokumentacji i nasze komentarze.</p>
+        <div class="segment-progress">
+          <div class="seg-step seg-done">
+            <span class="seg-num">1</span>
+            <span>Żeromskiego 76–79A</span>
+          </div>
+          <div class="seg-line"></div>
+          <div class="seg-step seg-done">
+            <span class="seg-num">2</span>
+            <span>Żeromskiego 89–131</span>
+          </div>
+          <div class="seg-line"></div>
+          <div class="seg-step seg-done">
+            <span class="seg-num">3</span>
+            <span>Żeromskiego 131–215</span>
+          </div>
+          <div class="seg-line"></div>
+          <div class="seg-step seg-done">
+            <span class="seg-num">4</span>
+            <span>Żeromskiego 207–237</span>
+          </div>
+        </div>
+
+        <!-- General project scope -->
+        <div class="segment-scope">
+          <h4>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="11" width="13" height="13" rx="2" ry="2"/><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
+            Zakres robót (główne punkty)
+          </h4>
+          <ul>
+            <li>Połączenia między warstwowe z emulsji asfaltowej na całej długości i szerokości jezdni oraz dróg dla rowerów i pieszych</li>
+            <li>Warstwa wierzchnia nawierzchni jezdni wykonana całą szerokością</li>
+            <li>Demontaż oraz montaż wiat przystankowych i innych elementów małej architektury</li>
+            <li>Doświetlenia przejść dla pieszych z nowych materiałów</li>
+            <li>Nasadzenia 50 szt. drzew oraz 60 szt. krzewów wieloletnich</li>
+            <li>Na znacznej długości odcinka między ścieżką a ul. Żeromskiego zostanie zachowany bufor zieleni</li>
+          </ul>
+        </div>
+
+        <a href="https://zdpotwock.eb2b.com.pl/" class="btn btn-sm btn-navy-outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Dokumentacja projektowa
+        </a>
+      </div>
+
+      <!-- Analysis entries -->
+      <div class="analysis-list">
+        <h3 class="analysis-list-title">Nasze analizy</h3>
+
+        <!-- ── SEGMENT 1 ── -->
+        <article class="analysis-entry analysis-entry-full" id="segment-1">
+          <div class="analysis-meta">
+            <span class="analysis-tag analysis-tag-live">Opublikowano</span>
+            <span class="analysis-date">Sierpień 2025</span>
+            <span class="analysis-segment-label">Segment 1 z 4</span>
+          </div>
+          <h4>Segment 1: ul. Żeromskiego 76 – Żeromskiego 79A</h4>
+          <p class="analysis-subtitle">Część drogowa projektu</p>
+
+          <!-- Key facts -->
+          <div class="key-facts">
+            <div class="fact-item fact-blue">
+              <span class="fact-value">3 m</span>
+              <span class="fact-label">szerokość ciągu<br>pieszo-rowerowego</span>
+            </div>
+            <div class="fact-item fact-orange">
+              <span class="fact-value">6 m</span>
+              <span class="fact-label">zwężenie jezdni<br>ul. Żeromskiego</span>
+            </div>
+          </div>
+
+          <!-- Body text -->
+          <div class="analysis-body">
+            <p>Pierwsza część projektu drogowego obejmuje odcinek ul Żeromskiego od numeru 76 do numeru 79A. Na rysunkach znajdziecie szczegółowy plan zmian w tej części ulicy, a ma ostatnim zdjęciu legendę wyjaśniającą, co oznaczają poszczególne kolory na mapie.</p>
+
+            <div class="analysis-tasks">
+              <h5>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="11" width="13" height="13" rx="2" ry="2"/><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
+                Zmiany w tym segmencie
+              </h5>
+              <ul>
+                <li>Ciąg pieszo-rowerowy będzie miał szerokość <strong>3 m</strong></li>
+                <li>Ulica Żeromskiego zostanie zwężona do <strong>6 m</strong></li>
+                <li>Zostaną przebudowane zjazdy na drogi poprzeczne i posesje (zaznaczone niebieskim wypełnieniem na rysunkach)</li>
+                <li>Chodniki po stronie południowej zostaną uzupełnione/poprawione jedynie w <strong>ograniczonym zakresie</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Image gallery -->
+          <div class="analysis-gallery" data-gallery="segment-1">
+            <figure class="gallery-thumb" data-index="0">
+              <img src="img/analysis/segment-1/1.jpg" alt="Rysunek projektu – segment 1, część 1" loading="lazy" />
+              <figcaption>Rysunek 1 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="1">
+              <img src="img/analysis/segment-1/2.jpg" alt="Rysunek projektu – segment 1, część 2" loading="lazy" />
+              <figcaption>Rysunek 2 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="2">
+              <img src="img/analysis/segment-1/3.jpg" alt="Rysunek projektu – segment 1, część 3" loading="lazy" />
+              <figcaption>Rysunek 3 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="3">
+              <img src="img/analysis/segment-1/4.jpg" alt="Rysunek projektu – segment 1, część 4" loading="lazy" />
+              <figcaption>Rysunek 4 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="4">
+              <img src="img/analysis/key/key.jpg" alt="Legenda" loading="lazy" />
+              <figcaption>Legenda</figcaption>
+            </figure>
+          </div>
+
+          <div class="analysis-cta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <p>Macie pytania? Zostawcie je w komentarzu, a my postaramy się uzyskać na nie odpowiedzi.</p>
+            <a href="http://bit.ly/4bvoxrr" target="_blank" rel="noopener" class="btn btn-blue btn-sm">Skomentuj na Facebooku</a>
+          </div>
+        </article>
+
+        <!-- ── SEGMENT 2 ── -->
+        <article class="analysis-entry analysis-entry-full" id="segment-2">
+          <div class="analysis-meta">
+            <span class="analysis-tag analysis-tag-live">Opublikowano</span>
+            <span class="analysis-date">Sierpień 2025</span>
+            <span class="analysis-segment-label">Segment 2 z 4</span>
+          </div>
+          <h4>Segment 2: Żeromskiego 89 – Żeromskiego 131</h4>
+          <p class="analysis-subtitle">Część drogowa projektu</p>
+
+          <!-- Key facts -->
+          <div class="key-facts">
+            <div class="fact-item fact-blue">
+              <span class="fact-value">3 m</span>
+              <span class="fact-label">szerokość ciągu<br>pieszo-rowerowego</span>
+            </div>
+            <div class="fact-item fact-orange">
+              <span class="fact-value">6 m</span>
+              <span class="fact-label">zwężenie jezdni<br>ul. Żeromskiego</span>
+            </div>
+            <div class="fact-item fact-green">
+              <span class="fact-value">1</span>
+              <span class="fact-label">nowe przejście<br>ul. Kosackiego</span>
+            </div>
+            <div class="fact-item fact-blue">
+              <span class="fact-value">1</span>
+              <span class="fact-label">poprawione przejście<br>przy 98J/98H</span>
+            </div>
+          </div>
+
+          <!-- Body text -->
+          <div class="analysis-body">
+            <p>Druga część projektu drogowego obejmuje odcinek Żeromskiego od numeru 89 do numeru 131. Na rysunkach znajdziecie szczegółowy plan zmian w tej części ulicy.</p>
+
+            <div class="analysis-tasks">
+              <h5>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="11" width="13" height="13" rx="2" ry="2"/><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
+                Zmiany w tym segmencie
+              </h5>
+              <ul>
+                <li>Sklep hydrauliczny zyska utwardzony parking tuż przy ulicy</li>
+                <li>Zapadnięte przejście dla pieszych przy numerach 98J/98H zostanie poprawione, zainstalowane zostanie doświetlenie</li>
+                <li>Poprawa odwodnienia - studzienki oraz przepusty na drugą stronę jezdni wpięte w nowy dren</li>
+                <li>Nowe przejście dla pieszych i rowerzystów na ul. Kosackiego</li>
+                <li>Nowa ścieżka (ciąg pieszo-rowerowy) o szerokości 3 m, przebudowane zjazdy, zwężenie ul. Żeromskiego do 6 m</li>
+              </ul>
+            </div>
+
+            <div class="analysis-notes">
+              <h5>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Tak jak w poprzednich segmentach
+              </h5>
+              <ul>
+                <li>Ciąg pieszo-rowerowy o szerokości <strong>3 m</strong></li>
+                <li>Ulica Żeromskiego zwężona do <strong>6 m</strong></li>
+                <li>Przebudowane zjazdy na drogi poprzeczne i posesje (zaznaczone niebieskim wypełnieniem)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Image gallery -->
+          <div class="analysis-gallery" data-gallery="segment-2">
+            <figure class="gallery-thumb" data-index="0">
+              <img src="img/analysis/segment-2/1.jpg" alt="Rysunek projektu – segment 2, część 1" loading="lazy" />
+              <figcaption>Rysunek 1 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="1">
+              <img src="img/analysis/segment-2/2.jpg" alt="Rysunek projektu – segment 2, część 2" loading="lazy" />
+              <figcaption>Rysunek 2 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="2">
+              <img src="img/analysis/segment-2/3.jpg" alt="Rysunek projektu – segment 2, część 3" loading="lazy" />
+              <figcaption>Rysunek 3 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="3">
+              <img src="img/analysis/segment-2/4.jpg" alt="Rysunek projektu – segment 2, część 4" loading="lazy" />
+              <figcaption>Rysunek 4 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="4">
+              <img src="img/analysis/key/key.jpg" alt="Legenda" loading="lazy" />
+              <figcaption>Legenda</figcaption>
+            </figure>
+          </div>
+
+          <div class="analysis-cta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <p>Zauważyliście coś interesującego? Zostawcie komentarz pod postem!</p>
+            <a href="https://bit.ly/4fPX8S6" target="_blank" rel="noopener" class="btn btn-blue btn-sm">Skomentuj na Facebooku</a>
+          </div>
+        </article>
+
+        <!-- ── SEGMENT 3 ── -->
+        <article class="analysis-entry analysis-entry-full" id="segment-3">
+          <div class="analysis-meta">
+            <span class="analysis-tag analysis-tag-live">Opublikowano</span>
+            <span class="analysis-date">Sierpień 2025</span>
+            <span class="analysis-segment-label">Segment 3 z 4</span>
+          </div>
+          <h4>Segment 3: Żeromskiego 131 – Żeromskiego 215</h4>
+          <p class="analysis-subtitle">Część drogowa projektu</p>
+
+          <!-- Key facts -->
+          <div class="key-facts">
+            <div class="fact-item fact-blue">
+              <span class="fact-value">3 m</span>
+              <span class="fact-label">szerokość ciągu<br>pieszo-rowerowego</span>
+            </div>
+            <div class="fact-item fact-orange">
+              <span class="fact-value">6 m</span>
+              <span class="fact-label">zwężenie jezdni<br>ul. Żeromskiego</span>
+            </div>
+            <div class="fact-item fact-green">
+              <span class="fact-value">2</span>
+              <span class="fact-label">nowe przejścia<br>dla pieszych</span>
+            </div>
+            <div class="fact-item fact-green">
+              <span class="fact-value">1</span>
+              <span class="fact-label">przedłużenie<br>chodnika</span>
+            </div>
+          </div>
+
+          <!-- Body text -->
+          <div class="analysis-body">
+            <p>Trzecia część projektu drogowego obejmuje odcinek Żeromskiego numeru 131 do numeru 215. Poniżej znajdziecie szczegółowy plan zmian w tej części ulicy.</p>
+
+            <div class="analysis-tasks">
+              <h5>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="11" width="13" height="13" rx="2" ry="2"/><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
+                Zmiany w tym segmencie
+              </h5>
+              <ul>
+                <li>Nowe przejście dla pieszych na wysokości Stokrotki</li>
+                <li>Chodnik prowadzący do przystanku autobusowego od przejścia przy ul. Nowej zostanie przedłużony aż do ul. Rakowej</li>
+                <li>Tuż za ul. Rakową powstanie kolejne nowe przejście dla pieszych</li>
+                <li>Nowa ścieżka (ciąg pieszo-rowerowy) o szerokości 3 m, przebudowane zjazdy, zwężenie ul. Żeromskiego do 6 m</li>
+              </ul>
+            </div>
+
+            <div class="analysis-notes">
+              <h5>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Tak jak w poprzednich segmentach
+              </h5>
+              <ul>
+                <li>Ciąg pieszo-rowerowy o szerokości <strong>3 m</strong></li>
+                <li>Ulica Żeromskiego zwężona do <strong>6 m</strong></li>
+                <li>Przebudowane zjazdy na drogi poprzeczne i posesje (zaznaczone niebieskim wypełnieniem)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Image gallery -->
+          <div class="analysis-gallery" data-gallery="segment-3">
+            <figure class="gallery-thumb" data-index="0">
+              <img src="img/analysis/segment-3/1.jpg" alt="Rysunek projektu – segment 3, część 1" loading="lazy" />
+              <figcaption>Rysunek 1 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="1">
+              <img src="img/analysis/segment-3/2.jpg" alt="Rysunek projektu – segment 3, część 2" loading="lazy" />
+              <figcaption>Rysunek 2 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="2">
+              <img src="img/analysis/segment-3/3.jpg" alt="Rysunek projektu – segment 3, część 3" loading="lazy" />
+              <figcaption>Rysunek 3 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="3">
+              <img src="img/analysis/segment-3/4.jpg" alt="Rysunek projektu – segment 3, część 4" loading="lazy" />
+              <figcaption>Rysunek 4 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="4">
+              <img src="img/analysis/key/key.jpg" alt="Legenda" loading="lazy" />
+              <figcaption>Legenda</figcaption>
+            </figure>
+          </div>
+
+          <div class="analysis-cta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <p>Zauważyliście jeszcze coś? Zostawcie komentarz pod postem!</p>
+            <a href="https://bit.ly/4pV4FUq" target="_blank" rel="noopener" class="btn btn-blue btn-sm">Skomentuj na Facebooku</a>
+          </div>
+        </article>
+
+        <!-- ── SEGMENT 4 ── -->
+        <article class="analysis-entry analysis-entry-full" id="segment-4">
+          <div class="analysis-meta">
+            <span class="analysis-tag analysis-tag-live">Opublikowano</span>
+            <span class="analysis-date">Sierpień 2025</span>
+            <span class="analysis-segment-label">Segment 4 z 4</span>
+          </div>
+          <h4>Segment 4: Żeromskiego 207 – Żeromskiego 237</h4>
+          <p class="analysis-subtitle">Część drogowa projektu</p>
+
+          <!-- Key facts -->
+          <div class="key-facts">
+            <div class="fact-item fact-blue">
+              <span class="fact-value">3 m</span>
+              <span class="fact-label">szerokość ciągu<br>pieszo-rowerowego</span>
+            </div>
+            <div class="fact-item fact-orange">
+              <span class="fact-value">6 m</span>
+              <span class="fact-label">zwężenie jezdni<br>ul. Żeromskiego</span>
+            </div>
+            <div class="fact-item fact-green">
+              <span class="fact-value">5 m</span>
+              <span class="fact-label">powiększenie parkingu<br>przy kościele</span>
+            </div>
+            <div class="fact-item fact-green">
+              <span class="fact-value">2</span>
+              <span class="fact-label">nowe przejścia<br>dla pieszych</span>
+            </div>
+          </div>
+
+          <!-- Body text -->
+          <div class="analysis-body">
+            <p>Czwarta i ostatnia część projektu drogowego obejmuje odcinek Żeromskiego od numeru 207 do numeru 237. Poniżej znajdziecie szczegółowy plan zmian w tej części ulicy.</p>
+
+            <div class="analysis-tasks">
+              <h5>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="11" width="13" height="13" rx="2" ry="2"/><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
+                Zmiany w tym segmencie
+              </h5>
+              <ul>
+                <li>Parking wzdłuż kościoła zostanie powiększony do <strong>5 m</strong> (obecnie ok. 4,7 m)</li>
+                <li>Nowe oznaczone przejście dla pieszych i rowerzystów na ul. Wyszyńskiego przy wejściu na teren kościoła</li>
+                <li>Studzienki odwadniające przy przejściach oraz w dalszej części jezdni</li>
+                <li>W kierunku szkoły zostaną usunięte drzewa rosnące w miejscu projektowanej ścieżki</li>
+                <li>Na wysokości zatoki autobusowej przy szkole ścieżka kontynuuje bieg, przechodząc przez ul. Laskową i poszerzając się do <strong>4,3 m</strong>, po czym przenosi się na drugą stronę jezdni</li>
+                <li>Nowe przejście dla pieszych i rowerzystów pomiędzy ul. Laskową a drogą techniczną przed wiaduktem</li>
+              </ul>
+            </div>
+
+            <div class="analysis-notes">
+              <h5>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Tak jak w poprzednich segmentach
+              </h5>
+              <ul>
+                <li>Ciąg pieszo-rowerowy o szerokości <strong>3 m</strong></li>
+                <li>Ulica Żeromskiego zwężona do <strong>6 m</strong></li>
+                <li>Przebudowane zjazdy na drogi poprzeczne i posesje (zaznaczone niebieskim wypełnieniem)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Image gallery -->
+          <div class="analysis-gallery" data-gallery="segment-4">
+            <figure class="gallery-thumb" data-index="0">
+              <img src="img/analysis/segment-4/1.jpg" alt="Rysunek projektu – segment 4, część 1" loading="lazy" />
+              <figcaption>Rysunek 1 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="1">
+              <img src="img/analysis/segment-4/2.jpg" alt="Rysunek projektu – segment 4, część 2" loading="lazy" />
+              <figcaption>Rysunek 2 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="2">
+              <img src="img/analysis/segment-4/3.jpg" alt="Rysunek projektu – segment 4, część 3" loading="lazy" />
+              <figcaption>Rysunek 3 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="3">
+              <img src="img/analysis/segment-4/4.jpg" alt="Rysunek projektu – segment 4, część 4" loading="lazy" />
+              <figcaption>Rysunek 4 – plan sytuacyjny</figcaption>
+            </figure>
+            <figure class="gallery-thumb" data-index="4">
+              <img src="img/analysis/key/key.jpg" alt="Legenda" loading="lazy" />
+              <figcaption>Legenda</figcaption>
+            </figure>
+          </div>
+
+          <div class="analysis-cta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <p>Jakie są Wasze przemyślenia? Zostawcie komentarz pod postem!</p>
+            <a href="https://www.facebook.com/share/p/197zgNCmgS/" target="_blank" rel="noopener" class="btn btn-blue btn-sm">Skomentuj na Facebooku</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ MAPA ══════════════════════════════ -->
+  <section id="mapa" class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Geograficznie</span>
+        <h2>Interaktywna mapa zagrożeń</h2>
+        <p class="section-desc">Miejsca szczególnie niebezpieczne na ul. Żeromskiego zgłoszone przez mieszkańców.</p>
+      </div>
+    </div>
+    <div class="container container-map">
+      <div class="map-wrapper">
+        <div id="zeromskiego-map" class="map-embed" aria-label="Interaktywna mapa ul. Żeromskiego w Otwocku"></div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="map-wrapper">
+        <div class="map-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#1a1a2e;"></span> Wypadki</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#d82626;"></span> Niebezpieczne przejście</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#ff8c00;"></span> Wyprzedzanie</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#2e7d32;"></span> Rejon szkoły</div>
+          <div class="legend-item"><span class="legend-line" style="background:#0d47ff;"></span> Obszar inwestycji</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ POPIERAJĄ NAS ════════════════════ -->
+  <section id="popieraja" class="section section-white">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag tag-gold">Wsparcie</span>
+        <h2>Wspierają ideę poprawy bezpieczeństwa</h2>
+        <p class="section-desc">Nasze działania wspierają lokalni przedsiębiorcy, organizacje, władze powiatu i władze miasta.</p>
+      </div>
+
+      <!-- ── Lokalni przedsiębiorcy ── -->
+      <div class="supporters-group">
+        <h3 class="supporters-group-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Lokalni przedsiębiorcy
+        </h3>
+        <div class="supporters-grid">
+
+          <div class="supporter-card">
+            <div class="supporter-logo">
+              <img src="https://placehold.co/80x80/e8f5e9/2e7d32?text=BODEX" alt="PPHU Bodex" />
+            </div>
+            <div class="supporter-info">
+              <strong>PPHU Bodex</strong>
+              <p class="supporter-details">ul. Żeromskiego 141</p>
+              <p>Prowadzimy sklep przy ul. Żeromskiego od ponad 20 lat. Bezpieczeństwo naszych klientów i ich dzieci jest dla nas priorytetem.</p>
+            </div>
+          </div>
+
+          <div class="supporter-card">
+            <div class="supporter-logo">
+              <img src="/img/supporters/logo-livio.png" alt="Market LIVIO" />
+            </div>
+            <div class="supporter-info">
+              <strong>Market LIVIO</strong>
+              <p class="supporter-details">ul. Żeromskiego 121</p>
+              <p>Ścieżka rowerowa to dla nas i naszych klientów ogromna zmiana. Popieramy każde działanie na rzecz bezpiecznej infrastruktury.</p>
+            </div>
+          </div>
+
+          <div class="supporter-card">
+            <div class="supporter-logo" style="background:#1b1d20; padding: 0 4px;">
+              <img src="/img/supporters/logo-skp.png" alt="SKP 24h" />
+            </div>
+            <div class="supporter-info">
+              <strong>SKP 24h</strong>
+              <p class="supporter-details">ul. Żeromskiego 98J</p>
+              <p>Jako stacja obsługująca mieszkańców całej ulicy doskonale widzimy, ile wypadków ma miejsce w tym rejonie. Wspieramy inicjatywę.</p>
+            </div>
+          </div>
+
+          <div class="supporter-card">
+            <div class="supporter-logo">
+              <img src="/img/supporters/logo-gil.svg" alt="Glina i Lina" />
+            </div>
+            <div class="supporter-info">
+              <strong>Glina i Lina</strong>
+              <p class="supporter-details">ul. Żeromskiego 113</p>
+              <p>Obie mieszkamy tutaj od urodzenia, dlatego poprawa bezpieczeństwa jest dla nas bardzo ważna.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Lokalne organizacje ── -->
+      <div class="supporters-group">
+        <h3 class="supporters-group-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Lokalne organizacje
+        </h3>
+        <div class="supporters-grid">
+
+          <div class="supporter-card">
+            <div class="supporter-logo">
+              <img src="https://placehold.co/80x80/fde8e8/d82626?text=OSP" alt="OSP Otwock" />
+            </div>
+            <div class="supporter-info">
+              <strong>OSP Otwock</strong>
+              <p>Jako strażacy interweniujemy na ul. Żeromskiego przy wypadkach. Redukcja prędkości i bezpieczne przejścia są absolutnie konieczne.</p>
+            </div>
+          </div>
+
+          <div class="supporter-card">
+            <div class="supporter-logo">
+              <img src="https://placehold.co/80x80/e8f0fe/0d47ff?text=KS" alt="Klub Sportowy" />
+            </div>
+            <div class="supporter-info">
+              <strong>KS Otwock</strong>
+              <p>Nasi zawodnicy i kibice codziennie przemierzają ul. Żeromskiego. Bezpieczna infrastruktura to warunek, by sport był dostępny dla wszystkich.</p>
+            </div>
+          </div>
+
+          <div class="supporter-card">
+            <div class="supporter-logo">
+              <img src="https://placehold.co/80x80/f3e5f5/7b1fa2?text=KR" alt="Koło Rowerzystów" />
+            </div>
+            <div class="supporter-info">
+              <strong>Otwockie Koło Rowerzystów</strong>
+              <p>Ścieżka rowerowa to duży krok naprzód, ale tylko wtedy, gdy będzie naprawdę bezpieczna – również na skrzyżowaniach i przy szkole.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Władze powiatu ── -->
+      <div class="supporters-group">
+        <h3 class="supporters-group-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          Władze powiatu
+        </h3>
+        <div class="supporters-empty">
+          <div class="supporters-empty-icon">💼</div>
+          <p class="supporters-empty-title">Czekamy na pierwsze wsparcie</p>
+          <p class="supporters-empty-desc">Żaden radny ani przedstawiciel Starostwa Powiatowego w Otwocku nie wyraził jeszcze publicznie poparcia dla naszych postulatów.</p>
+          <p class="supporters-empty-cta">Masz kontakt z radnym lub pracownikiem starostwa? <a href="https://www.facebook.com/BezpiecznaZeromskiegoOtwock" target="_blank" rel="noopener">Zachęć ich do rozmowy z nami →</a></p>
+        </div>
+      </div>
+
+      <!-- ── Władze miasta ── -->
+      <div class="supporters-group">
+        <h3 class="supporters-group-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4"/></svg>
+          Władze miasta
+        </h3>
+        <div class="supporters-grid">
+
+          <div class="supporter-card">
+            <div class="supporter-logo">
+              <img src="/img/supporters/photo-tyszka-kowalska.jpg" alt="Izabela Tyszka-Kowalska" />
+            </div>
+            <div class="supporter-info">
+              <strong>Izabela Tyszka-Kowalska</strong>
+              <p class="supporter-details">Radna Miasta Otwocka</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pretium ac arcu ut tempus. Donec non quam nec dui ullamcorper lobortis. Vivamus nec.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ OPINIE ════════════════════════════ -->
+  <section id="opinie" class="section section-white">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Głos mieszkańców</span>
+        <h2>Co mówią mieszkańcy?</h2>
+        <p class="section-desc">Podziel się swoją opinią na Facebooku – które miejsce jest najbardziej niebezpieczne?</p>
+      </div>
+      <div class="opinie-grid">
+
+        <blockquote class="opinia-card">
+          <p>„Przejście dla pieszych i skręt na osiedle zaraz za łukiem przy Żeromskiego 73 bardzo niebezpieczne."</p>
+          <p><i>- Mieszkanka ul. Żeromskiego</i></p>
+        </blockquote>
+
+        <blockquote class="opinia-card">
+          <p>„Przejście przy szkole wymaga dodatkowego zabezpieczenia. Codziennie serce mi staje, gdy dzieci przebiegają przez jezdnię."</p>
+          <p><i>- Rodzic ucznia SP8</i></p>
+        </blockquote>
+
+        <blockquote class="opinia-card opinia-cta">
+          <p>💬 Twoja opinia też się liczy!</p>
+          <a href="https://www.facebook.com/BezpiecznaZeromskiegoOtwock" target="_blank" rel="noopener" class="btn btn-blue btn-sm">Skomentuj na Facebooku</a>
+        </blockquote>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ FOOTER ════════════════════════════ -->
+  <footer id="kontakt">
+    <div class="footer-inner container">
+      <div class="footer-brand">
+        <img src="img/logo.png" alt="Logo Bezpieczna Żeromskiego" />
+        <div>
+          <strong>Bezpieczna Żeromskiego</strong>
+          <span>Otwock</span>
+        </div>
+      </div>
+      <nav class="footer-nav" aria-label="Linki w stopce">
+        <a href="https://www.facebook.com/BezpiecznaZeromskiegoOtwock" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Facebook
+        </a>
+        <a href="#projekt">Dokumentacja</a>
+        <a href="#petycja">Petycja</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+    <div class="footer-disclaimer container">
+      Witryna społecznej inicjatywy mieszkańców. Nie jest oficjalną stroną Powiatu Otwockiego ani Miasta Otwock.
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Przeglądarka zdjęć">
+    <button class="lightbox-close" id="lbClose" aria-label="Zamknij">✕</button>
+    <button class="lightbox-prev" id="lbPrev" aria-label="Poprzednie">‹</button>
+    <div class="lightbox-img-wrap">
+      <img id="lbImg" src="" alt="" />
+    </div>
+    <p class="lightbox-caption" id="lbCaption"></p>
+    <p class="lightbox-counter" id="lbCounter"></p>
+    <button class="lightbox-next" id="lbNext" aria-label="Następne">›</button>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
