@@ -26,6 +26,7 @@
       </button>
       <ul class="nav-links" id="navLinks">
         <li><a href="#inicjatywa">O inicjatywie</a></li>
+        <li><a href="#aktualnosci">Aktualności</a></li>
         <li><a href="#projekt">Projekt</a></li>
         <li><a href="#mapa">Mapa</a></li>
         <li><a href="#popieraja">Popierają nas</a></li>
@@ -102,6 +103,19 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════════════ AKTUALNOŚCI ══════════════════════ -->
+  <section id="aktualnosci" class="section section-white">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Na bieżąco</span>
+        <h2>Aktualności</h2>
+        <p class="section-desc">Co nowego w sprawie bezpiecznej Żeromskiego? Śledź postępy inicjatywy.</p>
+      </div>
+      <div class="news-list" id="newsList">
+        <div class="news-loading">Ładowanie aktualności…</div>
+      </div>
+    </div>
+  </section>
 
   <!-- ═══════════════════════════════ PETYCJA ═══════════════════════════ -->
   <section id="petycja" class="section section-navy section-petycja">
@@ -907,6 +921,8 @@
     <button class="lightbox-next" id="lbNext" aria-label="Następne">›</button>
   </div>
 
+  <script src="https://unpkg.com/marked@9.1.6/marked.min.js"></script>
+  <script src="data/news/news-index.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="js/main.js"></script>
 </body>

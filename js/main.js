@@ -133,6 +133,116 @@ fetch('data/signatures.json')
   })
   .catch(() => {}); // silently fail if file unavailable
 
+// ── News section ──
+(function () {
+  const list = document.getElementById('newsList');
+  if (!list) return;
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function tagHtml(tags) {
+    return (tags || []).map(t =>
+      `<span class="news-tag">${t}</span>`
+    ).join('');
+  }
+
+  function togglePost(post, btn, body) {
+    if (body.classList.contains('open')) {
+      body.classList.remove('open');
+      btn.textContent = 'Czytaj więcej →';
+      btn.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    if (body.innerHTML.trim()) {
+      body.classList.add('open');
+      btn.textContent = 'Zwiń ↑';
+      btn.setAttribute('aria-expanded', 'true');
+      return;
+    }
+    btn.textContent = 'Ładowanie…';
+    fetch(`data/news/${post.slug}.md`)
+      .then(r => r.ok ? r.text() : Promise.reject())
+      .then(md => {
+        body.innerHTML = marked.parse(md);
+        body.classList.add('open');
+        btn.textContent = 'Zwiń ↑';
+        btn.setAttribute('aria-expanded', 'true');
+      })
+      .catch(() => {
+        // Fallback: show excerpt when fetch is unavailable (e.g. file://)
+        body.innerHTML = `<p>${post.excerpt}</p><p class="news-error">Pełna treść dostępna po otwarciu strony przez serwer HTTP.</p>`;
+        body.classList.add('open');
+        btn.textContent = 'Zwiń ↑';
+        btn.setAttribute('aria-expanded', 'true');
+      });
+  }
+
+  const allPosts = (window.newsIndex || [])
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  if (!allPosts.length) {
+    list.innerHTML = '<p class="news-empty">Brak aktualności.</p>';
+    return;
+  }
+
+  const PER_PAGE = 3;
+  let currentPage = 1;
+  const totalPages = () => Math.ceil(allPosts.length / PER_PAGE);
+
+  function renderPage(page) {
+    currentPage = page;
+    const start = (page - 1) * PER_PAGE;
+    const posts = allPosts.slice(start, start + PER_PAGE);
+
+    list.innerHTML = posts.map(post => `
+      <article class="news-card" id="news-${post.slug}">
+        <div class="news-meta">
+          <time class="news-date" datetime="${post.date}">${formatDate(post.date)}</time>
+          <div class="news-tags">${tagHtml(post.tags)}</div>
+        </div>
+        <h3 class="news-title">${post.title}</h3>
+        <p class="news-excerpt">${post.excerpt}</p>
+        <div class="news-body" aria-hidden="true"></div>
+        <button class="news-toggle" aria-expanded="false">Czytaj więcej →</button>
+      </article>
+    `).join('') + renderPagination();
+
+    list.querySelectorAll('.news-toggle').forEach((btn, i) => {
+      const post = posts[i];
+      const card = document.getElementById(`news-${post.slug}`);
+      const body = card.querySelector('.news-body');
+      btn.addEventListener('click', () => togglePost(post, btn, body));
+    });
+
+    list.querySelectorAll('.news-page-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const p = parseInt(btn.dataset.page);
+        if (p !== currentPage) {
+          renderPage(p);
+          document.getElementById('aktualnosci').scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  function renderPagination() {
+    const total = totalPages();
+    if (total <= 1) return '';
+    const pages = Array.from({ length: total }, (_, i) => i + 1);
+    return `<nav class="news-pagination" aria-label="Strony aktualności">
+      ${pages.map(p => `
+        <button class="news-page-btn ${p === currentPage ? 'active' : ''}" data-page="${p}" aria-current="${p === currentPage ? 'page' : 'false'}">${p}</button>
+      `).join('')}
+    </nav>`;
+  }
+
+  renderPage(1);
+})();
+
 // ── Leaflet map – ul. Żeromskiego, Otwock ──
 (function () {
   const mapEl = document.getElementById('zeromskiego-map');
