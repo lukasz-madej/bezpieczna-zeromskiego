@@ -22,9 +22,13 @@
   --shadow-lg: 0 8px 40px rgba(7,29,68,.14);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+#segment-1, #segment-2, #segment-3, #segment-4 {
+  scroll-margin-top: 25px;
+}
 
-html { scroll-behavior: smooth; }
+
+
+html { scroll-behavior: smooth; scroll-padding-top: 68px; }
 
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -1005,7 +1009,15 @@ footer {
   padding: 6px 14px 6px 8px;
   border-radius: 100px;
   white-space: nowrap;
+  text-decoration: none;
+  transition: transform .15s, box-shadow .15s, filter .15s;
 }
+a.seg-step:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+a.seg-step:active { transform: translateY(0); }
 .seg-num {
   width: 24px; height: 24px;
   border-radius: 50%;
