@@ -832,10 +832,12 @@ ul { list-style: none; }
 
 .supporters-empty {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background: var(--light);
   border: 1px dashed var(--border);
   border-radius: var(--radius);
-  padding: 36px 32px;
+  padding: 36px 24px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -856,7 +858,7 @@ ul { list-style: none; }
 .supporters-empty-desc {
   font-size: .9rem;
   color: var(--text-muted);
-  max-width: 520px;
+  max-width: min(520px, 100%);
   margin: 0;
   line-height: 1.55;
 }
