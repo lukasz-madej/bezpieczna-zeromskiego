@@ -144,8 +144,9 @@ fetch('data/signatures.json')
   }
 
   function tagHtml(tags) {
+    const colourMap = { petycja: 'petycja', inicjatywa: 'inicjatywa', projekt: 'projekt', przetarg: 'przetarg', analiza: 'analizy', działania: 'petycja', mieszkańcy: 'inicjatywa', powiat: 'przetarg' };
     return (tags || []).map(t =>
-      `<span class="news-tag">${t}</span>`
+      `<span class="news-tag news-tag-${colourMap[t] || ''}">${t}</span>`
     ).join('');
   }
 
@@ -156,7 +157,7 @@ fetch('data/signatures.json')
       btn.setAttribute('aria-expanded', 'false');
       return;
     }
-    if (body.innerHTML.trim()) {
+    if (body.dataset.loaded) {
       body.classList.add('open');
       btn.textContent = 'Zwiń ↑';
       btn.setAttribute('aria-expanded', 'true');
@@ -167,13 +168,14 @@ fetch('data/signatures.json')
       .then(r => r.ok ? r.text() : Promise.reject())
       .then(md => {
         body.innerHTML = marked.parse(md);
+        body.dataset.loaded = '1';
         body.classList.add('open');
         btn.textContent = 'Zwiń ↑';
         btn.setAttribute('aria-expanded', 'true');
       })
       .catch(() => {
-        // Fallback: show excerpt when fetch is unavailable (e.g. file://)
         body.innerHTML = `<p>${post.excerpt}</p><p class="news-error">Pełna treść dostępna po otwarciu strony przez serwer HTTP.</p>`;
+        body.dataset.loaded = '1';
         body.classList.add('open');
         btn.textContent = 'Zwiń ↑';
         btn.setAttribute('aria-expanded', 'true');
@@ -198,16 +200,20 @@ fetch('data/signatures.json')
     const start = (page - 1) * PER_PAGE;
     const posts = allPosts.slice(start, start + PER_PAGE);
 
-    list.innerHTML = posts.map(post => `
-      <article class="news-card" id="news-${post.slug}">
-        <div class="news-meta">
-          <time class="news-date" datetime="${post.date}">${formatDate(post.date)}</time>
-          <div class="news-tags">${tagHtml(post.tags)}</div>
+    list.innerHTML = posts.map((post, i) => `
+      <article class="news-card${page === 1 && i === 0 ? ' news-card--latest' : ''}" id="news-${post.slug}" data-category="${(post.tags || [])[0] || ''}">
+        <div class="news-card-inner">
+          <div class="news-meta">
+            <time class="news-date" datetime="${post.date}">${formatDate(post.date)}</time>
+            <div class="news-tags">${tagHtml(post.tags)}</div>
+          </div>
+          <h3 class="news-title">${post.title}</h3>
+          <p class="news-excerpt">${post.excerpt}</p>
+          <div class="news-body"></div>
+          <div class="news-footer">
+            <button class="news-toggle" aria-expanded="false">Czytaj więcej →</button>
+          </div>
         </div>
-        <h3 class="news-title">${post.title}</h3>
-        <p class="news-excerpt">${post.excerpt}</p>
-        <div class="news-body" aria-hidden="true"></div>
-        <button class="news-toggle" aria-expanded="false">Czytaj więcej →</button>
       </article>
     `).join('') + renderPagination();
 
