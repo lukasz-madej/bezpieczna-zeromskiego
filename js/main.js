@@ -232,5 +232,5 @@ fetch('data/signatures.json')
       [52.136482258267755, 21.334004430774364],
     ],
   ];
-  L.polyline(routeMissing, { color: '#f5b400', weight: 4, opacity: 0.55, smoothFactor: 0 }).addTo(map);
+  L.polyline(routeMissing, { color: '#f5b400', weight: 6, opacity: 0.55, smoothFactor: 0 }).addTo(map);
 })();
