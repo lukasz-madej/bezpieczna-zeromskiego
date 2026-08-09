@@ -125,13 +125,28 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Petition signature counter ──
-fetch('data/signatures.json')
-  .then(r => r.ok ? r.json() : Promise.reject())
-  .then(({ count }) => {
-    const el = document.getElementById('petycjaCounterNum');
-    if (el && count != null) el.textContent = count.toLocaleString('pl-PL');
-  })
-  .catch(() => {}); // silently fail if file unavailable
+// Total = signatures collected online (petycjeonline.com, scraped by cron)
+//       + signatures gathered manually on paper (entered by hand in signatures-manual.json)
+Promise.all([
+  fetch('data/signatures.json').then(r => r.ok ? r.json() : Promise.reject()).catch(() => null),
+  fetch('data/signatures-manual.json').then(r => r.ok ? r.json() : Promise.reject()).catch(() => null)
+]).then(([online, manual]) => {
+  const el = document.getElementById('petycjaCounterNum');
+  const breakdownEl = document.getElementById('petycjaCounterBreakdown');
+  const onlineCount = online && online.count != null ? online.count : null;
+  const manualCount = manual && manual.count != null ? manual.count : null;
+  const total = (onlineCount || 0) + (manualCount || 0);
+
+  if (el && (onlineCount != null || manualCount != null)) {
+    el.textContent = total.toLocaleString('pl-PL');
+  }
+
+  if (breakdownEl && onlineCount != null && manualCount != null) {
+    breakdownEl.textContent =
+      `${onlineCount.toLocaleString('pl-PL')} podpisów online + ` +
+      `${manualCount.toLocaleString('pl-PL')} zebranych osobiście podczas zbiórek.`;
+  }
+});
 
 // ── News section ──
 (function () {
