@@ -1,5 +1,12 @@
 window.newsIndex = [
   {
+    "slug": "zbiorka-pod-kosciolem",
+    "title": "Jesteśmy dziś pod kościołem w Wólce Mlądzkiej!",
+    "date": "2026-08-09",
+    "excerpt": "Zapraszamy po kolejnych Mszach.",
+    "tags": ["petycja", "podpisy", "zbiórka"]
+  },
+  {
     "slug": "analiza-segmentu-4",
     "title": "Opublikowaliśmy analizę segmentu 4",
     "date": "2026-08-05",
