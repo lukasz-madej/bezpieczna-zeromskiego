@@ -4,3 +4,4 @@ Dziękujemy wszystkim, którzy już nas odwiedzili i poparli tę ważną dla mie
 
 ![Zbiorka pod kosciolem](data/news/photos/zbiorka-pod-kosciolem/1.jpg)
 ![Zbiorka pod kosciolem](data/news/photos/zbiorka-pod-kosciolem/2.jpg)
+![Zbiorka pod kosciolem](data/news/photos/zbiorka-pod-kosciolem/3.jpg)
