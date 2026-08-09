@@ -150,6 +150,42 @@ fetch('data/signatures.json')
     ).join('');
   }
 
+  // Groups consecutive "image-only" paragraphs (produced by markdown like
+  // `![alt](data/news/photos/<slug>/foo.jpg)`) into a responsive gallery grid,
+  // and adds lazy-loading + a lightbox click-to-enlarge behaviour.
+  function enhanceNewsPhotos(body) {
+    const paragraphs = Array.from(body.querySelectorAll('p'));
+    let group = [];
+
+    function flushGroup() {
+      if (group.length === 0) return;
+      const gallery = document.createElement('div');
+      gallery.className = 'news-gallery';
+      if (group.length === 1) gallery.classList.add('news-gallery--single');
+      group[0].parentNode.insertBefore(gallery, group[0]);
+      group.forEach(p => {
+        gallery.appendChild(p.querySelector('img'));
+        p.remove();
+      });
+      group = [];
+    }
+
+    paragraphs.forEach(p => {
+      const onlyImg = p.children.length === 1 && p.children[0].tagName === 'IMG' && p.textContent.trim() === '';
+      if (onlyImg) {
+        group.push(p);
+      } else if (group.length) {
+        flushGroup();
+      }
+    });
+    if (group.length) flushGroup();
+
+    body.querySelectorAll('.news-gallery img').forEach(img => {
+      img.loading = 'lazy';
+      img.addEventListener('click', () => window.open(img.src, '_blank', 'noopener'));
+    });
+  }
+
   function togglePost(post, btn, body) {
     if (body.classList.contains('open')) {
       body.classList.remove('open');
@@ -168,6 +204,7 @@ fetch('data/signatures.json')
       .then(r => r.ok ? r.text() : Promise.reject())
       .then(md => {
         body.innerHTML = marked.parse(md);
+        enhanceNewsPhotos(body);
         body.dataset.loaded = '1';
         body.classList.add('open');
         btn.textContent = 'Zwiń ↑';
