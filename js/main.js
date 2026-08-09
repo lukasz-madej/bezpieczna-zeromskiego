@@ -331,6 +331,8 @@ Promise.all([
     // Wypadki (czarne)
     { latlng: [52.126949120736995, 21.312078427001115], color: BLACK, label: 'Wypadek' },
     { latlng: [52.13549811647438, 21.331725110821942], color: BLACK, label: 'Wypadek' },
+    { latlng: [52.12550765733675, 21.296552453628372], color: BLACK, label: 'Wypadek' },
+
     // Niebezpieczne przejścia (czerwone)
     { latlng: [52.12630515337814, 21.30982402744196], color: RED,    label: 'Niebezpieczne przejście – okolice numeru 111' },
     { latlng: [52.125545374621005, 21.30058028451581], color: RED,    label: 'Niebezpieczne przejście – okolice numeru 73' },
