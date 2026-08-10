@@ -1055,6 +1055,7 @@ ul { list-style: none; }
   flex-shrink: 0;
   width: 64px;
   height: 64px;
+  box-sizing: border-box;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border);
