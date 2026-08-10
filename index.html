@@ -5,9 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Społeczna inicjatywa mieszkańców Otwocka na rzecz bezpiecznej ulicy Żeromskiego. Analizujemy projekt przebudowy i dbamy o bezpieczeństwo." />
   <title>Bezpieczna Żeromskiego – Otwock</title>
+
   <link rel="icon" href="img/logo.png" type="image/png" />
+  <link rel="apple-touch-icon" href="img/logo.png" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bezpieczna-zeromskiego.pl/" />
+  <meta property="og:title" content="Bezpieczna Żeromskiego – Otwock" />
+  <meta property="og:description" content="Społeczna inicjatywa mieszkańców Otwocka na rzecz bezpiecznej ulicy Żeromskiego. Analizujemy projekt przebudowy i dbamy o bezpieczeństwo." />
+  <meta property="og:image" content="https://bezpieczna-zeromskiego.pl/img/logo.png" />
+  <meta property="og:locale" content="pl_PL" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Bezpieczna Żeromskiego – Otwock" />
+  <meta name="twitter:description" content="Społeczna inicjatywa mieszkańców Otwocka na rzecz bezpiecznej ulicy Żeromskiego. Analizujemy projekt przebudowy i dbamy o bezpieczeństwo." />
+  <meta name="twitter:image" content="https://bezpieczna-zeromskiego.pl/img/logo.png" />
+
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" />
 </head>
 <body>
 
@@ -21,7 +39,7 @@
           <em>Otwock</em>
         </span>
       </a>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-controls="navLinks" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links" id="navLinks">
@@ -131,10 +149,14 @@
         </div>
         <p class="petycja-counter-breakdown" id="petycjaCounterBreakdown"></p>
 
-        <a href="https://www.petycjeonline.com/wprowadzenie_skutecznych_dziaa_poprawiajcych_bezpieczestwo_na_ulicy_eromskiego_w_otwocku" class="btn btn-orange btn-large" target="_blank">
+        <a href="https://www.petycjeonline.com/wprowadzenie_skutecznych_dziaa_poprawiajcych_bezpieczestwo_na_ulicy_eromskiego_w_otwocku" class="btn btn-orange btn-large" target="_blank" rel="noopener">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           Podpisz petycję
         </a>
+        <button type="button" class="btn btn-outline btn-sm" id="shareBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
+          Udostępnij stronę
+        </button>
         <p class="petycja-note">Udostępnij sąsiadom z ul. Żeromskiego i okolicznych ulic oraz rodzicom z SP8</p>
       </div>
     </div>
@@ -1004,9 +1026,18 @@
     <button class="lightbox-next" id="lbNext" aria-label="Następne">›</button>
   </div>
 
-  <script src="https://unpkg.com/marked@9.1.6/marked.min.js"></script>
+  <!-- Always-visible sticky petition CTA; pinned 20px above the footer via JS once scrolled that far -->
+  <a href="https://www.petycjeonline.com/wprowadzenie_skutecznych_dziaa_poprawiajcych_bezpieczestwo_na_ulicy_eromskiego_w_otwocku"
+     class="sticky-cta" id="stickyCta" target="_blank" rel="noopener">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    Podpisz petycję
+  </a>
+
+  <script src="https://unpkg.com/marked@9.1.6/marked.min.js"
+          integrity="sha256-YAKvY0hbBD+mDdq6GzQ2O5jSqLLGO2BwBPOiQFqKBTo=" crossorigin="anonymous"></script>
   <script src="data/news/news-index.js"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

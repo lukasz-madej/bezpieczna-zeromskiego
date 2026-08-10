@@ -7,11 +7,14 @@
   --navy:   #071d44;
   --navy2:  #0a2456;
   --blue:   #0d47ff;
+  --blue-light: #5c9eff;
   --gold:   #f5b400;
+  --gold-dark: #b8860b;
   --orange: #ff8c00;
   --red:    #d82626;
   --white:  #ffffff;
   --green:  #4caf50;
+  --green-dark: #2e7d32;
   --light:  #f5f7fa;
   --text:   #1a1a2e;
   --text-muted: #5a6377;
@@ -130,10 +133,6 @@ ul { list-style: none; }
   border-color: rgba(255,255,255,.6);
 }
 .btn-outline:hover { background: rgba(255,255,255,.1); }
-.btn-navy {
-  background: var(--navy);
-  color: var(--white);
-}
 .btn-blue {
   background: var(--blue);
   color: var(--white);
@@ -358,12 +357,6 @@ ul { list-style: none; }
 .card-outlined .card-icon { background: rgba(216,38,38,.1); color: var(--red); }
 .card-outlined h3 em { font-style: normal; color: var(--red); }
 
-.card-gold {
-  background: var(--white);
-  border-top: 4px solid var(--gold);
-}
-.card-gold .card-icon { background: rgba(245,180,0,.12); color: var(--gold); }
-
 .card-green {
   background: var(--white);
   border-top: 4px solid var(--green);
@@ -384,18 +377,17 @@ ul { list-style: none; }
   background: rgba(0,0,0,.05);
   border: 1px solid rgba(0,0,0,.1);
 }
-.stance-icon {
-  font-size: 2.2rem;
-  margin-bottom: 16px;
-  line-height: 1;
-}
 .stance-col h3 {
   font-size: 1.2rem;
   font-weight: 800;
   margin-bottom: 16px;
   color: var(--text);
 }
-.stance-col ul { display: grid; gap: 10px; }
+.stance-col ul {
+  display: grid;
+  gap: 10px;
+  padding-left: 0;
+}
 .stance-col ul li {
   color: var(--text-muted);
   font-size: .97rem;
@@ -411,12 +403,12 @@ ul { list-style: none; }
   height: 7px;
   border-radius: 50%;
 }
-.stance-green { border-top: 3px solid #4caf50; }
-.stance-green ul li::before { background: #4caf50; }
+.stance-green { border-top: 3px solid var(--green); }
+.stance-green ul li::before { background: var(--green); }
 .stance-red { border-top: 3px solid var(--red); }
 .stance-red ul li::before { background: var(--red); }
-.stance-blue { border-top: 3px solid #5c9eff; }
-.stance-blue ul li::before { background: #5c9eff; }
+.stance-blue { border-top: 3px solid var(--blue-light); }
+.stance-blue ul li::before { background: var(--blue-light); }
 
 /* ══════════════════════════════════════════════════════════
    PROBLEMY
@@ -458,6 +450,7 @@ ul { list-style: none; }
   font-weight: 800;
   color: var(--navy);
   margin-bottom: 5px;
+  margin-top: 0;
 }
 .problem-card p {
   color: var(--text-muted);
@@ -495,10 +488,10 @@ ul { list-style: none; }
   border-radius: 50%;
   flex-shrink: 0;
 }
-.status-done .status-dot   { background: #4caf50; box-shadow: 0 0 0 3px rgba(76,175,80,.2); }
+.status-done .status-dot   { background: var(--green); box-shadow: 0 0 0 3px rgba(76,175,80,.2); }
 .status-active .status-dot { background: var(--orange); box-shadow: 0 0 0 3px rgba(255,140,0,.2); animation: pulse 1.8s ease-in-out infinite; }
 .status-pending .status-dot{ background: var(--border); }
-.status-done   { color: #2e7d32; }
+.status-done   { color: var(--green-dark); }
 .status-active { color: var(--orange); }
 .status-divider {
   width: 40px; height: 2px;
@@ -670,9 +663,9 @@ ul { list-style: none; }
   max-width: 460px;
 }
 .petycja-inner strong { color: var(--gold); }
-.petycja-note {
-  font-size: .88rem !important;
-  color: rgba(255,255,255,.5) !important;
+.petycja-inner .petycja-note {
+  font-size: .88rem;
+  color: rgba(255,255,255,.5);
   margin-top: 6px;
 }
 .petycja-counter {
@@ -699,10 +692,10 @@ ul { list-style: none; }
   text-transform: uppercase;
   color: rgba(255,255,255,.6);
 }
-.petycja-counter-breakdown {
-  font-size: .82rem !important;
-  color: rgba(255,255,255,.5) !important;
-  margin-top: 10px !important;
+.petycja-inner .petycja-counter-breakdown {
+  font-size: .82rem;
+  color: rgba(255,255,255,.5);
+  margin-top: 10px;
   text-align: center;
   max-width: 380px;
 }
@@ -771,10 +764,10 @@ ul { list-style: none; }
   color: var(--blue);
 }
 .news-tag-petycja    { background: rgba(255,140,0,.1);  color: var(--orange); }
-.news-tag-inicjatywa { background: rgba(76,175,80,.12); color: #2e7d32; }
-.news-tag-projekt    { background: rgba(245,180,0,.15); color: #b8860b; }
+.news-tag-inicjatywa { background: rgba(76,175,80,.12); color: var(--green-dark); }
+.news-tag-projekt    { background: rgba(245,180,0,.15); color: var(--gold-dark); }
 .news-tag-przetarg   { background: rgba(216,38,38,.1);  color: var(--red); }
-.news-tag-analizy    { background: rgba(245,180,0,.15); color: #b8860b; }
+.news-tag-analizy    { background: rgba(245,180,0,.15); color: var(--gold-dark); }
 
 /* ── Content ── */
 .news-title {
@@ -846,6 +839,10 @@ ul { list-style: none; }
 }
 .news-gallery--single img { height: auto; max-height: 420px; }
 .news-gallery img:hover { transform: scale(1.02); box-shadow: var(--shadow-lg); }
+.news-gallery img:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
 
 /* ── Footer ── */
 .news-footer {
@@ -891,11 +888,6 @@ ul { list-style: none; }
   border-color: var(--navy);
   box-shadow: 0 4px 12px rgba(7,29,68,.25);
 }
-
-@media (max-width: 600px) {
-  .news-card { border-left-width: 2px; }
-}
-
 
 /* ══════════════════════════════════════════════════════════
    OPINIE
@@ -964,14 +956,14 @@ ul { list-style: none; }
 .opinia-card:nth-child(6n+6) { transform: rotate(1.5deg) !important; margin-top: 10px; }
 
 /* Sticky note colour */
-.opinia-card:nth-child(4n+1) { background: #f5f7fa; border-radius: 18px 4px 18px 18px; }
+.opinia-card:nth-child(4n+1) { background: var(--light); border-radius: 18px 4px 18px 18px; }
 .opinia-card:nth-child(4n+1)::before { left: auto; right: 20px; }
 .opinia-card:nth-child(4n+1)::after { left: auto; right: 24px; }
-.opinia-card:nth-child(4n+2) { background: #f5f7fa; }
-.opinia-card:nth-child(4n+3) { background: #f5f7fa; border-radius: 18px 4px 18px 18px; }
+.opinia-card:nth-child(4n+2) { background: var(--light); }
+.opinia-card:nth-child(4n+3) { background: var(--light); border-radius: 18px 4px 18px 18px; }
 .opinia-card:nth-child(4n+3)::before { left: auto; right: 20px; }
 .opinia-card:nth-child(4n+3)::after { left: auto; right: 24px; }
-.opinia-card:nth-child(4n+4) { background: #f5f7fa; }
+.opinia-card:nth-child(4n+4) { background: var(--light); }
 
 .opinia-card p {
   color: var(--text);
@@ -980,32 +972,35 @@ ul { list-style: none; }
   font-style: italic;
   margin: 0 0 12px;
 }
-.opinia-author {
+.opinia-card .opinia-author {
   font-size: .82rem;
   color: var(--text-muted);
   font-weight: 700;
-  font-style: normal !important;
-  margin-bottom: 0 !important;
+  font-style: normal;
+  margin-bottom: 0;
 }
 .opinia-card.opinia-cta {
-  background: var(--white) !important;
+  background: var(--white);
   border: 2px dashed var(--orange);
-  border-radius: 18px !important;
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 16px;
+  /* !important needed here: this must still beat the site-wide scroll
+     fade-in script (js/main.js), which injects `.visible { transform: none
+     !important }` on every animated element once it scrolls into view. */
   transform: none !important;
-  margin-top: 12px !important;
+  margin-top: 12px;
 }
 .opinia-cta::after,
 .opinia-cta::before { display: none; }
 .opinia-cta p {
   font-style: normal;
   font-weight: 700;
-  font-size: 1.05rem !important;
-  color: var(--navy) !important;
+  font-size: 1.05rem;
+  color: var(--navy);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -1070,18 +1065,6 @@ ul { list-style: none; }
   height: 100%;
   object-fit: contain;
 }
-.supporter-logo-initials {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: 900;
-  background: var(--init-bg, #e8f0fe);
-  color: var(--init-color, var(--blue));
-  overflow: visible;
-  border: none;
-}
-
 .supporter-info { flex: 1; min-width: 0; }
 .supporter-info strong {
   display: block;
@@ -1103,11 +1086,13 @@ ul { list-style: none; }
 .supporters-grid.columns .supporter-info p:not(.supporter-details) {
   display: -webkit-box;
   -webkit-line-clamp: 5;
+  line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 .supporters-grid.columns .supporter-info p.supporter-bio--clamped {
   -webkit-line-clamp: 4;
+  line-clamp: 4;
 }
 .supporter-more-btn {
   display: block;
@@ -1385,14 +1370,9 @@ a.seg-step:active { transform: translateY(0); }
 }
 .seg-done {
   background: rgba(76,175,80,.18);
-  color: #2e7d32;
+  color: var(--green-dark);
 }
-.seg-done .seg-num { background: #4caf50; color: #fff; }
-.seg-soon {
-  background: rgba(255,255,255,.07);
-  color: rgba(255,255,255,.45);
-}
-.seg-soon .seg-num { background: rgba(255,255,255,.15); color: rgba(255,255,255,.5); }
+.seg-done .seg-num { background: var(--green); color: #fff; }
 .seg-line {
   width: 24px; height: 2px;
   background: rgba(255,255,255,.15);
@@ -1457,7 +1437,7 @@ a.seg-step:active { transform: translateY(0); }
 }
 .fact-blue   { background: rgba(13,71,255,.08); color: var(--blue); }
 .fact-orange { background: rgba(255,140,0,.1); color: var(--orange); }
-.fact-green  { background: rgba(76,175,80,.1); color: #2e7d32; }
+.fact-green  { background: rgba(76,175,80,.1); color: var(--green-dark); }
 
 /* ANALYSIS BODY */
 .analysis-body {
@@ -1493,6 +1473,7 @@ a.seg-step:active { transform: translateY(0); }
 .analysis-notes ul {
   display: grid;
   gap: 8px;
+  padding-left: 0;
 }
 .analysis-tasks ul li,
 .analysis-notes ul li {
@@ -1539,6 +1520,10 @@ a.seg-step:active { transform: translateY(0); }
   transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(0,0,0,.18);
   border-color: var(--blue);
+}
+.gallery-thumb:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
 }
 .gallery-thumb img {
   width: 100%;
@@ -1679,6 +1664,7 @@ a.seg-step:active { transform: translateY(0); }
   .analysis-cta { flex-direction: column; align-items: flex-start; }
   .lightbox-prev { left: 6px; }
   .lightbox-next { right: 6px; }
+  .news-card { border-left-width: 2px; }
 }
 
 /* ── Segment scope (inside dark navy card) ── */
@@ -1702,7 +1688,11 @@ a.seg-step:active { transform: translateY(0); }
   margin-bottom: 14px;
 }
 .segment-scope h4 svg { flex-shrink: 0; }
-.segment-scope ul { display: grid; gap: 9px; }
+.segment-scope ul {
+  display: grid;
+  gap: 9px;
+  padding-left: 0;
+}
 .segment-scope ul li {
   font-size: .92rem;
   color: rgba(255,255,255,.78);
@@ -1728,4 +1718,43 @@ a.seg-step:active { transform: translateY(0); }
   background: rgba(255,255,255,.08);
   color: var(--white);
   border-color: rgba(255,255,255,.5);
+}
+
+/* ══════════════════════════════════════════════════════════
+   STICKY PETITION CTA
+══════════════════════════════════════════════════════════ */
+.sticky-cta {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--orange);
+  color: var(--white);
+  font-weight: 700;
+  font-size: .95rem;
+  padding: 13px 22px;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  text-decoration: none;
+  transition: filter .2s ease;
+}
+/* Applied via JS once the page is scrolled far enough that a fixed position
+   would overlap the footer; pins the button 20px above the footer instead
+   of letting it float over it. */
+.sticky-cta.pinned {
+  position: absolute;
+  bottom: auto;
+}
+.sticky-cta:hover { filter: brightness(1.08); }
+
+@media (max-width: 600px) {
+  .sticky-cta {
+    right: 16px;
+    bottom: 16px;
+    padding: 12px 18px;
+    font-size: .88rem;
+  }
 }

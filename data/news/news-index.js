@@ -4,14 +4,14 @@ window.newsIndex = [
     "title": "Podsumowanie zbiórki podpisów pod kościołem w Wólce Mlądzkiej!",
     "date": "2026-08-10",
     "excerpt": "Wczorajsza akcja zbierania podpisów pod petycją przy kościele Wniebowzięcia Najświętszej Maryi Panny w Otwocku przeszła nasze najśmielsze oczekiwania.",
-    "tags": ["petycja", "podpisy", "zbiórka"]
+    "tags": ["petycja", "zbiórka"]
   },
   {
     "slug": "zbiorka-pod-kosciolem",
     "title": "Jesteśmy dziś pod kościołem w Wólce Mlądzkiej!",
     "date": "2026-08-09",
     "excerpt": "Zapraszamy po kolejnych Mszach.",
-    "tags": ["petycja", "podpisy", "zbiórka"]
+    "tags": ["petycja", "zbiórka"]
   },
   {
     "slug": "analiza-segmentu-4",

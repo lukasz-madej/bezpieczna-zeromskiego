@@ -6,6 +6,12 @@
 const navToggle = document.getElementById('navToggle');
 const navLinks  = document.getElementById('navLinks');
 
+function closeNav() {
+  navLinks.classList.remove('open');
+  navToggle.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+
 navToggle.addEventListener('click', () => {
   const open = navLinks.classList.toggle('open');
   navToggle.classList.toggle('open', open);
@@ -15,9 +21,16 @@ navToggle.addEventListener('click', () => {
 // Close nav when a link is clicked (mobile)
 navLinks.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    navToggle.classList.remove('open');
+    closeNav();
   });
+});
+
+// Close nav on Escape, returning focus to the toggle button
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+    closeNav();
+    navToggle.focus();
+  }
 });
 
 // ── Navbar scroll shadow ──
@@ -27,6 +40,38 @@ window.addEventListener('scroll', () => {
     ? '0 4px 24px rgba(0,0,0,.45)'
     : '0 2px 16px rgba(0,0,0,.35)';
 }, { passive: true });
+
+// ── Sticky petition CTA ──
+// Always visible; pins 20px above the footer once a fixed position would
+// otherwise make it overlap/cover the footer content.
+(function () {
+  const stickyCta = document.getElementById('stickyCta');
+  const footer = document.getElementById('kontakt');
+  if (!stickyCta) return;
+
+  const GAP_ABOVE_FOOTER = 20;
+  const FIXED_BOTTOM_OFFSET = 24; // matches `bottom` in .sticky-cta CSS
+
+  function update() {
+    if (!footer) return;
+    const ctaHeight = stickyCta.offsetHeight;
+    const footerTopAbs = footer.getBoundingClientRect().top + window.scrollY;
+    const pinnedTopAbs = footerTopAbs - GAP_ABOVE_FOOTER - ctaHeight;
+    const fixedTopAbs = window.scrollY + window.innerHeight - FIXED_BOTTOM_OFFSET - ctaHeight;
+
+    if (fixedTopAbs >= pinnedTopAbs) {
+      stickyCta.classList.add('pinned');
+      stickyCta.style.top = `${pinnedTopAbs}px`;
+    } else {
+      stickyCta.classList.remove('pinned');
+      stickyCta.style.top = '';
+    }
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
 
 // ── Active nav link on scroll ──
 const sections = document.querySelectorAll('section[id]');
@@ -96,6 +141,26 @@ function lbClose() {
   document.body.style.overflow = '';
 }
 
+// Shared helper: wires up a clickable/keyboard-operable element to open the
+// lightbox at a given index within an image-descriptor array. Used both by
+// the static analysis-section galleries and the dynamically-injected news
+// galleries, so the click + keyboard-activation logic only lives in one place.
+function wireLightboxTrigger(el, images, index) {
+  if (el.tabIndex < 0 || !el.hasAttribute('tabindex')) el.tabIndex = 0;
+  if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+  if (!el.hasAttribute('aria-label')) {
+    el.setAttribute('aria-label', images[index].alt || 'Powiększ zdjęcie');
+  }
+  const open = () => { lbImages = images; lbShow(index); };
+  el.addEventListener('click', open);
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      open();
+    }
+  });
+}
+
 document.querySelectorAll('[data-gallery]').forEach(gallery => {
   const thumbs = gallery.querySelectorAll('.gallery-thumb');
   const imgs = Array.from(thumbs).map(t => ({
@@ -104,12 +169,7 @@ document.querySelectorAll('[data-gallery]').forEach(gallery => {
     caption: t.querySelector('figcaption')?.textContent || ''
   }));
 
-  thumbs.forEach((thumb, i) => {
-    thumb.addEventListener('click', () => {
-      lbImages = imgs;
-      lbShow(i);
-    });
-  });
+  thumbs.forEach((thumb, i) => wireLightboxTrigger(thumb, imgs, i));
 });
 
 document.getElementById('lbClose').addEventListener('click', lbClose);
@@ -147,6 +207,33 @@ Promise.all([
       `${manualCount.toLocaleString('pl-PL')} zebranych osobiście podczas zbiórek.`;
   }
 });
+
+// ── Share button (Web Share API with clipboard fallback) ──
+(function () {
+  const btn = document.getElementById('shareBtn');
+  if (!btn) return;
+
+  const shareData = {
+    title: document.title,
+    text: 'Podpisz petycję i wesprzyj bezpieczną ulicę Żeromskiego w Otwocku!',
+    url: location.href
+  };
+
+  btn.addEventListener('click', async () => {
+    if (navigator.share) {
+      try { await navigator.share(shareData); } catch (err) { /* user cancelled, ignore */ }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(shareData.url);
+      const original = btn.innerHTML;
+      btn.textContent = 'Link skopiowany!';
+      setTimeout(() => { btn.innerHTML = original; }, 2000);
+    } catch (err) {
+      // Clipboard API unavailable (e.g. insecure context) — nothing more we can do silently.
+    }
+  });
+})();
 
 // ── News section ──
 (function () {
@@ -207,12 +294,7 @@ Promise.all([
       alt: img.alt,
       caption: img.alt || ''
     }));
-    body.querySelectorAll('.news-gallery img').forEach((img, i) => {
-      img.addEventListener('click', () => {
-        lbImages = galleryImgs;
-        lbShow(i);
-      });
-    });
+    body.querySelectorAll('.news-gallery img').forEach((img, i) => wireLightboxTrigger(img, galleryImgs, i));
   }
 
   function togglePost(post, btn, body) {
