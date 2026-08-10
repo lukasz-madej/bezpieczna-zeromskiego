@@ -199,9 +199,19 @@ Promise.all([
     });
     if (group.length) flushGroup();
 
-    body.querySelectorAll('.news-gallery img').forEach(img => {
-      img.loading = 'lazy';
-      img.addEventListener('click', () => window.open(img.src, '_blank', 'noopener'));
+    body.querySelectorAll('.news-gallery img').forEach(img => { img.loading = 'lazy'; });
+
+    // Wire the gallery into the same lightbox used by the analysis section.
+    const galleryImgs = Array.from(body.querySelectorAll('.news-gallery img')).map(img => ({
+      src: img.src,
+      alt: img.alt,
+      caption: img.alt || ''
+    }));
+    body.querySelectorAll('.news-gallery img').forEach((img, i) => {
+      img.addEventListener('click', () => {
+        lbImages = galleryImgs;
+        lbShow(i);
+      });
     });
   }
 
