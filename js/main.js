@@ -404,3 +404,55 @@ Promise.all([
   ];
   L.polyline(routeMissing, { color: '#f5b400', weight: 6, opacity: 0.55, smoothFactor: 0 }).addTo(map);
 })();
+
+// ── Supporters: truncated bios with "read more" modal ──
+// Only cards inside ".supporters-grid.columns" get truncated/expandable bios,
+// so that all cards in those grids share the same height.
+(function () {
+  const modal = document.getElementById('supporterModal');
+  if (!modal) return;
+
+  const modalLogo = document.getElementById('supporterModalLogo');
+  const modalName = document.getElementById('supporterModalName');
+  const modalDetails = document.getElementById('supporterModalDetails');
+  const modalBody = document.getElementById('supporterModalBody');
+  const modalClose = document.getElementById('supporterModalClose');
+
+  function openModal(card) {
+    const logoHtml = card.querySelector('.supporter-logo').innerHTML;
+    const name = card.querySelector('.supporter-info strong')?.textContent || '';
+    const details = card.querySelector('.supporter-details')?.textContent || '';
+    const bioParagraphs = Array.from(card.querySelectorAll('.supporter-info p:not(.supporter-details)'));
+
+    modalLogo.innerHTML = logoHtml;
+    modalName.textContent = name;
+    modalDetails.textContent = details;
+    modalBody.innerHTML = bioParagraphs.map(p => `<p>${p.textContent}</p>`).join('');
+
+    modal.showModal();
+  }
+
+  modalClose.addEventListener('click', () => modal.close());
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.close(); // click on backdrop
+  });
+
+  document.querySelectorAll('.supporters-grid.columns .supporter-card').forEach(card => {
+    const bioParagraphs = card.querySelectorAll('.supporter-info p:not(.supporter-details)');
+    if (!bioParagraphs.length) return;
+    const bio = bioParagraphs[bioParagraphs.length - 1];
+
+    // Detect overflow against the default 5-line clamp; if the text is
+    // longer than that, drop to a 4-line clamp and use the freed 5th line
+    // for the "read more" link, so it reads as a natural continuation.
+    if (bio.scrollHeight - bio.clientHeight > 1) {
+      bio.classList.add('supporter-bio--clamped');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'supporter-more-btn';
+      btn.textContent = 'Czytaj więcej →';
+      btn.addEventListener('click', () => openModal(card));
+      bio.insertAdjacentElement('afterend', btn);
+    }
+  });
+})();

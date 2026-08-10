@@ -909,6 +909,21 @@
     </div>
   </section>
 
+  <!-- Shared modal for full supporter statements (avoids layout shift in cards) -->
+  <dialog id="supporterModal" class="supporter-modal">
+    <div class="supporter-modal-inner">
+      <button type="button" class="supporter-modal-close" id="supporterModalClose" aria-label="Zamknij">✕</button>
+      <div class="supporter-modal-header">
+        <div class="supporter-modal-logo" id="supporterModalLogo"></div>
+        <div>
+          <strong id="supporterModalName"></strong>
+          <span id="supporterModalDetails"></span>
+        </div>
+      </div>
+      <div class="supporter-modal-body" id="supporterModalBody"></div>
+    </div>
+  </dialog>
+
   <!-- ═══════════════════════════════ OPINIE ════════════════════════════ -->
   <section id="opinie" class="section section-white">
     <div class="container">

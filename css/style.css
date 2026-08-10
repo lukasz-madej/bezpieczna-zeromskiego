@@ -1026,6 +1026,92 @@ ul { list-style: none; }
   margin: 0;
 }
 
+/* Truncate long supporter bios to at most 5 lines so cards don't grow
+   excessively tall; when the text actually overflows, it is clamped to 4
+   lines instead and the "read more" link occupies the freed 5th line. */
+.supporters-grid.columns .supporter-info p:not(.supporter-details) {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.supporters-grid.columns .supporter-info p.supporter-bio--clamped {
+  -webkit-line-clamp: 4;
+}
+.supporter-more-btn {
+  display: block;
+  margin: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: .875rem;
+  line-height: 1.55;
+  font-weight: 700;
+  color: var(--blue);
+  cursor: pointer;
+  font-family: inherit;
+}
+.supporter-more-btn:hover { text-decoration: underline; }
+
+.supporter-modal {
+  border: none;
+  border-radius: var(--radius);
+  padding: 0;
+  max-width: min(560px, 92vw);
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+.supporter-modal::backdrop {
+  background: rgba(10, 20, 40, .55);
+  backdrop-filter: blur(2px);
+}
+.supporter-modal-inner { padding: 28px; position: relative; }
+.supporter-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--light);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.supporter-modal-close:hover { background: var(--border); }
+.supporter-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-right: 32px;
+}
+.supporter-modal-logo {
+  display: flex;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--white);
+}
+.supporter-modal-logo img { width: 100%; height: 100%; object-fit: contain; }
+.supporter-modal-header strong { display: block; font-size: 1.05rem; color: var(--navy); }
+.supporter-modal-header span { font-size: .85rem; color: var(--text-muted); }
+.supporter-modal-body p {
+  font-size: .92rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+.supporter-modal-body p:last-child { margin-bottom: 0; }
+
 .supporters-empty {
   width: 100%;
   max-width: 100%;
