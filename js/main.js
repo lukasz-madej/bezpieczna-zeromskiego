@@ -168,26 +168,30 @@ Promise.all([
   // Groups consecutive "image-only" paragraphs (produced by markdown like
   // `![alt](data/news/photos/<slug>/foo.jpg)`) into a responsive gallery grid,
   // and adds lazy-loading + a lightbox click-to-enlarge behaviour.
+  // Handles both authoring styles: one image per paragraph (blank line
+  // between each `![]()`) and several images crammed into one paragraph
+  // (no blank lines between them) — both end up in the same gallery markup.
   function enhanceNewsPhotos(body) {
     const paragraphs = Array.from(body.querySelectorAll('p'));
     let group = [];
 
     function flushGroup() {
       if (group.length === 0) return;
+      const images = group.flatMap(p => Array.from(p.querySelectorAll('img')));
       const gallery = document.createElement('div');
       gallery.className = 'news-gallery';
-      if (group.length === 1) gallery.classList.add('news-gallery--single');
+      if (images.length === 1) gallery.classList.add('news-gallery--single');
       group[0].parentNode.insertBefore(gallery, group[0]);
-      group.forEach(p => {
-        gallery.appendChild(p.querySelector('img'));
-        p.remove();
-      });
+      images.forEach(img => gallery.appendChild(img));
+      group.forEach(p => p.remove());
       group = [];
     }
 
     paragraphs.forEach(p => {
-      const onlyImg = p.children.length === 1 && p.children[0].tagName === 'IMG' && p.textContent.trim() === '';
-      if (onlyImg) {
+      const onlyImgs = p.textContent.trim() === '' &&
+        p.children.length > 0 &&
+        Array.from(p.children).every(child => child.tagName === 'IMG');
+      if (onlyImgs) {
         group.push(p);
       } else if (group.length) {
         flushGroup();

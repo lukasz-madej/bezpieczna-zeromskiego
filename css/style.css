@@ -800,6 +800,9 @@ ul { list-style: none; }
   line-height: 1.75;
   color: var(--text);
 }
+.news-body ul {
+  list-style-type: disc;
+}
 .news-body.open {
   max-height: 2000px;
   opacity: 1;
@@ -814,7 +817,6 @@ ul { list-style: none; }
   margin: 18px 0 8px;
 }
 .news-body p { margin-bottom: 12px; }
-.news-body p img + img { margin-top: 12px };
 .news-body ul, .news-body ol { padding-left: 20px; margin-bottom: 12px; list-style: initial; }
 .news-body li { margin-bottom: 4px; }
 .news-body a { color: var(--blue); text-decoration: underline; }
