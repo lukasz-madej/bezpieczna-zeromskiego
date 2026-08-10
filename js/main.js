@@ -2,6 +2,10 @@
    Bezpieczna Żeromskiego – main.js
    ═══════════════════════════════════════════════════════════ */
 
+// ── Footer year ──
+const footerYear = document.getElementById('footerYear');
+if (footerYear) footerYear.textContent = new Date().getFullYear();
+
 // ── Mobile nav toggle ──
 const navToggle = document.getElementById('navToggle');
 const navLinks  = document.getElementById('navLinks');
