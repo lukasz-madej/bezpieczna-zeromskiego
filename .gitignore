@@ -1,3 +1,5 @@
 .idea
 .DS_Store
+scripts/deploy.config.json
+scripts/.deploy-manifest.json
 
