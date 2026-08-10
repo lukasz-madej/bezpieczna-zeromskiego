@@ -210,7 +210,29 @@ Promise.all([
       `${onlineCount.toLocaleString('pl-PL')} podpisów online + ` +
       `${manualCount.toLocaleString('pl-PL')} zebranych osobiście podczas zbiórek.`;
   }
+
+  if (onlineCount != null || manualCount != null) updatePetycjaProgress(total);
 });
+
+// ── Signature milestone progress bar ──
+// Three independent goals (250 / 500 / 1000), each with its own bar and
+// percentage toward that specific target — avoids any ambiguity between a
+// shared bar's fill and evenly-spaced milestone markers.
+function updatePetycjaProgress(total) {
+  const goals = [
+    { milestone: 250, fill: document.getElementById('goal250Fill'), percent: document.getElementById('goal250Percent'), el: document.getElementById('goal250') },
+    { milestone: 500, fill: document.getElementById('goal500Fill'), percent: document.getElementById('goal500Percent'), el: document.getElementById('goal500') },
+    { milestone: 1000, fill: document.getElementById('goal1000Fill'), percent: document.getElementById('goal1000Percent'), el: document.getElementById('goal1000') }
+  ];
+
+  goals.forEach(({ milestone, fill, percent, el }) => {
+    if (!fill) return;
+    const pct = Math.min(100, (total / milestone) * 100);
+    fill.style.width = `${pct}%`;
+    if (percent) percent.textContent = `${Math.round(pct)}%`;
+    if (el) el.classList.toggle('completed', total >= milestone);
+  });
+}
 
 // ── Share button (Web Share API with clipboard fallback) ──
 (function () {

@@ -704,6 +704,60 @@ ul { list-style: none; }
   max-width: 380px;
 }
 
+/* ── Signature milestone goals (3 independent progress bars) ── */
+.petycja-goals {
+  width: 100%;
+  max-width: 460px;
+  margin: 6px 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.petycja-goal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.petycja-goal-label {
+  font-size: .78rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.55);
+  letter-spacing: .02em;
+  transition: color .3s ease;
+}
+.petycja-goal-percent {
+  font-size: .82rem;
+  font-weight: 800;
+  color: rgba(255,255,255,.55);
+  transition: color .3s ease;
+}
+.petycja-goal-track {
+  height: 8px;
+  background: rgba(255,255,255,.15);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.petycja-goal-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold), var(--orange));
+  border-radius: 999px;
+  transition: width 1s ease;
+}
+.petycja-goal.completed .petycja-goal-label,
+.petycja-goal.completed .petycja-goal-percent {
+  color: var(--white);
+}
+.petycja-goal.completed .petycja-goal-label::after {
+  content: " 🎉";
+}
+
+@media (max-width: 480px) {
+  .petycja-goal-label { font-size: .72rem; }
+  .petycja-goal-percent { font-size: .76rem; }
+}
+
 /* ══════════════════════════════════════════════════════════
    AKTUALNOŚCI
 ══════════════════════════════════════════════════════════ */
