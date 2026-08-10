@@ -7,24 +7,45 @@ through an FTP client after every change.
 
 Setup:
     1. Copy scripts/deploy.config.example.json to scripts/deploy.config.json
-       and fill in your FTP credentials (this file is gitignored, never
+       and fill in host/username/remote_dir (this file is gitignored, never
        commit real credentials).
-       OR set the DEPLOY_FTP_HOST / DEPLOY_FTP_USER / DEPLOY_FTP_PASS /
-       DEPLOY_FTP_DIR / DEPLOY_FTP_PORT / DEPLOY_FTP_TLS environment
-       variables instead (these take precedence over the config file).
+    2. Store the FTP password securely instead of writing it into the config
+       file:
+         - On macOS, store it in Keychain and reference it via
+           "keychain_service" in the config (see below):
+               python3 scripts/deploy.py3 --set-password
+         - Anywhere else (or if you prefer), set the DEPLOY_FTP_PASS
+           environment variable instead.
+       (A plain "password" field in the config file is still supported as a
+       last resort, but is not recommended since it is stored in plaintext.)
+
+    Config file fields:
+      host, username, remote_dir, port, use_tls, keychain_service
+      (keychain_service enables secure macOS Keychain password lookup;
+      the Keychain "account" is always the configured "username")
+
+    Environment variables (override config file, in this order of
+    precedence: env vars > config file "password" > macOS Keychain):
+      DEPLOY_FTP_HOST / DEPLOY_FTP_USER / DEPLOY_FTP_PASS / DEPLOY_FTP_DIR /
+      DEPLOY_FTP_PORT / DEPLOY_FTP_TLS / DEPLOY_FTP_KEYCHAIN_SERVICE
 
 Usage:
-    python3 scripts/deploy.py3                 # upload changed files
+    python3 scripts/deploy.py3                  # upload changed files
     python3 scripts/deploy.py3 --dry-run        # show what would be uploaded
     python3 scripts/deploy.py3 --force          # re-upload everything
     python3 scripts/deploy.py3 --delete         # also remove remote files
                                                  # that no longer exist locally
+    python3 scripts/deploy.py3 --set-password   # store the FTP password in
+                                                 # macOS Keychain (prompts,
+                                                 # never echoed/saved to disk)
 """
 
 import argparse
+import getpass
 import hashlib
 import json
 import os
+import subprocess
 import sys
 from ftplib import FTP, FTP_TLS, error_perm
 from pathlib import Path
@@ -48,7 +69,28 @@ EXCLUDE_FILES = {
 }
 
 
-def load_config():
+def keychain_get_password(service: str, account: str):
+    """Reads a password from the macOS Keychain. Returns None if unavailable
+    (not on macOS, `security` missing, or no matching entry)."""
+    try:
+        result = subprocess.run(
+            ["security", "find-generic-password", "-a", account, "-s", service, "-w"],
+            capture_output=True, text=True, check=True,
+        )
+        return result.stdout.strip() or None
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return None
+
+
+def keychain_set_password(service: str, account: str, password: str):
+    """Stores/updates a password in the macOS Keychain."""
+    subprocess.run(
+        ["security", "add-generic-password", "-a", account, "-s", service, "-w", password, "-U"],
+        check=True,
+    )
+
+
+def load_config(require_password=True):
     config = {}
     if CONFIG_PATH.exists():
         config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
@@ -60,17 +102,27 @@ def load_config():
         "remote_dir": "DEPLOY_FTP_DIR",
         "port": "DEPLOY_FTP_PORT",
         "use_tls": "DEPLOY_FTP_TLS",
+        "keychain_service": "DEPLOY_FTP_KEYCHAIN_SERVICE",
     }
     for key, env_var in env_map.items():
         if env_var in os.environ:
             config[key] = os.environ[env_var]
 
-    missing = [k for k in ("host", "username", "password") if not config.get(k)]
+    # Password resolution order: env var / config "password" (already merged
+    # above) > macOS Keychain (looked up by keychain_service + username).
+    if not config.get("password") and config.get("keychain_service") and config.get("username"):
+        keychain_password = keychain_get_password(config["keychain_service"], config["username"])
+        if keychain_password:
+            config["password"] = keychain_password
+
+    required = ["host", "username"] + (["password"] if require_password else [])
+    missing = [k for k in required if not config.get(k)]
     if missing:
         sys.exit(
             f"ERROR: missing FTP config: {', '.join(missing)}.\n"
-            f"Create {CONFIG_PATH.relative_to(ROOT)} (see deploy.config.example.json) "
-            f"or set DEPLOY_FTP_* environment variables."
+            f"Create {CONFIG_PATH.relative_to(ROOT)} (see deploy.config.example.json), "
+            f"set DEPLOY_FTP_* environment variables, or run "
+            f"'python3 scripts/deploy.py3 --set-password' to store the password in Keychain."
         )
 
     config.setdefault("remote_dir", "/")
@@ -161,7 +213,25 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="show what would be uploaded/deleted, without doing it")
     parser.add_argument("--force", action="store_true", help="re-upload every file, ignoring the local manifest cache")
     parser.add_argument("--delete", action="store_true", help="delete remote files that no longer exist locally")
+    parser.add_argument("--set-password", action="store_true",
+                         help="prompt for the FTP password and store it in macOS Keychain "
+                              "(requires 'keychain_service' + 'username' in the config file)")
     args = parser.parse_args()
+
+    if args.set_password:
+        config = load_config(require_password=False)
+        service = config.get("keychain_service")
+        if not service:
+            sys.exit(
+                "ERROR: add a \"keychain_service\" field to "
+                f"{CONFIG_PATH.relative_to(ROOT)} first, e.g. \"bezpieczna-zeromskiego-ftp\"."
+            )
+        password = getpass.getpass(f"FTP password for {config['username']}@{config['host']}: ")
+        if not password:
+            sys.exit("ERROR: empty password, aborting.")
+        keychain_set_password(service, config["username"], password)
+        print(f"✓ Password stored in Keychain (service \"{service}\", account \"{config['username']}\").")
+        return
 
     config = load_config()
     local_files = collect_local_files()
