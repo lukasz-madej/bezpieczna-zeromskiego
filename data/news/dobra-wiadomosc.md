@@ -4,4 +4,6 @@ Dzięki wsparciu Miasta Otwock, które przeznaczyło 4,4 mln zł na inwestycje n
 
 Więcej w materiale Starosty Otwockiego Tomasza Laskusa.
 
-<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1744986133211560&show_text=false" width="500" height="890" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+<div style="text-align: center;">
+    <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1744986133211560&show_text=false" width="500" height="890" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+</div>

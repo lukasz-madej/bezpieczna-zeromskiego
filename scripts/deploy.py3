@@ -30,10 +30,12 @@ Setup:
       DEPLOY_FTP_PORT / DEPLOY_FTP_TLS / DEPLOY_FTP_KEYCHAIN_SERVICE
 
 Usage:
-    python3 scripts/deploy.py3                  # upload changed files
-    python3 scripts/deploy.py3 --dry-run        # show what would be uploaded
+    python3 scripts/deploy.py3                  # upload changed files, delete
+                                                 # remote files no longer
+                                                 # present locally
+    python3 scripts/deploy.py3 --dry-run        # show what would be uploaded/deleted
     python3 scripts/deploy.py3 --force          # re-upload everything
-    python3 scripts/deploy.py3 --delete         # also remove remote files
+    python3 scripts/deploy.py3 --no-delete      # skip deleting remote files
                                                  # that no longer exist locally
     python3 scripts/deploy.py3 --set-password   # store the FTP password in
                                                  # macOS Keychain (prompts,
@@ -212,7 +214,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--dry-run", action="store_true", help="show what would be uploaded/deleted, without doing it")
     parser.add_argument("--force", action="store_true", help="re-upload every file, ignoring the local manifest cache")
-    parser.add_argument("--delete", action="store_true", help="delete remote files that no longer exist locally")
+    parser.add_argument("--no-delete", action="store_true", help="skip deleting remote files that no longer exist locally")
     parser.add_argument("--set-password", action="store_true",
                          help="prompt for the FTP password and store it in macOS Keychain "
                               "(requires 'keychain_service' + 'username' in the config file)")
@@ -243,7 +245,7 @@ def main():
         if manifest.get(rel_path) != digest:
             to_upload.append((rel_path, local_path, digest))
 
-    to_delete = sorted(set(manifest.keys()) - set(local_files.keys())) if args.delete else []
+    to_delete = [] if args.no_delete else sorted(set(manifest.keys()) - set(local_files.keys()))
 
     if not to_upload and not to_delete:
         print("Nothing to deploy — everything is already up to date.")
