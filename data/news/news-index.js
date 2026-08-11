@@ -1,6 +1,13 @@
 window.newsIndex = [
   {
-    "slug": "podsumowanie-zbioki-pod-kosciolem",
+    "slug": "dobra-wiadomosc",
+    "title": "Dobra wiadomość dla ul. Żeromskiego!",
+    "date": "2026-08-11",
+    "excerpt": "Dodatkowe środki z Miasta Otwock umożliwią realizację inwestycji na ul. Żeromskiego.",
+    "tags": ["inwestycja", "finansowanie"]
+  },
+  {
+    "slug": "podsumowanie-zbiorki-pod-kosciolem",
     "title": "Podsumowanie zbiórki podpisów pod kościołem w Wólce Mlądzkiej!",
     "date": "2026-08-10",
     "excerpt": "Wczorajsza akcja zbierania podpisów pod petycją przy kościele Wniebowzięcia Najświętszej Maryi Panny w Otwocku przeszła nasze najśmielsze oczekiwania.",
