@@ -1,5 +1,12 @@
 window.newsIndex = [
   {
+    "slug": "pisza-o-nas",
+    "title": "Nasza inicjatywa w lokalnych mediach",
+    "date": "2026-08-11",
+    "excerpt": "Nasza inicjatywa została zauważona przez lokalne media. Na portalu PortalOtwocki.pl ukazał się artykuł poświęcony remontowi ul. Żeromskiego.",
+    "tags": ["prasa"]
+  },
+  {
     "slug": "dobra-wiadomosc",
     "title": "Dobra wiadomość dla ul. Żeromskiego!",
     "date": "2026-08-11",
