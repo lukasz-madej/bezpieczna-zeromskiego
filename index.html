@@ -12,16 +12,22 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bezpieczna-zeromskiego.pl/" />
+  <meta property="og:site_name" content="Bezpieczna Żeromskiego" />
   <meta property="og:title" content="Bezpieczna Żeromskiego – Otwock" />
   <meta property="og:description" content="Społeczna inicjatywa mieszkańców Otwocka na rzecz bezpiecznej ulicy Żeromskiego. Analizujemy projekt przebudowy i dbamy o bezpieczeństwo." />
-  <meta property="og:image" content="https://bezpieczna-zeromskiego.pl/img/logo.png" />
+  <meta property="og:image" content="https://bezpieczna-zeromskiego.pl/img/og-image.jpg" />
+  <meta property="og:image:secure_url" content="https://bezpieczna-zeromskiego.pl/img/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="630" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Logo Bezpieczna Żeromskiego" />
   <meta property="og:locale" content="pl_PL" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Bezpieczna Żeromskiego – Otwock" />
   <meta name="twitter:description" content="Społeczna inicjatywa mieszkańców Otwocka na rzecz bezpiecznej ulicy Żeromskiego. Analizujemy projekt przebudowy i dbamy o bezpieczeństwo." />
-  <meta name="twitter:image" content="https://bezpieczna-zeromskiego.pl/img/logo.png" />
+  <meta name="twitter:image" content="https://bezpieczna-zeromskiego.pl/img/og-image.jpg" />
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -129,6 +135,7 @@
         <h2>Aktualności</h2>
         <p class="section-desc">Co nowego w sprawie bezpiecznej Żeromskiego? Śledź postępy inicjatywy.</p>
       </div>
+      <div class="news-filters" id="newsFilters" role="group" aria-label="Filtruj aktualności wg tagu"></div>
       <div class="news-list" id="newsList">
         <div class="news-loading">Ładowanie aktualności…</div>
       </div>
@@ -734,13 +741,13 @@
     </div>
     <div class="container">
       <div class="map-wrapper">
-        <div class="map-legend">
-          <div class="legend-item"><span class="legend-dot" style="background:#1a1a2e;"></span> Wypadek</div>
-          <div class="legend-item"><span class="legend-dot" style="background:#d82626;"></span> Niebezpieczne przejście</div>
-          <div class="legend-item"><span class="legend-dot" style="background:#ff8c00;"></span> Wyprzedzanie</div>
-          <div class="legend-item"><span class="legend-dot" style="background:#2e7d32;"></span> Rejon szkoły</div>
-          <div class="legend-item"><span class="legend-line" style="background:#0d47ff;"></span> Obszar inwestycji</div>
-          <div class="legend-item"><span class="legend-line" style="background:#f5b400;"></span> Braki w infrastrukturze</div>
+        <div class="map-legend" id="mapLegend">
+          <button type="button" class="legend-item" data-category="wypadek"><span class="legend-dot" style="background:#1a1a2e;"></span> Wypadek</button>
+          <button type="button" class="legend-item" data-category="przejscie"><span class="legend-dot" style="background:#d82626;"></span> Niebezpieczne przejście</button>
+          <button type="button" class="legend-item" data-category="wyprzedzanie"><span class="legend-dot" style="background:#ff8c00;"></span> Wyprzedzanie</button>
+          <button type="button" class="legend-item" data-category="szkola"><span class="legend-dot" style="background:#2e7d32;"></span> Rejon szkoły</button>
+          <button type="button" class="legend-item" data-category="inwestycja"><span class="legend-line" style="background:#0d47ff;"></span> Obszar inwestycji</button>
+          <button type="button" class="legend-item" data-category="braki"><span class="legend-line" style="background:#f5b400;"></span> Braki w infrastrukturze</button>
         </div>
       </div>
     </div>

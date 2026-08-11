@@ -78,6 +78,9 @@ window.addEventListener('scroll', () => {
 })();
 
 // ── Active nav link on scroll ──
+// Uses a thin "detection band" near the top of the viewport (just below the
+// sticky navbar) rather than requiring a fixed % of a section's total area
+// to be visible — the latter never triggers for tall sections like #projekt.
 const sections = document.querySelectorAll('section[id]');
 const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
 
@@ -89,7 +92,7 @@ const observer = new IntersectionObserver((entries) => {
       if (active) active.classList.add('active');
     }
   });
-}, { threshold: 0.35 });
+}, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
 
 sections.forEach(s => observer.observe(s));
 
@@ -191,19 +194,62 @@ document.addEventListener('keydown', e => {
 // ── Petition signature counter ──
 // Total = signatures collected online (petycjeonline.com, scraped by cron)
 //       + signatures gathered manually on paper (entered by hand in signatures-manual.json)
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Animates a number from `from` to `to` over `duration`ms (ease-out cubic),
+// skipping straight to the final value if the user prefers reduced motion.
+function animateNumber(el, from, to, duration, formatFn) {
+  if (!el) return;
+  if (prefersReducedMotion || from === to) {
+    el.textContent = formatFn(to);
+    return;
+  }
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = formatFn(Math.round(from + (to - from) * eased));
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+let petycjaData = null;
+let petycjaAnimated = false;
+let petycjaInView = false;
+
+function maybeAnimatePetycja() {
+  if (petycjaAnimated || !petycjaData || !petycjaInView) return;
+  petycjaAnimated = true;
+
+  const { onlineCount, manualCount, total } = petycjaData;
+  const el = document.getElementById('petycjaCounterNum');
+  if (el) animateNumber(el, 0, total, 1200, n => n.toLocaleString('pl-PL'));
+
+  if (onlineCount != null || manualCount != null) updatePetycjaProgress(total, { animate: true });
+}
+
+const petycjaSection = document.getElementById('petycja');
+if (petycjaSection) {
+  const petycjaObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        petycjaInView = true;
+        maybeAnimatePetycja();
+      }
+    });
+  }, { threshold: 0.3 });
+  petycjaObserver.observe(petycjaSection);
+}
+
 Promise.all([
   fetch('data/signatures.json').then(r => r.ok ? r.json() : Promise.reject()).catch(() => null),
   fetch('data/signatures-manual.json').then(r => r.ok ? r.json() : Promise.reject()).catch(() => null)
 ]).then(([online, manual]) => {
-  const el = document.getElementById('petycjaCounterNum');
   const breakdownEl = document.getElementById('petycjaCounterBreakdown');
   const onlineCount = online && online.count != null ? online.count : null;
   const manualCount = manual && manual.count != null ? manual.count : null;
   const total = (onlineCount || 0) + (manualCount || 0);
-
-  if (el && (onlineCount != null || manualCount != null)) {
-    el.textContent = total.toLocaleString('pl-PL');
-  }
 
   if (breakdownEl && onlineCount != null && manualCount != null) {
     breakdownEl.textContent =
@@ -211,14 +257,37 @@ Promise.all([
       `${manualCount.toLocaleString('pl-PL')} zebranych osobiście podczas zbiórek.`;
   }
 
-  if (onlineCount != null || manualCount != null) updatePetycjaProgress(total);
+  petycjaData = { onlineCount, manualCount, total };
+  maybeAnimatePetycja();
 });
 
 // ── Signature milestone progress bar ──
 // Three independent goals (250 / 500 / 1000), each with its own bar and
 // percentage toward that specific target — avoids any ambiguity between a
 // shared bar's fill and evenly-spaced milestone markers.
-function updatePetycjaProgress(total) {
+function celebrateGoal(goalEl, milestone) {
+  const flagKey = `petycja-celebrated-${milestone}`;
+  if (localStorage.getItem(flagKey)) return;
+  localStorage.setItem(flagKey, '1');
+  if (prefersReducedMotion || !goalEl) return;
+
+  const colors = ['#ffb300', '#ff8c00', '#2e7d32', '#0d47ff', '#ffffff'];
+  const burst = document.createElement('div');
+  burst.className = 'petycja-confetti';
+  for (let i = 0; i < 16; i++) {
+    const piece = document.createElement('span');
+    piece.style.setProperty('--x', `${(Math.random() - 0.5) * 160}px`);
+    piece.style.setProperty('--rot', `${(Math.random() - 0.5) * 360}deg`);
+    piece.style.setProperty('--delay', `${Math.random() * 120}ms`);
+    piece.style.background = colors[i % colors.length];
+    burst.appendChild(piece);
+  }
+  goalEl.appendChild(burst);
+  burst.addEventListener('animationend', () => burst.remove(), { once: false });
+  setTimeout(() => burst.remove(), 1600);
+}
+
+function updatePetycjaProgress(total, { animate = false } = {}) {
   const goals = [
     { milestone: 250, fill: document.getElementById('goal250Fill'), percent: document.getElementById('goal250Percent'), el: document.getElementById('goal250') },
     { milestone: 500, fill: document.getElementById('goal500Fill'), percent: document.getElementById('goal500Percent'), el: document.getElementById('goal500') },
@@ -228,11 +297,16 @@ function updatePetycjaProgress(total) {
   goals.forEach(({ milestone, fill, percent, el }) => {
     if (!fill) return;
     const pct = Math.min(100, (total / milestone) * 100);
+    const fromPct = animate ? 0 : parseFloat(percent?.textContent) || 0;
     fill.style.width = `${pct}%`;
-    if (percent) percent.textContent = `${Math.round(pct)}%`;
-    if (el) el.classList.toggle('completed', total >= milestone);
+    if (percent) animateNumber(percent, fromPct, pct, 1200, n => `${Math.round(n)}%`);
+    const wasCompleted = el?.classList.contains('completed');
+    const isCompleted = total >= milestone;
+    if (el) el.classList.toggle('completed', isCompleted);
+    if (isCompleted && !wasCompleted) celebrateGoal(el, milestone);
   });
 }
+
 
 // ── Share button (Web Share API with clipboard fallback) ──
 (function () {
@@ -365,21 +439,58 @@ function updatePetycjaProgress(total) {
     return;
   }
 
+  // "Nowe" badge for posts published within the last 2 weeks.
+  const NEW_BADGE_DAYS = 1;
+  const now = new Date();
+  function isRecent(dateStr) {
+    const diffDays = (now - new Date(dateStr)) / 86400000;
+    return diffDays >= 0 && diffDays <= NEW_BADGE_DAYS;
+  }
+
+  // ── Tag filter ──
+  const filtersEl = document.getElementById('newsFilters');
+  const allTags = Array.from(new Set(allPosts.flatMap(p => p.tags || []))).sort();
+  let activeTag = null;
+
+  function renderFilters() {
+    if (!filtersEl || !allTags.length) return;
+    filtersEl.innerHTML = [
+      `<button type="button" class="news-filter-btn${activeTag === null ? ' active' : ''}" data-tag="">Wszystkie</button>`,
+      ...allTags.map(t => `<button type="button" class="news-filter-btn${activeTag === t ? ' active' : ''}" data-tag="${t}">${t}</button>`)
+    ].join('');
+
+    filtersEl.querySelectorAll('.news-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeTag = btn.dataset.tag || null;
+        renderFilters();
+        renderPage(1);
+      });
+    });
+  }
+  renderFilters();
+
   const PER_PAGE = 3;
   let currentPage = 1;
-  const totalPages = () => Math.ceil(allPosts.length / PER_PAGE);
+  const filteredPosts = () => activeTag ? allPosts.filter(p => (p.tags || []).includes(activeTag)) : allPosts;
+  const totalPages = () => Math.ceil(filteredPosts().length / PER_PAGE);
 
   function renderPage(page) {
     currentPage = page;
+    const posts = filteredPosts();
     const start = (page - 1) * PER_PAGE;
-    const posts = allPosts.slice(start, start + PER_PAGE);
+    const pagePosts = posts.slice(start, start + PER_PAGE);
 
-    list.innerHTML = posts.map((post, i) => `
-      <article class="news-card${page === 1 && i === 0 ? ' news-card--latest' : ''}" id="news-${post.slug}" data-category="${(post.tags || [])[0] || ''}">
+    if (!pagePosts.length) {
+      list.innerHTML = '<p class="news-empty">Brak aktualności dla wybranego tagu.</p>';
+      return;
+    }
+
+    list.innerHTML = pagePosts.map((post, i) => `
+      <article class="news-card${page === 1 && i === 0 && !activeTag ? ' news-card--latest' : ''}" id="news-${post.slug}" data-category="${(post.tags || [])[0] || ''}">
         <div class="news-card-inner">
           <div class="news-meta">
             <time class="news-date" datetime="${post.date}">${formatDate(post.date)}</time>
-            <div class="news-tags">${tagHtml(post.tags)}</div>
+            <div class="news-tags">${tagHtml(post.tags)}${isRecent(post.date) ? '<span class="news-badge-new">Nowe</span>' : ''}</div>
           </div>
           <h3 class="news-title">${post.title}</h3>
           <p class="news-excerpt">${post.excerpt}</p>
@@ -392,7 +503,7 @@ function updatePetycjaProgress(total) {
     `).join('') + renderPagination();
 
     list.querySelectorAll('.news-toggle').forEach((btn, i) => {
-      const post = posts[i];
+      const post = pagePosts[i];
       const card = document.getElementById(`news-${post.slug}`);
       const body = card.querySelector('.news-body');
       btn.addEventListener('click', () => togglePost(post, btn, body));
@@ -451,31 +562,39 @@ function updatePetycjaProgress(total) {
   const BLACK = '#1a1a2e';
   const markers = [
     // Wypadki (czarne)
-    { latlng: [52.126949120736995, 21.312078427001115], color: BLACK, label: 'Wypadek' },
-    { latlng: [52.13549811647438, 21.331725110821942], color: BLACK, label: 'Wypadek' },
-    { latlng: [52.12550765733675, 21.296552453628372], color: BLACK, label: 'Wypadek' },
+    { latlng: [52.126949120736995, 21.312078427001115], color: BLACK, label: 'Wypadek', category: 'wypadek' },
+    { latlng: [52.13549811647438, 21.331725110821942], color: BLACK, label: 'Wypadek', category: 'wypadek' },
+    { latlng: [52.12550765733675, 21.296552453628372], color: BLACK, label: 'Wypadek', category: 'wypadek' },
 
     // Niebezpieczne przejścia (czerwone)
-    { latlng: [52.12630515337814, 21.30982402744196], color: RED,    label: 'Niebezpieczne przejście – okolice numeru 111' },
-    { latlng: [52.125545374621005, 21.30058028451581], color: RED,    label: 'Niebezpieczne przejście – okolice numeru 73' },
-    { latlng: [52.13043316674988, 21.321825156094768], color: RED,    label: 'Niebezpieczne przejście – okolice numeru 106' },
-    { latlng: [52.1327238596583, 21.326634153499533], color: RED,    label: 'Niebezpieczne przejście – okolice kościoła' },
-    { latlng: [52.13285359213022, 21.326824920763126], color: RED,    label: 'Niebezpieczne przejście – okolice kościoła' },
+    { latlng: [52.12630515337814, 21.30982402744196], color: RED,    label: 'Niebezpieczne przejście – okolice numeru 111', category: 'przejscie' },
+    { latlng: [52.125545374621005, 21.30058028451581], color: RED,    label: 'Niebezpieczne przejście – okolice numeru 73', category: 'przejscie' },
+    { latlng: [52.13043316674988, 21.321825156094768], color: RED,    label: 'Niebezpieczne przejście – okolice numeru 106', category: 'przejscie' },
+    { latlng: [52.1327238596583, 21.326634153499533], color: RED,    label: 'Niebezpieczne przejście – okolice kościoła', category: 'przejscie' },
+    { latlng: [52.13285359213022, 21.326824920763126], color: RED,    label: 'Niebezpieczne przejście – okolice kościoła', category: 'przejscie' },
 
     // Wyprzedzanie (pomarańczowe)
-    { latlng: [52.12527680744669, 21.302425327617737], color: ORANGE, label: 'Niebezpieczne wyprzedzanie' },
-    { latlng: [52.12575538333343, 21.2991234679028], color: ORANGE, label: 'Niebezpieczne wyprzedzanie' },
-    { latlng: [52.127055432266054, 21.312573915062078], color: ORANGE, label: 'Niebezpieczne wyprzedzanie' },
-    { latlng: [52.13074837745995, 21.323004688174663], color: ORANGE, label: 'Niebezpieczne wyprzedzanie' },
-    { latlng: [52.13483980805939, 21.33002119315483], color: ORANGE, label: 'Niebezpieczne wyprzedzanie' },
+    { latlng: [52.12527680744669, 21.302425327617737], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
+    { latlng: [52.12575538333343, 21.2991234679028], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
+    { latlng: [52.127055432266054, 21.312573915062078], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
+    { latlng: [52.13074837745995, 21.323004688174663], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
+    { latlng: [52.13483980805939, 21.33002119315483], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
     // Rejon szkoły (zielone)
-    { latlng: [52.13653646456338, 21.333757832170935], color: GREEN,  label: 'Rejon SP8 – strefa szczególnej ochrony' },
+    { latlng: [52.13653646456338, 21.333757832170935], color: GREEN,  label: 'Rejon SP8 – strefa szczególnej ochrony', category: 'szkola' },
   ];
 
-  markers.forEach(({ latlng, color, label }) => {
-    L.marker(latlng, { icon: circleIcon(color) })
+  // Grouped Leaflet layers per legend category, so clicking a legend item
+  // can toggle a whole group's visibility on/off.
+  const layersByCategory = {};
+  function addToCategory(category, layer) {
+    (layersByCategory[category] = layersByCategory[category] || []).push(layer);
+  }
+
+  markers.forEach(({ latlng, color, label, category }) => {
+    const marker = L.marker(latlng, { icon: circleIcon(color) })
       .addTo(map)
       .bindPopup(`<strong>${label}</strong>`);
+    addToCategory(category, marker);
   });
 
   // Street route polyline (approximate)
@@ -505,7 +624,8 @@ function updatePetycjaProgress(total) {
     [52.13626212924084, 21.3335180692645],
     [52.13690016926352, 21.33447885775998],
   ];
-  L.polyline(routeInvestment, { color: '#0d47ff', weight: 7, opacity: 0.55, smoothFactor: 0 }).addTo(map);
+  const investmentLine = L.polyline(routeInvestment, { color: '#0d47ff', weight: 7, opacity: 0.55, smoothFactor: 0 }).addTo(map);
+  addToCategory('inwestycja', investmentLine);
 
   const routeMissing = [
     [
@@ -524,7 +644,21 @@ function updatePetycjaProgress(total) {
       [52.136482258267755, 21.334004430774364],
     ],
   ];
-  L.polyline(routeMissing, { color: '#f5b400', weight: 6, opacity: 0.55, smoothFactor: 0 }).addTo(map);
+  const missingLine = L.polyline(routeMissing, { color: '#f5b400', weight: 6, opacity: 0.55, smoothFactor: 0 }).addTo(map);
+  addToCategory('braki', missingLine);
+
+  // ── Legend: click a category to toggle its markers/lines on the map ──
+  document.querySelectorAll('#mapLegend .legend-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const category = item.dataset.category;
+      const layers = layersByCategory[category] || [];
+      const willHide = item.classList.toggle('inactive');
+      layers.forEach(layer => {
+        if (willHide) map.removeLayer(layer);
+        else layer.addTo(map);
+      });
+    });
+  });
 })();
 
 // ── Supporters: truncated bios with "read more" modal ──
