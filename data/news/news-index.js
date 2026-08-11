@@ -1,6 +1,13 @@
 window.newsIndex = [
   {
-    "slug": "pisza-o-nas",
+    "slug": "pisza-o-nas-przeglad-otwocki",
+    "title": "Przegląd Otwocki pisze o przebudowie i naszej petycji",
+    "date": "2026-08-11",
+    "excerpt": "Kolejny lokalny portal, Przegląd Otwocki, opisał szczegóły przebudowy ul. Żeromskiego oraz naszą inicjatywę i petycję mieszkańców.",
+    "tags": ["prasa"]
+  },
+  {
+    "slug": "pisza-o-nas-portal-otwocki",
     "title": "Nasza inicjatywa w lokalnych mediach",
     "date": "2026-08-11",
     "excerpt": "Nasza inicjatywa została zauważona przez lokalne media. Na portalu PortalOtwocki.pl ukazał się artykuł poświęcony remontowi ul. Żeromskiego.",
