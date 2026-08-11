@@ -494,7 +494,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     }
 
     list.innerHTML = pagePosts.map((post, i) => `
-      <article class="news-card${page === 1 && i === 0 && !activeTag ? ' news-card--latest' : ''}" id="news-${post.slug}" data-category="${(post.tags || [])[0] || ''}">
+      <article class="news-card${isRecent(post.date) ? ' news-card--new' : ''}" id="news-${post.slug}" data-category="${(post.tags || [])[0] || ''}">
         <div class="news-card-inner">
           <div class="news-meta">
             <time class="news-date" datetime="${post.date}">${formatDate(post.date)}</time>

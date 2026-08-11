@@ -828,11 +828,12 @@ ul { list-style: none; }
 }
 .news-card:hover { box-shadow: var(--shadow-lg); }
 
-/* Newest card accent */
-.news-card.news-card--latest {
+/* Recently published card accent — applied to any post within the
+   "Nowe" badge window, not just the single newest item. */
+.news-card.news-card--new {
   border-left-color: var(--navy);
 }
-.news-card.news-card--latest .news-title {
+.news-card.news-card--new .news-title {
   font-size: 1.18rem;
 }
 
