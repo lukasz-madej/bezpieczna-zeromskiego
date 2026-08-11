@@ -1672,6 +1672,7 @@ a.seg-step:active { transform: translateY(0); }
 }
 .gallery-thumb img {
   width: 100%;
+  height: auto;
   aspect-ratio: 4/3;
   object-fit: cover;
   display: block;
@@ -1901,5 +1902,19 @@ a.seg-step:active { transform: translateY(0); }
     bottom: 16px;
     padding: 12px 18px;
     font-size: .88rem;
+  }
+}
+
+/* ── Reduced motion ──
+   Users who set prefers-reduced-motion: reduce get near-instant transitions
+   and no looping/scroll-triggered animations, site-wide. Scoped away from
+   `.visible`/`.petycja-goal-fill` opacity/width transitions is unnecessary
+   here since near-zero duration still lets those reach their end state. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

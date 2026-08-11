@@ -2,6 +2,9 @@
    Bezpieczna Żeromskiego – main.js
    ═══════════════════════════════════════════════════════════ */
 
+// ── Respect the user's motion preference site-wide ──
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // ── Footer year ──
 const footerYear = document.getElementById('footerYear');
 if (footerYear) footerYear.textContent = new Date().getFullYear();
@@ -101,22 +104,28 @@ const animateEls = document.querySelectorAll(
   '.card, .problem-card, .stance-col, .analysis-entry, .opinia-card'
 );
 
-const fadeIn = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      entry.target.style.transitionDelay = `${(i % 3) * 60}ms`;
-      entry.target.classList.add('visible');
-      fadeIn.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
+if (prefersReducedMotion) {
+  // Skip the scroll fade-in entirely: elements stay at their natural
+  // opacity/position instead of animating in.
+  animateEls.forEach(el => el.classList.add('visible'));
+} else {
+  const fadeIn = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = `${(i % 3) * 60}ms`;
+        entry.target.classList.add('visible');
+        fadeIn.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
 
-animateEls.forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(18px)';
-  el.style.transition = 'opacity .45s ease, transform .45s ease';
-  fadeIn.observe(el);
-});
+  animateEls.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity .45s ease, transform .45s ease';
+    fadeIn.observe(el);
+  });
+}
 
 // Inject .visible rule via JS to avoid FOUC with CSS-only approaches
 const style = document.createElement('style');
@@ -194,7 +203,6 @@ document.addEventListener('keydown', e => {
 // ── Petition signature counter ──
 // Total = signatures collected online (petycjeonline.com, scraped by cron)
 //       + signatures gathered manually on paper (entered by hand in signatures-manual.json)
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Animates a number from `from` to `to` over `duration`ms (ease-out cubic),
 // skipping straight to the final value if the user prefers reduced motion.
@@ -455,8 +463,8 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   function renderFilters() {
     if (!filtersEl || !allTags.length) return;
     filtersEl.innerHTML = [
-      `<button type="button" class="news-filter-btn${activeTag === null ? ' active' : ''}" data-tag="">Wszystkie</button>`,
-      ...allTags.map(t => `<button type="button" class="news-filter-btn${activeTag === t ? ' active' : ''}" data-tag="${t}">${t}</button>`)
+      `<button type="button" class="news-filter-btn${activeTag === null ? ' active' : ''}" data-tag="" aria-pressed="${activeTag === null}">Wszystkie</button>`,
+      ...allTags.map(t => `<button type="button" class="news-filter-btn${activeTag === t ? ' active' : ''}" data-tag="${t}" aria-pressed="${activeTag === t}">${t}</button>`)
     ].join('');
 
     filtersEl.querySelectorAll('.news-filter-btn').forEach(btn => {
@@ -653,6 +661,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
       const category = item.dataset.category;
       const layers = layersByCategory[category] || [];
       const willHide = item.classList.toggle('inactive');
+      item.setAttribute('aria-pressed', String(!willHide));
       layers.forEach(layer => {
         if (willHide) map.removeLayer(layer);
         else layer.addTo(map);
