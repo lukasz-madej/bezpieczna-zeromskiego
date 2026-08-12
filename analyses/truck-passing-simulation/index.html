@@ -9,7 +9,13 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="container zeromskiego-page">
 <section id="zeromskiego-dynamic-pass">
+  <header class="viz-page-header">
+    <span class="section-tag">Analiza techniczna</span>
+    <h1>Symulacja mijania pojazdów ciężarowych</h1>
+    <p class="text-muted viz-page-lead">ul. Żeromskiego w Otwocku — geometryczny model mijania dwóch zestawów ciągnik siodłowy + naczepa na łuku drogi.</p>
+  </header>
   <div class="viz-controls slider-controls">
     <label class="form-label" for="pass-position">Położenie podczas mijania: <strong id="position-value">48,55%</strong></label>
     <input id="pass-position" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="pass-status">
@@ -99,6 +105,7 @@
   <p class="text-small text-muted">Rysunek kabiny: uproszczony, stylizowany kontur ciągnika siodłowego (nie fotografia), przeskalowany do obrysu modelu — wyłącznie ilustracja robocza pokazująca zajęcie szerokości i położenie lusterek.</p>
   <p class="sr-only" id="truck-summary"></p>
 </section>
+</div>
 <script id="codex-visualization-floating-ui-core" src="https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js"></script>
 <script id="codex-visualization-floating-ui-dom" src="https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js"></script>
 <script id="codex-visualization-lucide" async src="https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js"></script>

@@ -1,41 +1,37 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   background-color: transparent !important;
 
-  /* Agent-facing contract; keep in sync with SKILL.md. */
-  --background: var(
-    --main-surface-primary,
-    light-dark(rgb(255 255 255), rgb(24 24 24))
-  );
-  --foreground: light-dark(rgb(26 28 31), rgb(255 255 255));
-  --card: color-mix(in oklab, var(--foreground) 5%, transparent);
+  /* Bezpieczna Żeromskiego brand tokens — kept in sync with the main site's
+     css/style.css so this analysis matches the website UI and can be
+     dropped into it later with minimal changes. */
+  --background: var(--main-surface-primary, #f5f7fa);
+  --foreground: #1a1a2e;
+  --card: #ffffff;
   --card-foreground: var(--foreground);
-  --popover: light-dark(rgb(255 255 255), rgb(45 45 45));
+  --popover: #ffffff;
   --popover-foreground: var(--foreground);
-  --primary: light-dark(rgb(51 156 255), rgb(131 195 255));
-  --primary-foreground: light-dark(rgb(255 255 255), rgb(13 13 13));
-  --secondary: light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%));
+  --primary: #0d47ff;
+  --primary-foreground: #ffffff;
+  --secondary: #ffffff;
   --secondary-foreground: var(--foreground);
-  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
-  --muted-foreground: light-dark(
-    rgb(26 28 31 / 49.4%),
-    rgb(255 255 255 / 49.8%)
-  );
-  --accent: light-dark(rgb(229 242 255), rgb(13 39 63));
+  --muted: rgba(26, 26, 46, 0.06);
+  --muted-foreground: #5a6377;
+  --accent: rgba(13, 71, 255, 0.1);
   --accent-foreground: var(--primary);
-  --destructive: light-dark(rgb(226 85 7), rgb(255 133 73));
-  --border: light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%));
-  --input: light-dark(
-    rgb(26 28 31 / 11.8%),
-    color-mix(in oklab, rgb(0 0 0) 10%, transparent)
-  );
-  --ring: light-dark(rgb(51 156 255), rgb(131 195 255 / 76%));
-  --font-size-base: 14px;
-  --red: light-dark(rgb(186 38 35), rgb(250 66 62));
-  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --destructive: #d82626;
+  --border: #e2e6ef;
+  --input: #e2e6ef;
+  --ring: #0d47ff;
+  --font-size-base: 15px;
+  --red: #d82626;
+  --green: #4caf50;
+  --navy: #071d44;
+  --gold: #f5b400;
+  --orange: #ff8c00;
 
   /* Internal implementation variables; not part of the agent contract. */
-  --font-sans: -apple-system, system-ui, "Segoe UI", sans-serif;
+  --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
     monospace;
@@ -50,7 +46,7 @@
   --line-height-normal: calc(var(--font-size-normal) * 1.5);
   --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
   --line-height-small: calc(var(--font-size-small) + 4px);
-  --radius: 10px;
+  --radius: 14px;
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -80,14 +76,16 @@
 }
 
 /* Generic mobile code-block hosts provide light/dark mode but no series palette.
-   AppBlock hosts set all six variables themselves. */
+   AppBlock hosts set all six variables themselves. Mapped onto the site's
+   brand accents (blue/orange/gold/green/red/navy) so vehicle A/B colors line
+   up with the site's own CTA and swatch colors. */
 :root:not([data-app-block-surface]) {
-  --viz-series-1: var(--primary);
-  --viz-series-2: light-dark(#f3883b, #f59a56);
-  --viz-series-3: light-dark(#5dc977, #74d58b);
-  --viz-series-4: light-dark(#eb77b1, #f08fc0);
-  --viz-series-5: light-dark(#9b79ec, #aa91ef);
-  --viz-series-6: light-dark(#3ab9b1, #5acbc2);
+  --viz-series-1: #0d47ff;
+  --viz-series-2: #ff8c00;
+  --viz-series-3: #4caf50;
+  --viz-series-4: #f5b400;
+  --viz-series-5: #d82626;
+  --viz-series-6: #071d44;
 }
 
 :root[data-theme="light"] {
@@ -257,12 +255,14 @@ code:not(pre code) {
 
 .card {
   min-width: 0;
-  padding: 12px;
+  padding: 16px;
   overflow: hidden;
   overflow-wrap: break-word;
-  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   color: var(--card-foreground);
   background: var(--card);
+  box-shadow: 0 4px 24px rgba(7, 29, 68, 0.09);
 }
 
 #widget > :not(.card) {

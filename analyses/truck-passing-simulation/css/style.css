@@ -1,5 +1,50 @@
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--background);
+}
+.zeromskiego-page {
+  padding-block: 32px 48px;
+}
+.container.zeromskiego-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-inline: 24px;
+}
+.viz-page-header {
+  margin-bottom: 28px;
+}
+.viz-page-header .section-tag {
+  display: inline-block;
+  background: rgba(13, 71, 255, .1);
+  color: var(--primary);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+.viz-page-header h1 {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--navy);
+  margin: 0 0 10px;
+}
+.viz-page-lead {
+  max-width: 640px;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
 #zeromskiego-dynamic-pass {
     color: var(--foreground);
+  }
+  #zeromskiego-dynamic-pass > * + * {
+    margin-top: 1.1rem;
   }
   #zeromskiego-dynamic-pass .form-label {
     flex: 1 1 22rem;
@@ -17,15 +62,15 @@
     background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
   }
   #zeromskiego-dynamic-pass .pass-slider::-webkit-slider-thumb {
-    background: darkgoldenrod;
-    border-color: color-mix(in srgb, darkgoldenrod 70%, var(--foreground));
+    background: var(--gold);
+    border-color: color-mix(in srgb, var(--gold) 70%, var(--foreground));
   }
   #zeromskiego-dynamic-pass .pass-slider::-moz-range-track {
     background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
   }
   #zeromskiego-dynamic-pass .pass-slider::-moz-range-thumb {
-    background: darkgoldenrod;
-    border-color: color-mix(in srgb, darkgoldenrod 70%, var(--foreground));
+    background: var(--gold);
+    border-color: color-mix(in srgb, var(--gold) 70%, var(--foreground));
   }
   #zeromskiego-dynamic-pass #pass-svg,
   #zeromskiego-dynamic-pass #cross-svg {
@@ -177,11 +222,6 @@
   }
   #zeromskiego-dynamic-pass .cross-photo {
     opacity: 0.85;
-  }
-  @media (prefers-color-scheme: dark) {
-    #zeromskiego-dynamic-pass .cross-photo {
-      filter: invert(1);
-    }
   }
   #zeromskiego-dynamic-pass .cross-mirror-a,
   #zeromskiego-dynamic-pass .cross-mirror-b,
