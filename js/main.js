@@ -721,3 +721,30 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     }
   });
 })();
+
+// Expandable inline iframe preview for the truck-passing simulation
+(function () {
+  document.querySelectorAll('.js-sim-toggle').forEach(btn => {
+    const frame = document.getElementById(btn.dataset.target);
+    if (!frame) return;
+    const iframe = frame.querySelector('iframe');
+    const label = btn.querySelector('.js-sim-toggle-label');
+    const icon = btn.querySelector('.js-sim-toggle-icon');
+
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const next = !expanded;
+      btn.setAttribute('aria-expanded', String(next));
+      frame.hidden = !next;
+      icon.classList.toggle('js-sim-toggle-icon--open', next);
+      label.textContent = next ? 'Zwiń symulację' : 'Zobacz symulację';
+
+      if (next) {
+        if (iframe && !iframe.src) {
+          iframe.src = iframe.dataset.src;
+        }
+        frame.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  });
+})();

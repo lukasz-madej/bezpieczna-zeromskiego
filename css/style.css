@@ -599,6 +599,46 @@ ul { list-style: none; }
 }
 .analysis-entry p { color: var(--text-muted); font-size: .93rem; }
 
+.analysis-simulation-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.js-sim-toggle-icon {
+  transition: transform .2s;
+}
+.js-sim-toggle-icon--open {
+  transform: rotate(90deg);
+}
+.analysis-simulation-newtab {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.analysis-simulation-newtab:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
+.analysis-simulation-embed {
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--light);
+}
+.analysis-simulation-embed iframe {
+  display: block;
+  width: 100%;
+  height: 1300px;
+  border: 0;
+}
+@media (max-width: 640px) {
+  .analysis-simulation-embed iframe { height: 1600px; }
+}
+
 /* ══════════════════════════════════════════════════════════
    MAPA
 ══════════════════════════════════════════════════════════ */

@@ -750,10 +750,16 @@
           </div>
           <h4>Symulacja mijania pojazdów ciężarowych</h4>
           <p>Interaktywny model geometryczny pokazujący mijanie dwóch zestawów ciężarowych (ciągnik siodłowy z naczepą) na łuku ul. Żeromskiego – z przekrojem poprzecznym kabin, kątem osi ciągników i wskaźnikiem kolizji liczonym na bieżąco podczas przesuwania suwaka.</p>
-          <a href="analyses/truck-passing-simulation/index.html" class="btn btn-blue btn-sm">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 3l14 9-14 9V3z"/></svg>
-            Zobacz symulację
-          </a>
+          <div class="analysis-simulation-actions">
+            <button type="button" class="btn btn-blue btn-sm js-sim-toggle" data-target="sim-frame-mijanie" aria-expanded="false" aria-controls="sim-frame-mijanie">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="js-sim-toggle-icon"><path d="M5 3l14 9-14 9V3z"/></svg>
+              <span class="js-sim-toggle-label">Zobacz symulację</span>
+            </button>
+            <a href="analyses/truck-passing-simulation/index.html" target="_blank" rel="noopener" class="analysis-simulation-newtab">Otwórz w nowej karcie ↗</a>
+          </div>
+          <div class="analysis-simulation-embed" id="sim-frame-mijanie" hidden>
+            <iframe data-src="analyses/truck-passing-simulation/index.html" title="Symulacja mijania pojazdów ciężarowych" loading="lazy"></iframe>
+          </div>
         </article>
 
       </div>
