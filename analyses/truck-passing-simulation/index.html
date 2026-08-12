@@ -16,36 +16,17 @@
     <h1>Symulacja mijania pojazdów ciężarowych</h1>
     <p class="text-muted viz-page-lead">ul. Żeromskiego w Otwocku — geometryczny model mijania dwóch zestawów ciągnik siodłowy + naczepa na łuku drogi.</p>
   </header>
-  <div class="viz-controls slider-controls">
-    <label class="form-label" for="pass-position">Położenie podczas mijania: <strong id="position-value">48,55%</strong></label>
-    <input id="pass-position" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="pass-status">
+
+  <div class="card viz-controls-card">
+    <div class="viz-controls slider-controls">
+      <label class="form-label" for="pass-position">Położenie podczas mijania: <strong id="position-value">48,55%</strong></label>
+      <input id="pass-position" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="pass-status">
+    </div>
+    <p class="text-small text-muted viz-model-line"><strong>Model reprezentatywny:</strong> Volvo FH 420 4×2 (rozstaw osi 3,80 m) + Schmitz Cargobull S.CS Universal 13,62 m.</p>
   </div>
 
-  <p class="text-small"><strong>Model reprezentatywny:</strong> Volvo FH 420 4×2 (rozstaw osi 3,80 m) + Schmitz Cargobull S.CS Universal 13,62 m.</p>
-
-  <svg id="pass-svg" viewBox="360 155 1110 345" role="img" aria-labelledby="pass-svg-title pass-svg-desc">
-    <title id="pass-svg-title">Dynamiczne mijanie dwóch ciągników siodłowych z naczepami na łuku ulicy Żeromskiego</title>
-    <desc id="pass-svg-desc">Ruch prawostronny. Pojazd na górnym pasie jedzie w lewo, a pojazd na dolnym pasie jedzie w prawo. Suwak przesuwa oba zestawy aż całkowicie się miną.</desc>
-    <image id="plan-image" x="0" y="0" width="1477" height="786" preserveAspectRatio="none"></image>
-    <path id="project-axis" class="project-axis"></path>
-    <g id="upper-vehicle" aria-label="Zestaw na górnym pasie, kierunek w lewo"></g>
-    <g id="lower-vehicle" aria-label="Zestaw na dolnym pasie, kierunek w prawo"></g>
-    <g id="nearest-mark" aria-hidden="true">
-      <line id="nearest-line" class="nearest-line"></line>
-      <circle id="nearest-a" class="nearest-dot" r="4"></circle>
-      <circle id="nearest-b" class="nearest-dot" r="4"></circle>
-    </g>
-  </svg>
-  <p class="text-small text-muted">Przekrój jest pionową projekcją poprzeczną kabin na wspólną płaszczyznę. Pokazuje zajęcie szerokości jezdni i położenie lusterek; o faktycznej kolizji decyduje wskaźnik obrysów w rzucie z góry, który uwzględnia także przesunięcie pojazdów wzdłuż drogi.</p>
-
-  <div class="viz-row direction-row" aria-label="Kierunki ruchu">
-    <span><span class="legend-swatch upper-swatch" aria-hidden="true"></span>Górny pas: B ←</span>
-    <span><span class="legend-swatch lower-swatch" aria-hidden="true"></span>Dolny pas: A →</span>
-    <span class="text-muted">ruch prawostronny</span>
-  </div>
-
-  <div class="viz-grid" aria-live="polite">
-    <div class="card viz-stat">
+  <div class="viz-grid viz-grid-primary" aria-live="polite">
+    <div class="card viz-stat viz-stat-primary">
       <span class="text-muted">Podpisany wskaźnik kolizji</span>
       <span class="viz-stat-value" id="current-gap">0,00 m</span>
       <span class="viz-badge" id="collision-state">Styk</span>
@@ -63,46 +44,79 @@
     </div>
   </div>
 
-  <p id="pass-status" class="text-small"></p>
+  <p id="pass-status" class="text-small text-muted viz-status-line"></p>
 
-  <svg id="cross-svg" viewBox="0 0 900 550" role="img" aria-labelledby="cross-title cross-desc">
-    <title id="cross-title">Przekrój poprzeczny przez kabiny w aktualnym położeniu</title>
-    <desc id="cross-desc">Pionowa projekcja poprzeczna jezdni szerokości sześciu metrów. Na obrysy geometryczne nałożono stylizowany rysunek konturowy kabiny ciężarówki. Mały rzut z góry pokazuje kąt między osiami ciągników.</desc>
-    <line id="cross-road-profile" x1="120" y1="477" x2="780" y2="463" class="cross-road"></line>
-    <line x1="450" y1="55" x2="450" y2="485" class="cross-axis"></line>
-    <line x1="120" y1="492" x2="780" y2="492" class="cross-dimension"></line>
-    <line x1="120" y1="480" x2="120" y2="502" class="cross-dimension"></line>
-    <line x1="780" y1="480" x2="780" y2="502" class="cross-dimension"></line>
-    <text x="450" y="525" class="cross-label">jezdnia 6,00 m</text>
-    <text x="450" y="45" class="cross-label">oś jezdni</text>
-    <text id="crossfall-label" x="450" y="455" class="cross-label">← spadek 2% do wnętrza łuku</text>
-    <g id="cross-upper" aria-label="Przekrój pojazdu B"></g>
-    <g id="cross-lower" aria-label="Przekrój pojazdu A"></g>
-    <g id="cross-gap" aria-hidden="true"></g>
-    <text id="cross-gap-label" x="265" y="24" class="cross-label">projekcja poprzeczna lusterek 0,00 m</text>
-    <g id="angle-inset" aria-hidden="true">
-      <line id="angle-line-a" x1="720" y1="78" x2="800" y2="78" class="angle-a"></line>
-      <line id="angle-line-b" x1="720" y1="78" x2="640" y2="78" class="angle-b"></line>
-      <text id="angle-label" x="720" y="50" class="cross-label">0,00°</text>
-    </g>
-  </svg>
-
-  <div class="table-responsive">
-    <table class="table table-sm">
-      <thead>
-        <tr>
-          <th>Pojazd / punkt obrysu</th>
-          <th class="text-end">Do osi</th>
-          <th class="text-end">Do krawędzi</th>
-          <th class="text-end">Odległość punktu do najbliższego obrysu drugiego zestawu</th>
-        </tr>
-      </thead>
-      <tbody id="clearance-body"></tbody>
-    </table>
+  <div class="viz-section">
+    <div class="viz-section-header">
+      <h2>Widok z góry</h2>
+      <div class="viz-row direction-row" aria-label="Kierunki ruchu">
+        <span><span class="legend-swatch upper-swatch" aria-hidden="true"></span>Górny pas: B ←</span>
+        <span><span class="legend-swatch lower-swatch" aria-hidden="true"></span>Dolny pas: A →</span>
+        <span class="text-muted">ruch prawostronny</span>
+      </div>
+    </div>
+    <svg id="pass-svg" viewBox="360 155 1110 345" role="img" aria-labelledby="pass-svg-title pass-svg-desc">
+      <title id="pass-svg-title">Dynamiczne mijanie dwóch ciągników siodłowych z naczepami na łuku ulicy Żeromskiego</title>
+      <desc id="pass-svg-desc">Ruch prawostronny. Pojazd na górnym pasie jedzie w lewo, a pojazd na dolnym pasie jedzie w prawo. Suwak przesuwa oba zestawy aż całkowicie się miną.</desc>
+      <image id="plan-image" x="0" y="0" width="1477" height="786" preserveAspectRatio="none"></image>
+      <path id="project-axis" class="project-axis"></path>
+      <g id="upper-vehicle" aria-label="Zestaw na górnym pasie, kierunek w lewo"></g>
+      <g id="lower-vehicle" aria-label="Zestaw na dolnym pasie, kierunek w prawo"></g>
+      <g id="nearest-mark" aria-hidden="true">
+        <line id="nearest-line" class="nearest-line"></line>
+        <circle id="nearest-a" class="nearest-dot" r="4"></circle>
+        <circle id="nearest-b" class="nearest-dot" r="4"></circle>
+      </g>
+    </svg>
+    <p class="text-small text-muted">Przekrój jest pionową projekcją poprzeczną kabin na wspólną płaszczyznę. Pokazuje zajęcie szerokości jezdni i położenie lusterek; o faktycznej kolizji decyduje wskaźnik obrysów w rzucie z góry, który uwzględnia także przesunięcie pojazdów wzdłuż drogi.</p>
   </div>
 
-  <p class="text-small text-muted">Wymiary modelu: Volvo FH 4×2 — kabina 2,495 m, rozstaw osi 3,80 m, przód–oś przednia 1,555 m, oś przednia–sworzeń naczepy 3,425 m; Schmitz S.CS — szerokość 2,55 m, długość całkowita 13,72 m, sworzeń–środek zespołu osi 7,70 m. Rozstaw zewnętrzny lusterek 3,02 m oszacowano na podstawie publikowanej szerokości kabiny 2,495 m; niepewność tego parametru wynosi około ±0,05 m. Rysunek kabiny jest wyłącznie nakładką wizualną — obliczenia wykonuje model geometryczny. Przednie osie prowadzone środkiem pasów. R = 350,00 m. Pochylenie poprzeczne 2% do wnętrza łuku pokazano w przekroju: na 6,00 m daje 0,12 m różnicy wysokości. Nie zmienia ono kinematyki w rzucie z góry. Model nie uwzględnia pracy zawieszenia ani dynamicznego przechyłu; dokładność położenia względem podkładu rastrowego około ±0,05–0,10 m.</p>
-  <p class="text-small text-muted">Rysunek kabiny: uproszczony, stylizowany kontur ciągnika siodłowego (nie fotografia), przeskalowany do obrysu modelu — wyłącznie ilustracja robocza pokazująca zajęcie szerokości i położenie lusterek.</p>
+  <div class="viz-section">
+    <div class="viz-section-header">
+      <h2>Przekrój poprzeczny kabin</h2>
+    </div>
+    <svg id="cross-svg" viewBox="0 0 900 550" role="img" aria-labelledby="cross-title cross-desc">
+      <title id="cross-title">Przekrój poprzeczny przez kabiny w aktualnym położeniu</title>
+      <desc id="cross-desc">Pionowa projekcja poprzeczna jezdni szerokości sześciu metrów. Na obrysy geometryczne nałożono stylizowany rysunek konturowy kabiny ciężarówki. Mały rzut z góry pokazuje kąt między osiami ciągników.</desc>
+      <line id="cross-road-profile" x1="120" y1="477" x2="780" y2="463" class="cross-road"></line>
+      <line x1="450" y1="55" x2="450" y2="485" class="cross-axis"></line>
+      <line x1="120" y1="492" x2="780" y2="492" class="cross-dimension"></line>
+      <line x1="120" y1="480" x2="120" y2="502" class="cross-dimension"></line>
+      <line x1="780" y1="480" x2="780" y2="502" class="cross-dimension"></line>
+      <text x="450" y="525" class="cross-label">jezdnia 6,00 m</text>
+      <text x="450" y="45" class="cross-label">oś jezdni</text>
+      <text id="crossfall-label" x="450" y="455" class="cross-label">← spadek 2% do wnętrza łuku</text>
+      <g id="cross-upper" aria-label="Przekrój pojazdu B"></g>
+      <g id="cross-lower" aria-label="Przekrój pojazdu A"></g>
+      <g id="cross-gap" aria-hidden="true"></g>
+      <text id="cross-gap-label" x="265" y="24" class="cross-label">projekcja poprzeczna lusterek 0,00 m</text>
+      <g id="angle-inset" aria-hidden="true">
+        <line id="angle-line-a" x1="720" y1="78" x2="800" y2="78" class="angle-a"></line>
+        <line id="angle-line-b" x1="720" y1="78" x2="640" y2="78" class="angle-b"></line>
+        <text id="angle-label" x="720" y="50" class="cross-label">0,00°</text>
+      </g>
+    </svg>
+  </div>
+
+  <details class="viz-details">
+    <summary>Szczegółowe dane pomiarowe i metodologia</summary>
+    <div class="table-responsive">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>Pojazd / punkt obrysu</th>
+            <th class="text-end">Do osi</th>
+            <th class="text-end">Do krawędzi</th>
+            <th class="text-end">Odległość punktu do najbliższego obrysu drugiego zestawu</th>
+          </tr>
+        </thead>
+        <tbody id="clearance-body"></tbody>
+      </table>
+    </div>
+
+    <p class="text-small text-muted">Wymiary modelu: Volvo FH 4×2 — kabina 2,495 m, rozstaw osi 3,80 m, przód–oś przednia 1,555 m, oś przednia–sworzeń naczepy 3,425 m; Schmitz S.CS — szerokość 2,55 m, długość całkowita 13,72 m, sworzeń–środek zespołu osi 7,70 m. Rozstaw zewnętrzny lusterek 3,02 m oszacowano na podstawie publikowanej szerokości kabiny 2,495 m; niepewność tego parametru wynosi około ±0,05 m. Rysunek kabiny jest wyłącznie nakładką wizualną — obliczenia wykonuje model geometryczny. Przednie osie prowadzone środkiem pasów. R = 350,00 m. Pochylenie poprzeczne 2% do wnętrza łuku pokazano w przekroju: na 6,00 m daje 0,12 m różnicy wysokości. Nie zmienia ono kinematyki w rzucie z góry. Model nie uwzględnia pracy zawieszenia ani dynamicznego przechyłu; dokładność położenia względem podkładu rastrowego około ±0,05–0,10 m.</p>
+    <p class="text-small text-muted">Rysunek kabiny: uproszczony, stylizowany kontur ciągnika siodłowego (nie fotografia), przeskalowany do obrysu modelu — wyłącznie ilustracja robocza pokazująca zajęcie szerokości i położenie lusterek.</p>
+  </details>
   <p class="sr-only" id="truck-summary"></p>
 </section>
 </div>

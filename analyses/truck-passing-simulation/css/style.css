@@ -46,6 +46,57 @@ body {
   #zeromskiego-dynamic-pass > * + * {
     margin-top: 1.1rem;
   }
+  #zeromskiego-dynamic-pass .viz-controls-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  #zeromskiego-dynamic-pass .viz-model-line {
+    margin: 0;
+  }
+  #zeromskiego-dynamic-pass .viz-status-line {
+    margin-top: 0;
+    padding: 10px 14px;
+    border-radius: var(--radius-lg);
+    background: var(--muted);
+  }
+  #zeromskiego-dynamic-pass .viz-section {
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--border);
+  }
+  #zeromskiego-dynamic-pass .viz-section-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+  #zeromskiego-dynamic-pass .viz-section-header h2 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin: 0;
+  }
+  #zeromskiego-dynamic-pass .viz-details {
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--border);
+  }
+  #zeromskiego-dynamic-pass .viz-details > summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--navy);
+    padding: 6px 0;
+  }
+  #zeromskiego-dynamic-pass .viz-details > summary:hover {
+    color: var(--primary);
+  }
+  #zeromskiego-dynamic-pass .viz-details[open] > summary {
+    margin-bottom: 0.75rem;
+  }
+  #zeromskiego-dynamic-pass .viz-details > :not(summary) + * {
+    margin-top: 0.75rem;
+  }
   #zeromskiego-dynamic-pass .form-label {
     flex: 1 1 22rem;
   }
@@ -164,8 +215,9 @@ body {
     vector-effect: non-scaling-stroke;
   }
   #zeromskiego-dynamic-pass .direction-row {
-    justify-content: space-between;
-    margin-top: 0.5rem;
+    justify-content: flex-start;
+    margin: 0;
+    font-size: var(--font-size-small);
   }
   #zeromskiego-dynamic-pass .legend-swatch {
     display: inline-block;
@@ -181,10 +233,30 @@ body {
     background: var(--viz-series-2);
   }
   #zeromskiego-dynamic-pass .viz-stat {
-    margin-top: 0.75rem;
+    border-left: 4px solid transparent;
   }
-  #zeromskiego-dynamic-pass #pass-status {
-    margin-top: 0.5rem;
+  #zeromskiego-dynamic-pass .viz-stat-primary {
+    border-left-color: var(--green);
+  }
+  #zeromskiego-dynamic-pass .viz-stat-primary:has(.text-destructive) {
+    border-left-color: var(--red);
+  }
+  #zeromskiego-dynamic-pass .viz-stat-primary .viz-stat-value {
+    font-size: 1.7rem;
+  }
+  #zeromskiego-dynamic-pass #current-gap {
+    color: var(--green);
+  }
+  #zeromskiego-dynamic-pass #current-gap.text-destructive {
+    color: var(--red);
+  }
+  #zeromskiego-dynamic-pass .viz-badge {
+    background: rgba(76, 175, 80, .15);
+    color: var(--green);
+  }
+  #zeromskiego-dynamic-pass .viz-badge.text-destructive {
+    background: rgba(216, 38, 38, .12);
+    color: var(--red);
   }
   #zeromskiego-dynamic-pass .cross-road,
   #zeromskiego-dynamic-pass .cross-dimension,
