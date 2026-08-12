@@ -893,6 +893,8 @@ ul { list-style: none; }
 .news-filter-btn {
   font-size: .82rem;
   font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
   padding: 7px 16px;
   border-radius: 100px;
   border: 1px solid var(--border);
