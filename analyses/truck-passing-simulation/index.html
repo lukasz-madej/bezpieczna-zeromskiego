@@ -14,7 +14,7 @@
   <header class="viz-page-header">
     <span class="section-tag">Analiza techniczna</span>
     <h1>Symulacja mijania pojazdów ciężarowych</h1>
-    <p class="text-muted viz-page-lead">ul. Żeromskiego w Otwocku - geometryczny model mijania dwóch zestawów ciągnik siodłowy + naczepa na łuku drogi.</p>
+    <p class="text-muted viz-page-lead">ul. Żeromskiego - geometryczny model mijania dwóch zestawów, ciągnik siodłowy z naczepą, na łuku drogi.</p>
   </header>
 
   <div class="card viz-controls-card">
@@ -69,10 +69,8 @@
     <p class="text-small text-muted">Przekrój jest pionową projekcją poprzeczną kabin na wspólną płaszczyznę. Pokazuje zajęcie szerokości jezdni i położenie lusterek; o faktycznej kolizji decyduje wskaźnik obrysów w rzucie z góry, który uwzględnia także przesunięcie pojazdów wzdłuż drogi.</p>
   </div>
 
-  <div class="viz-section">
-    <div class="viz-section-header">
-      <h2>Przekrój poprzeczny kabin</h2>
-    </div>
+  <details class="viz-section" open>
+    <summary class="viz-section-summary">Przekrój poprzeczny</summary>
     <svg id="cross-svg" viewBox="0 0 900 600" role="img" aria-labelledby="cross-title cross-desc">
       <title id="cross-title">Przekrój poprzeczny przez kabiny w aktualnym położeniu</title>
       <desc id="cross-desc">Pionowa projekcja poprzeczna jezdni szerokości sześciu metrów. Na obrysy geometryczne nałożono stylizowany rysunek konturowy kabiny ciężarówki. Mały rzut z góry pokazuje kąt między osiami ciągników.</desc>
@@ -94,10 +92,10 @@
         <text id="angle-label" x="720" y="24" class="cross-label">0,00°</text>
       </g>
     </svg>
-  </div>
+  </details>
 
   <details class="viz-details">
-    <summary>Szczegółowe dane pomiarowe i metodologia</summary>
+    <summary class="viz-section-summary">Szczegółowe dane pomiarowe i metodologia</summary>
     <div class="table-responsive">
       <table class="table table-sm">
         <thead>

@@ -35,7 +35,6 @@ body {
   margin: 0 0 10px;
 }
 .viz-page-lead {
-  max-width: 640px;
   font-size: 1rem;
   line-height: 1.6;
   margin: 0;
@@ -76,16 +75,20 @@ body {
     padding-top: 0.4rem;
     border-top: 1px solid var(--border);
   }
-  #zeromskiego-dynamic-pass .viz-details > summary {
+  #zeromskiego-dynamic-pass .viz-details > summary,
+  #zeromskiego-dynamic-pass .viz-section-summary {
     cursor: pointer;
-    font-weight: 700;
+    font-size: 1.15rem;
+    font-weight: 800;
     color: var(--navy);
     padding: 6px 0;
   }
-  #zeromskiego-dynamic-pass .viz-details > summary:hover {
+  #zeromskiego-dynamic-pass .viz-details > summary:hover,
+  #zeromskiego-dynamic-pass .viz-section-summary:hover {
     color: var(--primary);
   }
-  #zeromskiego-dynamic-pass .viz-details[open] > summary {
+  #zeromskiego-dynamic-pass .viz-details[open] > summary,
+  #zeromskiego-dynamic-pass details.viz-section[open] > .viz-section-summary {
     margin-bottom: 0.75rem;
   }
   #zeromskiego-dynamic-pass .viz-details > :not(summary) + * {
