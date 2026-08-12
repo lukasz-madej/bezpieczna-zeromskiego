@@ -107,28 +107,28 @@ body {
     background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
   }
   #zeromskiego-dynamic-pass .pass-slider::-webkit-slider-thumb {
-    width: 34px;
-    height: 18px;
-    margin-top: 5px;
-    border: none;
-    border-radius: 4px;
-    background-color: transparent;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 20'%3E%3Crect x='9' y='8.5' width='22' height='3' rx='1.5' fill='%23f5b400' stroke='%23071d44' stroke-width='0.75'/%3E%3Cpolygon points='0.75,10 10,3 10,17' fill='%23f5b400' stroke='%23071d44' stroke-width='0.75' stroke-linejoin='round'/%3E%3Cpolygon points='39.25,10 30,3 30,17' fill='%23f5b400' stroke='%23071d44' stroke-width='0.75' stroke-linejoin='round'/%3E%3C/svg%3E");
+    width: 22px;
+    height: 22px;
+    margin-top: 3px;
+    border: 1px solid color-mix(in srgb, var(--gold) 70%, var(--foreground));
+    border-radius: var(--radius-full);
+    background-color: var(--gold);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cline x1='5' y1='12' x2='19' y2='12' stroke='%23071d44' stroke-width='2' stroke-linecap='round'/%3E%3Cpolyline points='9,7 4,12 9,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpolyline points='15,7 20,12 15,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
+    background-size: 16px;
     cursor: ew-resize;
   }
   #zeromskiego-dynamic-pass .pass-slider::-moz-range-track {
     background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
   }
   #zeromskiego-dynamic-pass .pass-slider::-moz-range-thumb {
-    width: 34px;
-    height: 18px;
-    border: none;
-    border-radius: 4px;
-    background-color: transparent;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 20'%3E%3Crect x='9' y='8.5' width='22' height='3' rx='1.5' fill='%23f5b400' stroke='%23071d44' stroke-width='0.75'/%3E%3Cpolygon points='0.75,10 10,3 10,17' fill='%23f5b400' stroke='%23071d44' stroke-width='0.75' stroke-linejoin='round'/%3E%3Cpolygon points='39.25,10 30,3 30,17' fill='%23f5b400' stroke='%23071d44' stroke-width='0.75' stroke-linejoin='round'/%3E%3C/svg%3E");
+    width: 22px;
+    height: 22px;
+    border: 1px solid color-mix(in srgb, var(--gold) 70%, var(--foreground));
+    border-radius: var(--radius-full);
+    background-color: var(--gold);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cline x1='5' y1='12' x2='19' y2='12' stroke='%23071d44' stroke-width='2' stroke-linecap='round'/%3E%3Cpolyline points='9,7 4,12 9,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpolyline points='15,7 20,12 15,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -144,7 +144,7 @@ body {
     margin-top: 0.75rem;
   }
   #zeromskiego-dynamic-pass #pass-svg + p {
-    margin-top: 5px;
+    margin-top: 10px;
   }
   #zeromskiego-dynamic-pass #plan-image {
     opacity: 0.76;
