@@ -27,7 +27,7 @@
     travel: 34,
     crossfall: 0.02
   };
-  const activeTruckPhotoSource = "img/truck-cab.webp";
+  const activeTruckPhotoSource = "img/truck-cab.svg";
   const vehicle = {
     width: 2.55,
     cabWidth: 2.495,

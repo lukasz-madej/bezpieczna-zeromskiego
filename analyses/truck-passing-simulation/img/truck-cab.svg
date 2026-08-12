@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 302 372" role="img" aria-label="Schematyczny rysunek kabiny ciężarówki, widok z przodu">
+  <!-- Generic, non-branded line-drawing of a truck cab front view, used as a schematic
+       stand-in for a photographic reference (keeps the visualization illustrative rather
+       than tied to a specific vehicle photo). -->
+  <g fill="none" stroke="#1a1c1f" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- cab silhouette -->
+    <path d="M40,368
+             L40,150
+             Q40,96 70,70
+             L108,34
+             Q151,10 194,34
+             L232,70
+             Q262,96 262,150
+             L262,368 Z"
+          fill="#e7e9ec" />
+
+    <!-- roof line accent -->
+    <path d="M70,70 Q151,30 232,70" fill="none" stroke-width="3" />
+
+    <!-- windshield -->
+    <rect x="70" y="86" width="162" height="96" rx="14" fill="#cfe3f2" />
+    <line x1="151" y1="86" x2="151" y2="182" stroke-width="3" />
+
+    <!-- wipers -->
+    <path d="M92,178 L128,120" stroke-width="3" />
+    <path d="M210,178 L174,120" stroke-width="3" />
+
+    <!-- door/body seam -->
+    <line x1="151" y1="192" x2="151" y2="368" stroke-width="3" />
+
+    <!-- grille -->
+    <rect x="76" y="240" width="150" height="70" rx="8" fill="#dcdfe3" />
+    <line x1="76" y1="258" x2="226" y2="258" stroke-width="2" />
+    <line x1="76" y1="276" x2="226" y2="276" stroke-width="2" />
+    <line x1="76" y1="294" x2="226" y2="294" stroke-width="2" />
+
+    <!-- emblem placeholder -->
+    <circle cx="151" cy="222" r="14" fill="#e7e9ec" />
+
+    <!-- headlights -->
+    <rect x="46" y="238" width="26" height="44" rx="8" fill="#f5efd8" />
+    <rect x="230" y="238" width="26" height="44" rx="8" fill="#f5efd8" />
+
+    <!-- bumper -->
+    <rect x="34" y="332" width="234" height="26" rx="6" fill="#c7cbd1" />
+
+    <!-- side mirror mounts (schematic, actual mirror span drawn separately) -->
+    <path d="M40,150 L18,150" stroke-width="4" />
+    <path d="M262,150 L284,150" stroke-width="4" />
+  </g>
+</svg>
