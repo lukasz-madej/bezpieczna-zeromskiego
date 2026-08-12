@@ -1,0 +1,199 @@
+#zeromskiego-dynamic-pass {
+    color: var(--foreground);
+  }
+  #zeromskiego-dynamic-pass .form-label {
+    flex: 1 1 22rem;
+  }
+  #zeromskiego-dynamic-pass .slider-controls {
+    display: block;
+  }
+  #zeromskiego-dynamic-pass .pass-slider {
+    display: block;
+    width: 100%;
+    margin-top: 0.45rem;
+    accent-color: var(--viz-series-1);
+  }
+  #zeromskiego-dynamic-pass .pass-slider::-webkit-slider-runnable-track {
+    background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
+  }
+  #zeromskiego-dynamic-pass .pass-slider::-webkit-slider-thumb {
+    background: darkgoldenrod;
+    border-color: color-mix(in srgb, darkgoldenrod 70%, var(--foreground));
+  }
+  #zeromskiego-dynamic-pass .pass-slider::-moz-range-track {
+    background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
+  }
+  #zeromskiego-dynamic-pass .pass-slider::-moz-range-thumb {
+    background: darkgoldenrod;
+    border-color: color-mix(in srgb, darkgoldenrod 70%, var(--foreground));
+  }
+  #zeromskiego-dynamic-pass #pass-svg,
+  #zeromskiego-dynamic-pass #cross-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  #zeromskiego-dynamic-pass #cross-svg {
+    margin-top: 0.75rem;
+  }
+  #zeromskiego-dynamic-pass #plan-image {
+    opacity: 0.76;
+  }
+  #zeromskiego-dynamic-pass .project-axis {
+    fill: none;
+    stroke: var(--viz-series-4);
+    stroke-width: 2.5;
+    stroke-dasharray: 18 13;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .vehicle-part {
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .upper-part {
+    fill: color-mix(in srgb, var(--viz-series-1) 54%, transparent);
+    stroke: var(--viz-series-1);
+  }
+  #zeromskiego-dynamic-pass .lower-part {
+    fill: color-mix(in srgb, var(--viz-series-2) 54%, transparent);
+    stroke: var(--viz-series-2);
+  }
+  #zeromskiego-dynamic-pass .cab-detail,
+  #zeromskiego-dynamic-pass .axle-detail,
+  #zeromskiego-dynamic-pass .direction-mark {
+    fill: none;
+    stroke: var(--foreground);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .wheel {
+    fill: var(--foreground);
+    stroke: var(--background);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .mirror-arm {
+    stroke: var(--red);
+    stroke-width: 3;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .mirror-body {
+    fill: var(--red);
+    stroke: var(--background);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .hitch {
+    fill: var(--foreground);
+    stroke: var(--background);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .measurement-point {
+    fill: var(--background);
+    stroke: var(--foreground);
+    stroke-width: 3;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .measurement-label {
+    fill: var(--foreground);
+    stroke: var(--background);
+    stroke-width: 4;
+    paint-order: stroke;
+    font-size: 18px;
+    font-weight: 500;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+  #zeromskiego-dynamic-pass .nearest-line {
+    stroke: var(--red);
+    stroke-width: 2;
+    stroke-dasharray: 5 4;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .nearest-dot {
+    fill: var(--red);
+    stroke: var(--background);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .direction-row {
+    justify-content: space-between;
+    margin-top: 0.5rem;
+  }
+  #zeromskiego-dynamic-pass .legend-swatch {
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-right: 0.35rem;
+    vertical-align: -0.08rem;
+  }
+  #zeromskiego-dynamic-pass .upper-swatch {
+    background: var(--viz-series-1);
+  }
+  #zeromskiego-dynamic-pass .lower-swatch {
+    background: var(--viz-series-2);
+  }
+  #zeromskiego-dynamic-pass .viz-stat {
+    margin-top: 0.75rem;
+  }
+  #zeromskiego-dynamic-pass #pass-status {
+    margin-top: 0.5rem;
+  }
+  #zeromskiego-dynamic-pass .cross-road,
+  #zeromskiego-dynamic-pass .cross-dimension,
+  #zeromskiego-dynamic-pass .cross-axis {
+    fill: none;
+    stroke: var(--foreground);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .cross-axis {
+    stroke: var(--viz-series-4);
+    stroke-dasharray: 10 8;
+  }
+  #zeromskiego-dynamic-pass .cross-dimension {
+    stroke: var(--muted-foreground);
+  }
+  #zeromskiego-dynamic-pass .cross-label {
+    fill: var(--foreground);
+    font-size: 16px;
+    font-weight: 500;
+    text-anchor: middle;
+  }
+  #zeromskiego-dynamic-pass .cross-cab-a,
+  #zeromskiego-dynamic-pass .cross-cab-b {
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .cross-cab-a {
+    fill: color-mix(in srgb, var(--viz-series-2) 10%, transparent);
+    stroke: var(--viz-series-2);
+  }
+  #zeromskiego-dynamic-pass .cross-cab-b {
+    fill: color-mix(in srgb, var(--viz-series-1) 10%, transparent);
+    stroke: var(--viz-series-1);
+  }
+  #zeromskiego-dynamic-pass .cross-photo {
+    opacity: 0.62;
+  }
+  #zeromskiego-dynamic-pass .cross-mirror-a,
+  #zeromskiego-dynamic-pass .cross-mirror-b,
+  #zeromskiego-dynamic-pass .cross-gap-line {
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .cross-mirror-a { stroke: var(--viz-series-2); }
+  #zeromskiego-dynamic-pass .cross-mirror-b { stroke: var(--viz-series-1); }
+  #zeromskiego-dynamic-pass .cross-gap-line { stroke: var(--red); }
+  #zeromskiego-dynamic-pass .angle-a,
+  #zeromskiego-dynamic-pass .angle-b {
+    stroke-width: 5;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .angle-a { stroke: var(--viz-series-2); }
+  #zeromskiego-dynamic-pass .angle-b { stroke: var(--viz-series-1); }
