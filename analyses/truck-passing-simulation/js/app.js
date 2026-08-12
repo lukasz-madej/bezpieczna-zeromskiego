@@ -590,8 +590,8 @@
       }));
       const label = svgElement("text", {
         x: centerX.toFixed(1),
-        y: (localRoadY - 14).toFixed(1),
-        class: "cross-label"
+        y: (localRoadY + 28).toFixed(1),
+        class: "cross-label cross-direction-label"
       });
       label.textContent = labelText;
       group.appendChild(label);
@@ -619,9 +619,9 @@
     const halfAngle = angleDegrees * Math.PI / 360;
     const lengthPx = 80;
     root.querySelector("#angle-line-a").setAttribute("x2", (720 + lengthPx * Math.cos(halfAngle)).toFixed(1));
-    root.querySelector("#angle-line-a").setAttribute("y2", (78 + lengthPx * Math.sin(halfAngle)).toFixed(1));
+    root.querySelector("#angle-line-a").setAttribute("y2", (38 + lengthPx * Math.sin(halfAngle)).toFixed(1));
     root.querySelector("#angle-line-b").setAttribute("x2", (720 - lengthPx * Math.cos(halfAngle)).toFixed(1));
-    root.querySelector("#angle-line-b").setAttribute("y2", (78 + lengthPx * Math.sin(halfAngle)).toFixed(1));
+    root.querySelector("#angle-line-b").setAttribute("y2", (38 + lengthPx * Math.sin(halfAngle)).toFixed(1));
     root.querySelector("#angle-label").textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
   }
 
