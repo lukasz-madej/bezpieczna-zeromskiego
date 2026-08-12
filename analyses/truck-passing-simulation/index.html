@@ -14,20 +14,20 @@
   <header class="viz-page-header">
     <span class="section-tag">Analiza techniczna</span>
     <h1>Symulacja mijania pojazdów ciężarowych</h1>
-    <p class="text-muted viz-page-lead">ul. Żeromskiego w Otwocku — geometryczny model mijania dwóch zestawów ciągnik siodłowy + naczepa na łuku drogi.</p>
+    <p class="text-muted viz-page-lead">ul. Żeromskiego w Otwocku - geometryczny model mijania dwóch zestawów ciągnik siodłowy + naczepa na łuku drogi.</p>
   </header>
 
   <div class="card viz-controls-card">
     <div class="viz-controls slider-controls">
       <label class="form-label" for="pass-position">Położenie podczas mijania: <strong id="position-value">48,55%</strong></label>
-      <input id="pass-position" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="pass-status">
+      <input id="pass-position" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55">
     </div>
     <p class="text-small text-muted viz-model-line"><strong>Model reprezentatywny:</strong> Volvo FH 420 4×2 (rozstaw osi 3,80 m) + Schmitz Cargobull S.CS Universal 13,62 m.</p>
   </div>
 
   <div class="viz-grid viz-grid-primary" aria-live="polite">
     <div class="card viz-stat viz-stat-primary">
-      <span class="text-muted">Podpisany wskaźnik kolizji</span>
+      <span class="text-muted">Wskaźnik kolizji</span>
       <span class="viz-stat-value" id="current-gap">0,00 m</span>
       <span class="viz-badge" id="collision-state">Styk</span>
       <span id="gap-pair">lusterko ↔ lusterko</span>
@@ -43,8 +43,6 @@
       <span id="lateral-acceleration">aᵧ = 0,056 g</span>
     </div>
   </div>
-
-  <p id="pass-status" class="text-small text-muted viz-status-line"></p>
 
   <div class="viz-section">
     <div class="viz-section-header">

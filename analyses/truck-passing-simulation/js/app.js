@@ -9,7 +9,6 @@
   const relativeAngle = root.querySelector("#relative-angle");
   const collisionState = root.querySelector("#collision-state");
   const gapPair = root.querySelector("#gap-pair");
-  const status = root.querySelector("#pass-status");
   const tableBody = root.querySelector("#clearance-body");
   const summary = root.querySelector("#truck-summary");
   const ns = "http://www.w3.org/2000/svg";
@@ -664,7 +663,6 @@
     collisionState.textContent = nearest.value < -0.0005 ? "Kolizja" : nearest.value > 0.0005 ? "Prześwit" : "Styk";
     collisionState.classList.toggle("text-destructive", nearest.value < -0.0005);
     gapPair.textContent = pair;
-    status.textContent = "Etap: " + phase + ". Kąt osi ciągników " + angleDegrees.toFixed(2).replace(".", ",") + "° wynika z geometrii R = 350 m i położenia zestawów, a nie z prędkości. Dla 50 km/h przyspieszenie boczne wynosi 0,056 g. Spadek 2% do wnętrza łuku jest pokazany w przekroju pionowym; nie zmienia obliczeń rzutu z góry. Wartość dodatnia oznacza prześwit, 0,00 m — zetknięcie, a ujemna — geometryczne wejście punktu w obrys drugiego zestawu. Punkty 1–2: czoło naczepy, 3–4: środek, 5–6: koniec; numery nieparzyste są od strony osi jezdni.";
 
     const rows = [
       ["Górny pas B ← — czoło (lusterka)", upperClearance.frontAxis, upperClearance.frontEdge, signedPointSetToVehicle(upper.mirrorTips, lower)],

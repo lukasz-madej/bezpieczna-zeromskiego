@@ -54,12 +54,6 @@ body {
   #zeromskiego-dynamic-pass .viz-model-line {
     margin: 0;
   }
-  #zeromskiego-dynamic-pass .viz-status-line {
-    margin-top: 0;
-    padding: 10px 14px;
-    border-radius: var(--radius-lg);
-    background: var(--muted);
-  }
   #zeromskiego-dynamic-pass .viz-section {
     padding-top: 0.4rem;
     border-top: 1px solid var(--border);
