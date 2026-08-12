@@ -1,51 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 302 372" role="img" aria-label="Schematyczny rysunek kabiny ciężarówki, widok z przodu">
-  <!-- Generic, non-branded line-drawing of a truck cab front view, used as a schematic
-       stand-in for a photographic reference (keeps the visualization illustrative rather
-       than tied to a specific vehicle photo). -->
-  <g fill="none" stroke="#1a1c1f" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
-    <!-- cab silhouette -->
-    <path d="M40,368
-             L40,150
-             Q40,96 70,70
-             L108,34
-             Q151,10 194,34
-             L232,70
-             Q262,96 262,150
-             L262,368 Z"
-          fill="#e7e9ec" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 652" role="img" aria-label="Schematyczny rysunek kabiny ciężarówki typu Volvo FH, widok z przodu">
+  <!-- Generic, non-branded line-drawing of a truck cab front view, matching the
+       overall silhouette proportions of a Volvo FH (flat overhanging roof, wide
+       single-piece windshield, broad grille, large corner headlights, wide bumper).
+       Used as a schematic stand-in for a photographic reference. -->
 
-    <!-- roof line accent -->
-    <path d="M70,70 Q151,30 232,70" fill="none" stroke-width="3" />
+  <!-- cab body silhouette -->
+  <path d="M180,14
+           L420,14
+           Q430,14 430,26
+           L430,40
+           Q500,70 536,130
+           L536,632
+           Q536,650 518,650
+           L82,650
+           Q64,650 64,632
+           L64,130
+           Q100,70 170,40
+           L170,26
+           Q170,14 180,14 Z"
+        fill="#ece7d9" stroke="#1a1c1f" stroke-width="4" stroke-linejoin="round" />
 
-    <!-- windshield -->
-    <rect x="70" y="86" width="162" height="96" rx="14" fill="#cfe3f2" />
-    <line x1="151" y1="86" x2="151" y2="182" stroke-width="3" />
+  <!-- windshield -->
+  <path d="M96,62 L504,62 L525,225 L75,225 Z"
+        fill="#cfe3ea" stroke="#1a1c1f" stroke-width="4" stroke-linejoin="round" />
+  <line x1="300" y1="62" x2="300" y2="225" stroke="#1a1c1f" stroke-width="3" />
 
-    <!-- wipers -->
-    <path d="M92,178 L128,120" stroke-width="3" />
-    <path d="M210,178 L174,120" stroke-width="3" />
+  <!-- wipers, resting near the base of the windshield -->
+  <path d="M128,214 L230,110" fill="none" stroke="#1a1c1f" stroke-width="4" stroke-linecap="round" />
+  <path d="M472,214 L370,110" fill="none" stroke="#1a1c1f" stroke-width="4" stroke-linecap="round" />
 
-    <!-- door/body seam -->
-    <line x1="151" y1="192" x2="151" y2="368" stroke-width="3" />
+  <!-- dark cab trim band below the windshield -->
+  <rect x="70" y="230" width="460" height="46" rx="6" fill="#2b2e33" />
 
-    <!-- grille -->
-    <rect x="76" y="240" width="150" height="70" rx="8" fill="#dcdfe3" />
-    <line x1="76" y1="258" x2="226" y2="258" stroke-width="2" />
-    <line x1="76" y1="276" x2="226" y2="276" stroke-width="2" />
-    <line x1="76" y1="294" x2="226" y2="294" stroke-width="2" />
+  <!-- chrome strip with a plain emblem placeholder -->
+  <rect x="70" y="278" width="460" height="18" rx="4" fill="#c9ccd1" />
+  <circle cx="300" cy="287" r="16" fill="#ece7d9" stroke="#1a1c1f" stroke-width="3" />
 
-    <!-- emblem placeholder -->
-    <circle cx="151" cy="222" r="14" fill="#e7e9ec" />
+  <!-- grille -->
+  <rect x="140" y="330" width="320" height="150" rx="14" fill="#26282c" stroke="#1a1c1f" stroke-width="3" />
+  <line x1="140" y1="360" x2="460" y2="360" stroke="#45484e" stroke-width="3" />
+  <line x1="140" y1="390" x2="460" y2="390" stroke="#45484e" stroke-width="3" />
+  <line x1="140" y1="420" x2="460" y2="420" stroke="#45484e" stroke-width="3" />
+  <line x1="140" y1="450" x2="460" y2="450" stroke="#45484e" stroke-width="3" />
 
-    <!-- headlights -->
-    <rect x="46" y="238" width="26" height="44" rx="8" fill="#f5efd8" />
-    <rect x="230" y="238" width="26" height="44" rx="8" fill="#f5efd8" />
+  <!-- headlights -->
+  <rect x="70" y="460" width="92" height="92" rx="22" fill="#f5efd8" stroke="#1a1c1f" stroke-width="3" />
+  <circle cx="116" cy="506" r="26" fill="none" stroke="#1a1c1f" stroke-width="2.5" />
+  <rect x="438" y="460" width="92" height="92" rx="22" fill="#f5efd8" stroke="#1a1c1f" stroke-width="3" />
+  <circle cx="484" cy="506" r="26" fill="none" stroke="#1a1c1f" stroke-width="2.5" />
 
-    <!-- bumper -->
-    <rect x="34" y="332" width="234" height="26" rx="6" fill="#c7cbd1" />
+  <!-- bumper -->
+  <rect x="45" y="576" width="510" height="46" rx="14" fill="#c7cbd1" stroke="#1a1c1f" stroke-width="3" />
 
-    <!-- side mirror mounts (schematic, actual mirror span drawn separately) -->
-    <path d="M40,150 L18,150" stroke-width="4" />
-    <path d="M262,150 L284,150" stroke-width="4" />
-  </g>
+  <!-- license plate -->
+  <rect x="245" y="596" width="110" height="28" rx="4" fill="#f4f4f2" stroke="#1a1c1f" stroke-width="2.5" />
+
+  <!-- side mirror mounts (schematic; actual mirror span is drawn separately by the app) -->
+  <path d="M64,150 L18,150" fill="none" stroke="#1a1c1f" stroke-width="4" stroke-linecap="round" />
+  <path d="M536,150 L582,150" fill="none" stroke="#1a1c1f" stroke-width="4" stroke-linecap="round" />
 </svg>
