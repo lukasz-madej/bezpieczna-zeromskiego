@@ -1,0 +1,336 @@
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--background);
+}
+.zeromskiego-page {
+  padding-block: 32px 48px;
+}
+.container.zeromskiego-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-inline: 24px;
+}
+.viz-page-header {
+  margin-bottom: 28px;
+}
+.viz-page-header .section-tag {
+  display: inline-block;
+  background: rgba(13, 71, 255, .1);
+  color: var(--primary);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+.viz-page-header h1 {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--navy);
+  margin: 0 0 10px;
+}
+.viz-page-lead {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+#zeromskiego-dynamic-pass {
+    color: var(--foreground);
+  }
+  #zeromskiego-dynamic-pass > * + * {
+    margin-top: 1.1rem;
+  }
+  #zeromskiego-dynamic-pass .viz-controls-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  #zeromskiego-dynamic-pass .viz-model-line {
+    margin: 0;
+  }
+  #zeromskiego-dynamic-pass .viz-section {
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--border);
+  }
+  #zeromskiego-dynamic-pass .viz-section-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+  #zeromskiego-dynamic-pass .viz-section-header h2 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin: 0;
+  }
+  #zeromskiego-dynamic-pass .viz-details {
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--border);
+  }
+  #zeromskiego-dynamic-pass .viz-details > summary,
+  #zeromskiego-dynamic-pass .viz-section-summary {
+    cursor: pointer;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--navy);
+    padding: 6px 0;
+  }
+  #zeromskiego-dynamic-pass .viz-details > summary:hover,
+  #zeromskiego-dynamic-pass .viz-section-summary:hover {
+    color: var(--primary);
+  }
+  #zeromskiego-dynamic-pass .viz-details[open] > summary,
+  #zeromskiego-dynamic-pass details.viz-section[open] > .viz-section-summary {
+    margin-bottom: 0.75rem;
+  }
+  #zeromskiego-dynamic-pass .viz-details > :not(summary) + * {
+    margin-top: 0.75rem;
+  }
+  #zeromskiego-dynamic-pass .form-label {
+    flex: 1 1 22rem;
+  }
+  #zeromskiego-dynamic-pass .slider-controls {
+    display: block;
+  }
+  #zeromskiego-dynamic-pass .pass-slider {
+    display: block;
+    width: 100%;
+    margin-top: 0.45rem;
+    accent-color: var(--viz-series-1);
+  }
+  #zeromskiego-dynamic-pass .pass-slider::-webkit-slider-runnable-track {
+    background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
+  }
+  #zeromskiego-dynamic-pass .pass-slider::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+    margin-top: 3px;
+    border: 1px solid color-mix(in srgb, var(--gold) 70%, var(--foreground));
+    border-radius: var(--radius-full);
+    background-color: var(--gold);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cline x1='5' y1='12' x2='19' y2='12' stroke='%23071d44' stroke-width='2' stroke-linecap='round'/%3E%3Cpolyline points='9,7 4,12 9,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpolyline points='15,7 20,12 15,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px;
+    cursor: ew-resize;
+  }
+  #zeromskiego-dynamic-pass .pass-slider::-moz-range-track {
+    background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
+  }
+  #zeromskiego-dynamic-pass .pass-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border: 1px solid color-mix(in srgb, var(--gold) 70%, var(--foreground));
+    border-radius: var(--radius-full);
+    background-color: var(--gold);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cline x1='5' y1='12' x2='19' y2='12' stroke='%23071d44' stroke-width='2' stroke-linecap='round'/%3E%3Cpolyline points='9,7 4,12 9,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpolyline points='15,7 20,12 15,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: ew-resize;
+  }
+  #zeromskiego-dynamic-pass #pass-svg,
+  #zeromskiego-dynamic-pass #cross-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  #zeromskiego-dynamic-pass #cross-svg {
+    margin-top: 0.75rem;
+  }
+  #zeromskiego-dynamic-pass #pass-svg + p {
+    margin-top: 10px;
+  }
+  #zeromskiego-dynamic-pass #plan-image {
+    opacity: 0.76;
+  }
+  #zeromskiego-dynamic-pass .project-axis {
+    fill: none;
+    stroke: var(--viz-series-4);
+    stroke-width: 2.5;
+    stroke-dasharray: 18 13;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .vehicle-part {
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .upper-part {
+    fill: color-mix(in srgb, var(--viz-series-1) 54%, transparent);
+    stroke: var(--viz-series-1);
+  }
+  #zeromskiego-dynamic-pass .lower-part {
+    fill: color-mix(in srgb, var(--viz-series-2) 54%, transparent);
+    stroke: var(--viz-series-2);
+  }
+  #zeromskiego-dynamic-pass .cab-detail,
+  #zeromskiego-dynamic-pass .axle-detail,
+  #zeromskiego-dynamic-pass .direction-mark {
+    fill: none;
+    stroke: var(--foreground);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .wheel {
+    fill: var(--foreground);
+    stroke: var(--background);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .mirror-arm {
+    stroke: var(--red);
+    stroke-width: 3;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .mirror-body {
+    fill: var(--red);
+    stroke: var(--background);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .hitch {
+    fill: var(--foreground);
+    stroke: var(--background);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .measurement-point {
+    fill: var(--background);
+    stroke: var(--foreground);
+    stroke-width: 3;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .measurement-label {
+    fill: var(--foreground);
+    stroke: var(--background);
+    stroke-width: 4;
+    paint-order: stroke;
+    font-size: 18px;
+    font-weight: 500;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+  #zeromskiego-dynamic-pass .nearest-line {
+    stroke: var(--red);
+    stroke-width: 2;
+    stroke-dasharray: 5 4;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .nearest-dot {
+    fill: var(--red);
+    stroke: var(--background);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .direction-row {
+    justify-content: flex-start;
+    margin: 0;
+    font-size: var(--font-size-small);
+  }
+  #zeromskiego-dynamic-pass .legend-swatch {
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-right: 0.35rem;
+    vertical-align: -0.08rem;
+  }
+  #zeromskiego-dynamic-pass .upper-swatch {
+    background: var(--viz-series-1);
+  }
+  #zeromskiego-dynamic-pass .lower-swatch {
+    background: var(--viz-series-2);
+  }
+  #zeromskiego-dynamic-pass .viz-stat {
+    border-left: 4px solid transparent;
+  }
+  #zeromskiego-dynamic-pass .viz-stat-primary {
+    border-left-color: var(--green);
+  }
+  #zeromskiego-dynamic-pass .viz-stat-primary:has(.text-destructive) {
+    border-left-color: var(--red);
+  }
+  #zeromskiego-dynamic-pass .viz-stat-primary .viz-stat-value {
+    font-size: 1.7rem;
+  }
+  #zeromskiego-dynamic-pass #current-gap {
+    color: var(--green);
+  }
+  #zeromskiego-dynamic-pass #current-gap.text-destructive {
+    color: var(--red);
+  }
+  #zeromskiego-dynamic-pass .viz-badge {
+    background: rgba(76, 175, 80, .15);
+    color: var(--green);
+  }
+  #zeromskiego-dynamic-pass .viz-badge.text-destructive {
+    background: rgba(216, 38, 38, .12);
+    color: var(--red);
+  }
+  #zeromskiego-dynamic-pass .cross-road,
+  #zeromskiego-dynamic-pass .cross-dimension,
+  #zeromskiego-dynamic-pass .cross-axis {
+    fill: none;
+    stroke: var(--foreground);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .cross-axis {
+    stroke: var(--viz-series-4);
+    stroke-dasharray: 10 8;
+  }
+  #zeromskiego-dynamic-pass .cross-dimension {
+    stroke: var(--muted-foreground);
+  }
+  #zeromskiego-dynamic-pass .cross-label {
+    fill: var(--muted-foreground);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-anchor: middle;
+  }
+  #zeromskiego-dynamic-pass .cross-label-sub {
+    font-size: 0.6rem;
+  }
+  #zeromskiego-dynamic-pass .cross-cab-a,
+  #zeromskiego-dynamic-pass .cross-cab-b {
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .cross-cab-a {
+    fill: color-mix(in srgb, var(--viz-series-2) 10%, transparent);
+    stroke: var(--viz-series-2);
+  }
+  #zeromskiego-dynamic-pass .cross-cab-b {
+    fill: color-mix(in srgb, var(--viz-series-1) 10%, transparent);
+    stroke: var(--viz-series-1);
+  }
+  #zeromskiego-dynamic-pass .cross-photo {
+    opacity: 0.85;
+  }
+  #zeromskiego-dynamic-pass .cross-mirror-a,
+  #zeromskiego-dynamic-pass .cross-mirror-b,
+  #zeromskiego-dynamic-pass .cross-gap-line {
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .cross-mirror-a { stroke: var(--viz-series-2); }
+  #zeromskiego-dynamic-pass .cross-mirror-b { stroke: var(--viz-series-1); }
+  #zeromskiego-dynamic-pass .cross-gap-line { stroke: var(--red); }
+  #zeromskiego-dynamic-pass .angle-a,
+  #zeromskiego-dynamic-pass .angle-b {
+    stroke-width: 5;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  #zeromskiego-dynamic-pass .angle-a { stroke: var(--viz-series-2); }
+  #zeromskiego-dynamic-pass .angle-b { stroke: var(--viz-series-1); }
