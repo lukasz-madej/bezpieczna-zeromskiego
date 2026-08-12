@@ -288,8 +288,8 @@ body {
     stroke: var(--muted-foreground);
   }
   #zeromskiego-dynamic-pass .cross-label {
-    fill: var(--foreground);
-    font-size: 16px;
+    fill: var(--muted-foreground);
+    font-size: 1rem;
     font-weight: 500;
     text-anchor: middle;
   }
