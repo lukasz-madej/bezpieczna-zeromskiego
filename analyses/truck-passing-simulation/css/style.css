@@ -289,9 +289,12 @@ body {
   }
   #zeromskiego-dynamic-pass .cross-label {
     fill: var(--muted-foreground);
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 500;
     text-anchor: middle;
+  }
+  #zeromskiego-dynamic-pass .cross-label-sub {
+    font-size: 0.6rem;
   }
   #zeromskiego-dynamic-pass .cross-cab-a,
   #zeromskiego-dynamic-pass .cross-cab-b {
