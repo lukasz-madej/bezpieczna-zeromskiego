@@ -614,7 +614,7 @@
       y2: upperInner.y.toFixed(1),
       class: "cross-gap-line"
     }));
-    root.querySelector("#cross-gap-label").textContent = "lustra: poziomo " + formatMeters(mirrorGap) + " · Δh " + heightDifference.toFixed(2).replace(".", ",") + " m";
+    root.querySelector("#cross-gap-label").textContent = "Lusterka: poziomo " + formatMeters(mirrorGap) + " · Δh " + heightDifference.toFixed(2).replace(".", ",") + " m";
 
     const halfAngle = angleDegrees * Math.PI / 360;
     const lengthPx = 80;
@@ -660,7 +660,7 @@
     relativeAngle.textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
     currentGap.textContent = formatMeters(nearest.value);
     currentGap.classList.toggle("text-destructive", nearest.value < -0.0005);
-    collisionState.textContent = nearest.value < -0.0005 ? "Kolizja" : nearest.value > 0.0005 ? "Prześwit" : "Styk";
+    collisionState.textContent = nearest.value < -0.0005 ? "Kolizja" : nearest.value > 0.0005 ? "Odstęp" : "Styk";
     collisionState.classList.toggle("text-destructive", nearest.value < -0.0005);
     gapPair.textContent = pair;
 
