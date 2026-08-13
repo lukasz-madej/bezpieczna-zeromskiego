@@ -1,13 +1,18 @@
   #zeromskiego-dynamic-pass {
     color: var(--foreground);
   }
+  #zeromskiego-dynamic-pass .sticky-controls {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--background);
+    padding: 0.6rem 0;
+    margin: 0 -0.1px;
+    box-shadow: 0 4px 10px -6px rgba(7, 29, 68, 0.25);
+  }
   #zeromskiego-dynamic-pass .viz-section {
     padding-top: 0.4rem;
     border-top: 1px solid var(--border);
-  }
-  #zeromskiego-dynamic-pass .viz-section:first-child {
-    padding-top: 0;
-    border-top: none;
   }
   #zeromskiego-dynamic-pass .viz-details {
     padding-top: 0.4rem;
@@ -88,9 +93,6 @@
   }
   #zeromskiego-dynamic-pass .three-controls {
     margin-top: 0.4rem;
-  }
-  #zeromskiego-dynamic-pass .three-slider-controls {
-    margin-top: 1rem;
   }
   #zeromskiego-dynamic-pass #three-canvas[hidden] {
     display: none;

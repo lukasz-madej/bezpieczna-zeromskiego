@@ -4,16 +4,12 @@
   const root = document.getElementById("zeromskiego-dynamic-pass");
   const svg = root.querySelector("#pass-svg");
   const slider = root.querySelector("#pass-position");
-  const threeSlider = root.querySelector("#pass-position-3d");
-  const tableSlider = root.querySelector("#pass-position-table");
   const threeCanvas = root.querySelector("#three-canvas");
   const threeContext = threeCanvas.getContext("2d");
   const threePlay = root.querySelector("#three-play");
   const threeReset = root.querySelector("#three-reset");
   const threePhase = root.querySelector("#three-phase");
   const positionValue = root.querySelector("#position-value");
-  const positionValue3D = root.querySelector("#position-value-3d");
-  const positionValueTable = root.querySelector("#position-value-table");
   const currentGap = root.querySelector("#current-gap");
   const relativeAngle = root.querySelector("#relative-angle");
   const collisionState = root.querySelector("#collision-state");
@@ -1258,10 +1254,6 @@
     const phase = fraction < 0.33 ? "zbliżanie" : fraction <= 0.67 ? "mijanie" : "po minięciu";
     const pair = nearest.labelA + " ↔ " + nearest.labelB;
     positionValue.textContent = slider.value.replace(".", ",") + "%";
-    threeSlider.value = slider.value;
-    positionValue3D.textContent = slider.value.replace(".", ",") + "%";
-    tableSlider.value = slider.value;
-    positionValueTable.textContent = slider.value.replace(".", ",") + "%";
     relativeAngle.textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
     currentGap.textContent = formatMeters(nearest.value);
     currentGap.classList.toggle("text-destructive", nearest.value < -0.0005);
@@ -1302,13 +1294,5 @@
 
   root.querySelector("#project-axis").setAttribute("d", axisPath());
   slider.addEventListener("input", renderDynamic);
-  threeSlider.addEventListener("input", () => {
-    slider.value = threeSlider.value;
-    renderDynamic();
-  });
-  tableSlider.addEventListener("input", () => {
-    slider.value = tableSlider.value;
-    renderDynamic();
-  });
   renderDynamic();
 })();

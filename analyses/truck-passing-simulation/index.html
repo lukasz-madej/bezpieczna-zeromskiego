@@ -10,12 +10,13 @@
 </head>
 <body>
 <section id="zeromskiego-dynamic-pass">
+  <div class="viz-controls slider-controls sticky-controls">
+    <label class="form-label" for="pass-position">Położenie podczas mijania: <strong id="position-value">48,55%</strong></label>
+    <input id="pass-position" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="pass-status">
+  </div>
+
   <details class="viz-section" open>
     <summary class="viz-section-summary">Model 3D</summary>
-    <div class="viz-controls slider-controls three-slider-controls">
-      <label class="form-label" for="pass-position-3d">Położenie w widoku 3D: <strong id="position-value-3d">48,55%</strong></label>
-      <input id="pass-position-3d" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="three-phase">
-    </div>
     <div class="viz-controls three-controls" aria-label="Sterowanie widokiem 3D">
       <button id="three-play" class="btn btn-primary" type="button" aria-pressed="false">Odtwórz mijanie</button>
       <button id="three-reset" class="btn" type="button">Ustaw kamerę</button>
@@ -35,11 +36,6 @@
 
   <details class="viz-section" open>
     <summary class="viz-section-summary">Rzut z góry</summary>
-    <div class="viz-controls slider-controls">
-      <label class="form-label" for="pass-position">Położenie podczas mijania: <strong id="position-value">48,55%</strong></label>
-      <input id="pass-position" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="pass-status">
-    </div>
-
     <p class="text-small"><strong>Model reprezentatywny:</strong> Volvo FH 420 4×2 (rozstaw osi 3,80 m) + Schmitz Cargobull S.CS Universal 13,62 m.</p>
 
     <svg id="pass-svg" viewBox="360 155 1110 345" role="img" aria-labelledby="pass-svg-title pass-svg-desc">
@@ -130,11 +126,6 @@
 
   <details class="viz-details" open>
     <summary class="viz-section-summary">Tabela obliczeń</summary>
-    <div class="viz-controls slider-controls table-slider-controls">
-      <label class="form-label" for="pass-position-table">Położenie dla tabeli obliczeń: <strong id="position-value-table">48,55%</strong></label>
-      <input id="pass-position-table" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="pass-status">
-    </div>
-
     <div class="table-responsive">
       <table class="table table-sm">
         <thead>
