@@ -883,9 +883,9 @@
     const halfAngle = angleDegrees * Math.PI / 360;
     const lengthPx = 80;
     root.querySelector("#angle-line-a").setAttribute("x2", (720 + lengthPx * Math.cos(halfAngle)).toFixed(1));
-    root.querySelector("#angle-line-a").setAttribute("y2", (52 + lengthPx * Math.sin(halfAngle)).toFixed(1));
+    root.querySelector("#angle-line-a").setAttribute("y2", (32 + lengthPx * Math.sin(halfAngle)).toFixed(1));
     root.querySelector("#angle-line-b").setAttribute("x2", (720 - lengthPx * Math.cos(halfAngle)).toFixed(1));
-    root.querySelector("#angle-line-b").setAttribute("y2", (52 + lengthPx * Math.sin(halfAngle)).toFixed(1));
+    root.querySelector("#angle-line-b").setAttribute("y2", (32 + lengthPx * Math.sin(halfAngle)).toFixed(1));
     root.querySelector("#angle-label").textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
   }
 
