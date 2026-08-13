@@ -137,6 +137,10 @@ ul { list-style: none; }
   background: var(--blue);
   color: var(--white);
 }
+.btn-green {
+  background: var(--green);
+  color: var(--white);
+}
 .btn-sm {
   padding: 8px 18px;
   font-size: .88rem;
@@ -569,6 +573,9 @@ ul { list-style: none; }
 .analysis-entry.coming-soon {
   opacity: .65;
   border-style: dashed;
+}
+#symulacja-mijania.analysis-entry {
+  border-color: var(--green);
 }
 .analysis-meta {
   display: flex;
