@@ -1617,10 +1617,9 @@ footer {
 .segment-progress {
   display: flex;
   align-items: center;
-  gap: 0;
   margin: 20px 0 24px;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 10px;
 }
 .seg-step {
   display: flex;
@@ -1655,11 +1654,6 @@ a.seg-step:active { transform: translateY(0); }
   color: var(--green-dark);
 }
 .seg-done .seg-num { background: var(--green); color: #fff; }
-.seg-line {
-  width: 24px; height: 2px;
-  background: rgba(255,255,255,.15);
-  flex-shrink: 0;
-}
 
 /* ══════════════════════════════════════════════════════════
    ANALYSIS ENTRY – FULL (with content)
