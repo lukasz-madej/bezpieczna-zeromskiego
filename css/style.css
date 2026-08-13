@@ -645,6 +645,7 @@ ul { list-style: none; }
   display: flex;
   flex-direction: column;
   gap: 14px;
+  padding-left: 0;
 }
 .questions-list li {
   display: flex;
@@ -672,7 +673,7 @@ ul { list-style: none; }
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-top: 16px;
+  margin-top: 20px;
   flex-wrap: wrap;
 }
 .js-sim-toggle-icon {
