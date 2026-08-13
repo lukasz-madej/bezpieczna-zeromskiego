@@ -117,6 +117,8 @@
     background: var(--orange);
     color: var(--card);
     border-color: var(--orange);
+    min-width: 11.5rem;
+    justify-content: center;
   }
   #zeromskiego-dynamic-pass .three-controls .btn-primary:hover {
     background: color-mix(in srgb, var(--orange) 85%, black);
@@ -130,6 +132,10 @@
   #zeromskiego-dynamic-pass .three-controls .btn:not(.btn-primary):hover {
     background: color-mix(in srgb, var(--navy) 6%, transparent);
     border-color: var(--navy);
+  }
+  #zeromskiego-dynamic-pass .three-phase {
+    margin-left: auto;
+    text-align: right;
   }
   #zeromskiego-dynamic-pass #three-canvas[hidden] {
     display: none;
