@@ -746,5 +746,37 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
         frame.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     });
+
+    if (!iframe) return;
+
+    // Same-origin iframe: measure its content and resize the frame to fit,
+    // so there's no dead space or internal scrollbar regardless of content height.
+    const fitHeight = () => {
+      try {
+        const doc = iframe.contentDocument;
+        if (!doc || !doc.documentElement) return;
+        const height = Math.max(
+          doc.documentElement.scrollHeight,
+          doc.body ? doc.body.scrollHeight : 0
+        );
+        if (height > 0) iframe.style.height = height + 'px';
+      } catch (err) {
+        // Cross-origin or not yet accessible; keep the CSS fallback height.
+      }
+    };
+
+    iframe.addEventListener('load', () => {
+      fitHeight();
+      try {
+        const doc = iframe.contentDocument;
+        if (doc && doc.documentElement && 'ResizeObserver' in window) {
+          const observer = new ResizeObserver(fitHeight);
+          observer.observe(doc.documentElement);
+        }
+      } catch (err) {
+        // Ignore; fitHeight already ran once on load.
+      }
+      window.addEventListener('resize', fitHeight);
+    });
   });
 })();
