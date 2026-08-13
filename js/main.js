@@ -744,6 +744,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
           iframe.src = iframe.dataset.src;
         }
         frame.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (iframe) requestStickyUpdate();
       }
     });
 
@@ -767,6 +768,42 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
       }
     };
 
+    // The iframe is sized to fit all of its content (see fitHeight above), so
+    // it never scrolls internally and the simulation's own `position: sticky`
+    // slider never has anything to stick to. Since it's same-origin, we
+    // instead compute where a real sticky element would be and nudge it
+    // into place with a transform driven by the outer page's own scroll,
+    // confined to the vertical span of the simulation section so it detaches
+    // again once that section scrolls out of view (mirroring native sticky).
+    let stickyControls = null;
+    let stickySection = null;
+    let stickyTicking = false;
+
+    const updateStickyControls = () => {
+      stickyTicking = false;
+      if (frame.hidden || !stickyControls || !stickySection) return;
+      const navbar = document.getElementById('navbar');
+      const stickyLine = navbar ? navbar.getBoundingClientRect().height : 0;
+      const iframeTop = iframe.getBoundingClientRect().top;
+      const sectionBottomAbs = iframeTop + stickySection.getBoundingClientRect().bottom;
+      const naturalTopAbs = iframeTop + stickyControls.offsetTop;
+      const controlsHeight = stickyControls.offsetHeight;
+
+      let shift = 0;
+      if (naturalTopAbs < stickyLine) {
+        const maxTopAbs = sectionBottomAbs - controlsHeight;
+        const targetTopAbs = Math.min(stickyLine, maxTopAbs);
+        shift = Math.max(0, targetTopAbs - naturalTopAbs);
+      }
+      stickyControls.style.transform = shift > 0 ? `translateY(${shift}px)` : '';
+    };
+
+    const requestStickyUpdate = () => {
+      if (stickyTicking) return;
+      stickyTicking = true;
+      requestAnimationFrame(updateStickyControls);
+    };
+
     iframe.addEventListener('load', () => {
       fitHeight();
       try {
@@ -775,10 +812,17 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
           const observer = new ResizeObserver(fitHeight);
           observer.observe(doc.body);
         }
+        if (doc) {
+          stickyControls = doc.querySelector('.sticky-controls');
+          stickySection = doc.getElementById('zeromskiego-dynamic-pass') || doc.body;
+        }
       } catch (err) {
         // Ignore; fitHeight already ran once on load.
       }
       window.addEventListener('resize', fitHeight);
+      window.addEventListener('resize', requestStickyUpdate);
+      window.addEventListener('scroll', requestStickyUpdate, { passive: true });
+      requestStickyUpdate();
     });
   });
 })();
