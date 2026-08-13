@@ -67,80 +67,62 @@
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Dokumentacja</span>
-        <h2>Analiza projektu</h2>
-        <p class="section-desc">Dokumentacja projektowa jest publicznie dostępna. Rozkładamy ją na czynniki pierwsze, żeby każdy mieszkaniec wiedział, co dokładnie ma powstać.</p>
-      </div>
-
-      <!-- Status bar -->
-      <div class="status-bar">
-        <div class="status-item status-done">
-          <span class="status-dot"></span>
-          <span>Projekt gotowy</span>
-        </div>
-        <div class="status-divider"></div>
-        <div class="status-item status-active">
-          <span class="status-dot"></span>
-          <span>Poszukiwany wykonawca</span>
-        </div>
-        <div class="status-divider"></div>
-        <div class="status-item status-pending">
-          <span class="status-dot"></span>
-          <span>Budowa</span>
-        </div>
-      </div>
-
-      <!-- Segment overview -->
-      <div class="segment-card">
-        <div class="segment-badge">Pełny odcinek projektu</div>
-        <h3>Skrzyżowanie z ul. Jałowcową – skrzyżowanie z ul. Laskową</h3>
-        <p>Projekt obejmuje 4 segmenty. Analizujemy każdy z nich osobno, publikując rysunki z dokumentacji i nasze komentarze.</p>
-        <div class="segment-progress">
-          <a href="#segment-1" class="seg-step seg-done">
-            <span class="seg-num">1</span>
-            <span>Żeromskiego 76–79A</span>
-          </a>
-          <div class="seg-line"></div>
-          <a href="#segment-2" class="seg-step seg-done">
-            <span class="seg-num">2</span>
-            <span>Żeromskiego 89–131</span>
-          </a>
-          <div class="seg-line"></div>
-          <a href="#segment-3" class="seg-step seg-done">
-            <span class="seg-num">3</span>
-            <span>Żeromskiego 131–215</span>
-          </a>
-          <div class="seg-line"></div>
-          <a href="#segment-4" class="seg-step seg-done">
-            <span class="seg-num">4</span>
-            <span>Żeromskiego 207–237</span>
-          </a>
-        </div>
-
-        <!-- General project scope -->
-        <div class="segment-scope">
-          <h4>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="11" width="13" height="13" rx="2" ry="2"/><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
-            Zakres robót (główne punkty)
-          </h4>
-          <ul>
-            <li>Połączenia między warstwowe z emulsji asfaltowej na całej długości i szerokości jezdni oraz dróg dla rowerów i pieszych</li>
-            <li>Warstwa wierzchnia nawierzchni jezdni wykonana całą szerokością</li>
-            <li>Demontaż oraz montaż wiat przystankowych i innych elementów małej architektury</li>
-            <li>Doświetlenia przejść dla pieszych z nowych materiałów</li>
-            <li>Nasadzenia 50 szt. drzew oraz 60 szt. krzewów wieloletnich</li>
-            <li>Na znacznej długości odcinka między ścieżką a ul. Żeromskiego zostanie zachowany bufor zieleni</li>
-          </ul>
-        </div>
-
-        <a href="https://zdpotwock.eb2b.com.pl/" class="btn btn-sm btn-navy-outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Dokumentacja projektowa
-        </a>
+        <h2>Analizy i symulacje</h2>
+        <p class="section-desc">Dokumentacja projektowa jest publicznie dostępna. Rozkładamy ją na czynniki pierwsze, żeby każdy mieszkaniec wiedział, co dokładnie ma powstać. Dodatkowo zamieszczamy też symulację ruchu ciężarowego po zmianach proponowanych w dokumentacji.</p>
       </div>
 
       <!-- Analysis entries -->
       <div class="analysis-list">
         <h3 class="analysis-list-title">Nasze analizy</h3>
+
+        <!-- ── SYMULACJA MIJANIA POJAZDÓW ── -->
+        <article class="analysis-entry analysis-entry-full" id="symulacja-mijania">
+          <div class="analysis-meta">
+            <span class="analysis-tag analysis-tag-live">Nowe</span>
+            <span class="analysis-date">Sierpień 2026</span>
+          </div>
+          <h4>Symulacja mijania pojazdów ciężarowych</h4>
+          <p><strong>Czy projektowana szerokość 6,00 m ulicy Żeromskiego pozwoli ciężarówkom bezpiecznie się minąć?</strong></p>
+          <p>Jedno pytanie szczególnie często powtarzało się podczas naszych spotkań z Wami oraz w komentarzach pod publikowanymi materiałami:</p>
+          <blockquote class="pull-quote">
+            <svg class="pull-quote-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.17 6A5.17 5.17 0 0 0 2 11.17V18h6.83v-6.83H4.6A3.57 3.57 0 0 1 8.17 7.6V6H7.17zm10 0A5.17 5.17 0 0 0 12 11.17V18h6.83v-6.83H14.6A3.57 3.57 0 0 1 18.17 7.6V6h-1z"/></svg>
+            <span>Żeromskiego naprawdę zostanie zwężona do 6 metrów?</span>
+          </blockquote>
+          <p>Nas również nurtuje to od chwili, gdy zaczęliśmy analizować projekt przebudowy. Jak zapewne zdążyliście nas poznać, lubimy opierać się na konkretnych, mierzalnych danych. Dlatego postanowiliśmy zaprosić do udziału dwóch wirtualnych kierowców wraz z ich zestawami - ciągnikami siodłowymi z naczepami.
+            Połączyliśmy nasze inżynierskie wykształcenie, doświadczenie za kierownicą oraz dostępne narzędzia, aby możliwie czytelnie pokazać, co może wydarzyć się podczas mijania dwóch ciężarówek na projektowanej jezdni. A żeby nie ograniczać się do statycznych rysunków, przygotowaliśmy interaktywną symulację.
+            W naszym scenariuszu kierowcy mają nerwy ze stali i konsekwentnie prowadzą pojazdy środkiem swoich pasów ruchu. Każdy pas ma dokładnie 3,00 m szerokości. Jaki jest efekt? Przekonajcie się sami, przesuwając suwak poniżej.
+          </p><p>Nie twierdzimy, że każde spotkanie ciężarówek na tej drodze zakończy się tak jak w symulacji. Pokazuje ona jednak, jak niewielki może pozostać margines na błąd kierowcy, chwilę nieuwagi lub niewielkie odchylenie od środka pasa.
+          Symulacja obrazuje geometrię konkretnego scenariusza i nie zastępuje profesjonalnej analizy przejezdności. Pozwala jednak zobaczyć skalę dostępnej przestrzeni oraz miejsca, w których mogą pojawić się problemy.
+          Jak może wyglądać to w codziennym ruchu? Kierowcy, chcąc zwiększyć odstęp między pojazdami, prawdopodobnie będą odsuwać się od osi jezdni. W wielu przypadkach może to oznaczać najeżdżanie kołami na pobocze.
+          Publikacje branżowe dotyczące trwałości krawędzi nawierzchni wskazują, że regularne obciążanie poboczy przez ciężkie pojazdy może prowadzić do ich deformacji, powstawania kolein oraz stopniowego wykruszania i obłamywania krawędzi asfaltu. Z czasem może pojawić się różnica wysokości między jezdnią a poboczem, zwiększająca ryzyko utraty panowania nad pojazdem oraz uszkodzenia opon lub zawieszenia.
+        </p>
+          <p>Dlatego zadajemy trzy konkretne pytania:</p>
+          <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+            <symbol id="questions-icon-symbol" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </symbol>
+          </svg>
+          <div class="questions-callout">
+            <ol class="questions-list">
+              <li><svg class="questions-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#questions-icon-symbol"></use></svg><span>Czy na obecnym etapie inwestycji możliwe jest zwiększenie projektowanej szerokości jezdni — na całym przebudowywanym odcinku albo przynajmniej w miejscach najbardziej narażonych na problemy podczas mijania się ciężarówek?</span></li>
+              <li><svg class="questions-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#questions-icon-symbol"></use></svg><span>Czy zamiast poboczy wykonanych wyłącznie z zagęszczonego kruszywa można zastosować asfaltowe opaski krawędziowe lub inne konstrukcyjne wzmocnienie odporne na regularne najeżdżanie przez ciężkie pojazdy?</span></li>
+              <li><svg class="questions-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#questions-icon-symbol"></use></svg><span>Czy możliwe jest ograniczenie tranzytowego ruchu pojazdów ciężarowych, które nie obsługują posesji ani przedsiębiorstw zlokalizowanych przy ulicy Żeromskiego, lecz wykorzystują ją oraz centrum Otwocka jako trasę dojazdową do i z zakładów znajdujących się między innymi w Karczewie?</span></li>
+            </ol>
+          </div>
+          <p>Nie przesądzamy odpowiedzi. Oczekujemy jednak, że przed rozpoczęciem przebudowy kwestie te zostaną rzetelnie przeanalizowane, a mieszkańcy otrzymają konkretne wyjaśnienia oparte na danych dotyczących natężenia i struktury ruchu oraz trwałości zaprojektowanych rozwiązań.</p>
+          <div class="analysis-simulation-actions">
+            <button type="button" class="btn btn-green btn-sm js-sim-toggle" data-target="sim-frame-mijanie" aria-expanded="false" aria-controls="sim-frame-mijanie">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="js-sim-toggle-icon"><path d="M5 3l14 9-14 9V3z"/></svg>
+              <span class="js-sim-toggle-label">Zobacz symulację</span>
+            </button>
+            <a href="analyses/truck-passing-simulation/index.html" target="_blank" rel="noopener" class="analysis-simulation-newtab">Otwórz w nowej karcie ↗</a>
+          </div>
+          <div class="analysis-simulation-embed" id="sim-frame-mijanie" hidden>
+            <iframe data-src="analyses/truck-passing-simulation/index.html" title="Symulacja mijania pojazdów ciężarowych" loading="lazy"></iframe>
+          </div>
+        </article>
 
         <!-- ── SEGMENT 1 ── -->
         <article class="analysis-entry analysis-entry-full" id="segment-1">
@@ -486,55 +468,6 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             <p>Jakie są Wasze przemyślenia? Zostawcie komentarz pod postem!</p>
             <a href="https://www.facebook.com/share/p/197zgNCmgS/" target="_blank" rel="noopener" class="btn btn-blue btn-sm">Skomentuj na Facebooku</a>
-          </div>
-        </article>
-
-        <!-- ── SYMULACJA MIJANIA POJAZDÓW ── -->
-        <article class="analysis-entry analysis-entry-full" id="symulacja-mijania">
-          <div class="analysis-meta">
-            <span class="analysis-tag analysis-tag-live">Nowe</span>
-            <span class="analysis-date">Sierpień 2026</span>
-          </div>
-          <h4>Symulacja mijania pojazdów ciężarowych</h4>
-          <p><strong>Czy projektowana szerokość 6,00 m ulicy Żeromskiego pozwoli ciężarówkom bezpiecznie się minąć?</strong></p>
-          <p>Jedno pytanie szczególnie często powtarzało się podczas naszych spotkań z Wami oraz w komentarzach pod publikowanymi materiałami:</p>
-          <blockquote class="pull-quote">
-            <svg class="pull-quote-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.17 6A5.17 5.17 0 0 0 2 11.17V18h6.83v-6.83H4.6A3.57 3.57 0 0 1 8.17 7.6V6H7.17zm10 0A5.17 5.17 0 0 0 12 11.17V18h6.83v-6.83H14.6A3.57 3.57 0 0 1 18.17 7.6V6h-1z"/></svg>
-            <span>Żeromskiego naprawdę zostanie zwężona do 6 metrów?</span>
-          </blockquote>
-          <p>Nas również nurtuje to od chwili, gdy zaczęliśmy analizować projekt przebudowy. Jak zapewne zdążyliście nas poznać, lubimy opierać się na konkretnych, mierzalnych danych. Dlatego postanowiliśmy zaprosić do udziału dwóch wirtualnych kierowców wraz z ich zestawami - ciągnikami siodłowymi z naczepami.
-            Połączyliśmy nasze inżynierskie wykształcenie, doświadczenie za kierownicą oraz dostępne narzędzia, aby możliwie czytelnie pokazać, co może wydarzyć się podczas mijania dwóch ciężarówek na projektowanej jezdni. A żeby nie ograniczać się do statycznych rysunków, przygotowaliśmy interaktywną symulację.
-            W naszym scenariuszu kierowcy mają nerwy ze stali i konsekwentnie prowadzą pojazdy środkiem swoich pasów ruchu. Każdy pas ma dokładnie 3,00 m szerokości. Jaki jest efekt? Przekonajcie się sami, przesuwając suwak poniżej.
-            </p><p>Nie twierdzimy, że każde spotkanie ciężarówek na tej drodze zakończy się tak jak w symulacji. Pokazuje ona jednak, jak niewielki może pozostać margines na błąd kierowcy, chwilę nieuwagi lub niewielkie odchylenie od środka pasa.
-            Symulacja obrazuje geometrię konkretnego scenariusza i nie zastępuje profesjonalnej analizy przejezdności. Pozwala jednak zobaczyć skalę dostępnej przestrzeni oraz miejsca, w których mogą pojawić się problemy.
-            Jak może wyglądać to w codziennym ruchu? Kierowcy, chcąc zwiększyć odstęp między pojazdami, prawdopodobnie będą odsuwać się od osi jezdni. W wielu przypadkach może to oznaczać najeżdżanie kołami na pobocze.
-            Publikacje branżowe dotyczące trwałości krawędzi nawierzchni wskazują, że regularne obciążanie poboczy przez ciężkie pojazdy może prowadzić do ich deformacji, powstawania kolein oraz stopniowego wykruszania i obłamywania krawędzi asfaltu. Z czasem może pojawić się różnica wysokości między jezdnią a poboczem, zwiększająca ryzyko utraty panowania nad pojazdem oraz uszkodzenia opon lub zawieszenia.
-          </p>
-          <p>Dlatego zadajemy trzy konkretne pytania:</p>
-          <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-            <symbol id="questions-icon-symbol" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"></path>
-              <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </symbol>
-          </svg>
-          <div class="questions-callout">
-            <ol class="questions-list">
-              <li><svg class="questions-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#questions-icon-symbol"></use></svg><span>Czy na obecnym etapie inwestycji możliwe jest zwiększenie projektowanej szerokości jezdni — na całym przebudowywanym odcinku albo przynajmniej w miejscach najbardziej narażonych na problemy podczas mijania się ciężarówek?</span></li>
-              <li><svg class="questions-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#questions-icon-symbol"></use></svg><span>Czy zamiast poboczy wykonanych wyłącznie z zagęszczonego kruszywa można zastosować asfaltowe opaski krawędziowe lub inne konstrukcyjne wzmocnienie odporne na regularne najeżdżanie przez ciężkie pojazdy?</span></li>
-              <li><svg class="questions-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#questions-icon-symbol"></use></svg><span>Czy możliwe jest ograniczenie tranzytowego ruchu pojazdów ciężarowych, które nie obsługują posesji ani przedsiębiorstw zlokalizowanych przy ulicy Żeromskiego, lecz wykorzystują ją oraz centrum Otwocka jako trasę dojazdową do i z zakładów znajdujących się między innymi w Karczewie?</span></li>
-            </ol>
-          </div>
-          <p>Nie przesądzamy odpowiedzi. Oczekujemy jednak, że przed rozpoczęciem przebudowy kwestie te zostaną rzetelnie przeanalizowane, a mieszkańcy otrzymają konkretne wyjaśnienia oparte na danych dotyczących natężenia i struktury ruchu oraz trwałości zaprojektowanych rozwiązań.</p>
-          <div class="analysis-simulation-actions">
-            <button type="button" class="btn btn-green btn-sm js-sim-toggle" data-target="sim-frame-mijanie" aria-expanded="false" aria-controls="sim-frame-mijanie">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="js-sim-toggle-icon"><path d="M5 3l14 9-14 9V3z"/></svg>
-              <span class="js-sim-toggle-label">Zobacz symulację</span>
-            </button>
-            <a href="analyses/truck-passing-simulation/index.html" target="_blank" rel="noopener" class="analysis-simulation-newtab">Otwórz w nowej karcie ↗</a>
-          </div>
-          <div class="analysis-simulation-embed" id="sim-frame-mijanie" hidden>
-            <iframe data-src="analyses/truck-passing-simulation/index.html" title="Symulacja mijania pojazdów ciężarowych" loading="lazy"></iframe>
           </div>
         </article>
 

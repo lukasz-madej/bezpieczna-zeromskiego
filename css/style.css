@@ -67,7 +67,7 @@ ul { list-style: none; }
 
 /* ── PROJECT SUBPAGE BREADCRUMB ── */
 .project-breadcrumb {
-  padding: 20px 24px 0;
+  padding: 20px 24px;
 }
 .project-breadcrumb a {
   color: var(--text-muted);
