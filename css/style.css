@@ -575,7 +575,11 @@ ul { list-style: none; }
   border-style: dashed;
 }
 #symulacja-mijania.analysis-entry {
-  border-color: var(--green);
+  border-color: var(--green) !important;
+}
+#symulacja-mijania .analysis-tag-live {
+  background: rgba(76,175,80,.12) !important;
+  color: var(--green-dark) !important;
 }
 .analysis-meta {
   display: flex;
