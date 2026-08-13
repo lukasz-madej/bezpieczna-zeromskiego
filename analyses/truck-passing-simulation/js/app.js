@@ -253,7 +253,7 @@
     drawCrossSection(outer.rearCorners, outerColor, 4);
     drawCrossSection(inner.rearCorners, innerColor, 4);
 
-    label("CZOŁA: prześwit praktycznie 0", outer.mirrorMid, -170, -86);
+    label("CZOŁA: odstęp praktycznie 0", outer.mirrorMid, -170, -86);
     label("KONIEC: oś " + fmt(outerC.rearAxis) + " / kraw. " + fmt(outerC.rearEdge), outer.trailerRear, -150, 48);
     label("KONIEC: oś " + fmt(innerC.rearAxis) + " / kraw. " + fmt(innerC.rearEdge), inner.trailerRear, -250, 44);
 
@@ -266,7 +266,7 @@
 
     const meetingGap = outerC.frontAxis + innerC.frontAxis;
     const criticalTrailerCabGap = outerC.rearAxis + innerC.frontAxis;
-    summary.textContent = "Przy lusterkach " + mirrorSpan.toFixed(2) + " m prześwit między lusterkami wynosi około " + fmt(meetingGap) + ", a krytyczny prześwit między naczepą na zewnętrznym pasie i kabiną na wewnętrznym pasie około " + fmt(criticalTrailerCabGap) + ".";
+    summary.textContent = "Przy lusterkach " + mirrorSpan.toFixed(2) + " m odstęp między lusterkami wynosi około " + fmt(meetingGap) + ", a krytyczny odstęp między naczepą na zewnętrznym pasie i kabiną na wewnętrznym pasie około " + fmt(criticalTrailerCabGap) + ".";
     canvas.setAttribute("aria-label", summary.textContent);
   }
 
@@ -1135,7 +1135,7 @@
       context.fillText(item.label, labelPosition.x, labelPosition.y);
     });
 
-    const stateText = gapValue < -0.0005 ? "kolizja geometryczna" : gapValue > 0.0005 ? "prześwit " + formatMeters(gapValue) : "styk obrysów";
+    const stateText = gapValue < -0.0005 ? "kolizja geometryczna" : gapValue > 0.0005 ? "odstęp " + formatMeters(gapValue) : "styk obrysów";
     threePhase.textContent = "Widok 3D · " + phase + " · " + stateText;
     threeCanvas.setAttribute("aria-label", "Model 3D, etap " + phase + ", " + stateText + ". Jezdnia sześć metrów, pobocze południowe jeden metr, separacja północna jeden metr i droga rowerowa trzy metry.");
   }
@@ -1257,10 +1257,10 @@
     relativeAngle.textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
     currentGap.textContent = formatMeters(nearest.value);
     currentGap.classList.toggle("text-destructive", nearest.value < -0.0005);
-    collisionState.textContent = nearest.value < -0.0005 ? "Kolizja" : nearest.value > 0.0005 ? "Prześwit" : "Styk";
+    collisionState.textContent = nearest.value < -0.0005 ? "Kolizja" : nearest.value > 0.0005 ? "Odstęp" : "Styk";
     collisionState.classList.toggle("text-destructive", nearest.value < -0.0005);
     gapPair.textContent = pair;
-    status.textContent = "Etap: " + phase + ". Kąt osi ciągników " + angleDegrees.toFixed(2).replace(".", ",") + "° wynika z geometrii R = 350 m i położenia zestawów, a nie z prędkości. Dla 50 km/h przyspieszenie boczne wynosi 0,056 g. Spadek 2% do wnętrza łuku jest pokazany w przekroju pionowym; nie zmienia obliczeń rzutu z góry. Wartość dodatnia oznacza prześwit, 0,00 m — zetknięcie, a ujemna — geometryczne wejście punktu w obrys drugiego zestawu. Punkty 1–2: czoło naczepy, 3–4: środek, 5–6: koniec; numery nieparzyste są od strony osi jezdni.";
+    status.textContent = "Etap: " + phase + ". Kąt osi ciągników " + angleDegrees.toFixed(2).replace(".", ",") + "° wynika z geometrii R = 350 m i położenia zestawów, a nie z prędkości. Dla 50 km/h przyspieszenie boczne wynosi 0,056 g. Spadek 2% do wnętrza łuku jest pokazany w przekroju pionowym; nie zmienia obliczeń rzutu z góry. Wartość dodatnia oznacza odstęp, 0,00 m — zetknięcie, a ujemna — geometryczne wejście punktu w obrys drugiego zestawu. Punkty 1–2: czoło naczepy, 3–4: środek, 5–6: koniec; numery nieparzyste są od strony osi jezdni.";
 
     const rows = [
       ["Górny pas B ← — czoło (lusterka)", upperClearance.frontAxis, upperClearance.frontEdge, signedPointSetToVehicle(upper.mirrorTips, lower)],
