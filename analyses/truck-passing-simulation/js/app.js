@@ -6,277 +6,54 @@
   const slider = root.querySelector("#pass-position");
   const threeCanvas = root.querySelector("#three-canvas");
   const threeContext = threeCanvas.getContext("2d");
-  const threePlay = root.querySelector("#three-play");
-  const threeReset = root.querySelector("#three-reset");
-  const threePhase = root.querySelector("#three-phase");
-  const positionValue = root.querySelector("#position-value");
-  const currentGap = root.querySelector("#current-gap");
-  const relativeAngle = root.querySelector("#relative-angle");
-  const collisionState = root.querySelector("#collision-state");
-  const gapPair = root.querySelector("#gap-pair");
-  const status = root.querySelector("#pass-status");
-  const tableBody = root.querySelector("#clearance-body");
-  const summary = root.querySelector("#truck-summary");
+  const elements = {
+    slider,
+    svg,
+    threeCanvas,
+    threePlay: root.querySelector("#three-play"),
+    threeReset: root.querySelector("#three-reset"),
+    threePhase: root.querySelector("#three-phase"),
+    positionValue: root.querySelector("#position-value"),
+    currentGap: root.querySelector("#current-gap"),
+    relativeAngle: root.querySelector("#relative-angle"),
+    collisionState: root.querySelector("#collision-state"),
+    status: root.querySelector("#pass-status"),
+    tableBody: root.querySelector("#clearance-body"),
+    summary: root.querySelector("#truck-summary"),
+    planImage: root.querySelector("#plan-image"),
+    projectAxis: root.querySelector("#project-axis"),
+    upperVehicle: root.querySelector("#upper-vehicle"),
+    lowerVehicle: root.querySelector("#lower-vehicle"),
+    nearestMark: root.querySelector("#nearest-mark"),
+    nearestLine: root.querySelector("#nearest-line"),
+    nearestA: root.querySelector("#nearest-a"),
+    nearestB: root.querySelector("#nearest-b"),
+    crossUpper: root.querySelector("#cross-upper"),
+    crossLower: root.querySelector("#cross-lower"),
+    crossGap: root.querySelector("#cross-gap"),
+    crossGapLabel: root.querySelector("#cross-gap-label"),
+    angleLineA: root.querySelector("#angle-line-a"),
+    angleLineB: root.querySelector("#angle-line-b"),
+    angleLabel: root.querySelector("#angle-label")
+  };
   const ns = "http://www.w3.org/2000/svg";
-
-  const image = new Image();
-  image.src = "img/plan-preview.jpg";
-
-  /* Poprzedni, statyczny model pozostaje wyłączony poniżej.
-  const crop = { x: 760, y: 210, width: 650, height: 180 };
-  const fitted = {
-    cxPx: 853.704,
-    cyPx: 2982.735,
-    pxPerM: 11.48217,
-    roadRadiusM: 236.061,
-    roadHalfWidthM: 3.0
+  const COLLISION_EPSILON = 0.0005;
+  const CROSS_SECTION = {
+    scale: 110,
+    roadCenterX: 450,
+    roadY: 470,
+    angleOriginX: 720,
+    angleOriginY: 32,
+    angleLineLength: 80
   };
-  const truckPhotoSource = "img/truck-photo.webp";
-  const vehicle = {
-    widthM: 2.55,
-    frontAxleToHitchM: 3.10,
-    frontOverhangM: 1.40,
-    mirrorBehindFrontM: 0.55,
-    trailerHitchToAxlesM: 8.10,
-    trailerFrontOverhangM: 1.60,
-    trailerRearOverhangM: 3.90
+  const PLAYBACK = {
+    repeatThreshold: 99.95,
+    percentPerMillisecond: 0.0125,
+    maxFrameDelta: 50
   };
-
-  const fmt = value => {
-    if (Math.abs(value) < 0.02) return "≈ 0,00 m";
-    if (value < 0) return "–" + Math.abs(value).toFixed(2).replace(".", ",") + " m";
-    return value.toFixed(2).replace(".", ",") + " m";
-  };
-
-  const css = name => getComputedStyle(root).getPropertyValue(name).trim();
-  const point = (r, theta) => ({ x: r * Math.cos(theta), y: r * Math.sin(theta) });
-  const add = (a, b, factor = 1) => ({ x: a.x + b.x * factor, y: a.y + b.y * factor });
-  const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y });
-  const length = v => Math.hypot(v.x, v.y);
-  const unit = v => {
-    const d = length(v);
-    return { x: v.x / d, y: v.y / d };
-  };
-  const normal = u => ({ x: -u.y, y: u.x });
-  const radius = p => Math.hypot(p.x, p.y);
-
-  const toCanvas = p => ({
-    x: (fitted.cxPx + p.x * fitted.pxPerM - crop.x) * 2,
-    y: (fitted.cyPx + p.y * fitted.pxPerM - crop.y) * 2
-  });
-
-  function polygon(start, end, halfWidth, u) {
-    const n = normal(u);
-    return [
-      add(start, n, halfWidth),
-      add(end, n, halfWidth),
-      add(end, n, -halfWidth),
-      add(start, n, -halfWidth)
-    ];
-  }
-
-  function buildVehicle(lane, direction, thetaFront, mirrorSpanM) {
-    const frontRadius = fitted.roadRadiusM + lane * 1.5;
-    const hitchRadius = Math.sqrt(frontRadius ** 2 - vehicle.frontAxleToHitchM ** 2);
-    const hitchTheta = thetaFront - direction * Math.asin(vehicle.frontAxleToHitchM / frontRadius);
-    const axleRadius = Math.sqrt(hitchRadius ** 2 - vehicle.trailerHitchToAxlesM ** 2);
-    const axleTheta = hitchTheta - direction * Math.asin(vehicle.trailerHitchToAxlesM / hitchRadius);
-
-    const frontAxle = point(frontRadius, thetaFront);
-    const hitch = point(hitchRadius, hitchTheta);
-    const trailerAxles = point(axleRadius, axleTheta);
-    const tractorDir = unit(sub(frontAxle, hitch));
-    const trailerDir = unit(sub(hitch, trailerAxles));
-    const frontMid = add(frontAxle, tractorDir, vehicle.frontOverhangM);
-    const tractorRear = add(hitch, tractorDir, -0.60);
-    const mirrorMid = add(frontMid, tractorDir, -vehicle.mirrorBehindFrontM);
-    const trailerFront = add(hitch, trailerDir, vehicle.trailerFrontOverhangM);
-    const trailerRear = add(trailerAxles, trailerDir, -vehicle.trailerRearOverhangM);
-    const tractorPoly = polygon(frontMid, tractorRear, vehicle.widthM / 2, tractorDir);
-    const trailerPoly = polygon(trailerFront, trailerRear, vehicle.widthM / 2, trailerDir);
-    const tractorN = normal(tractorDir);
-    const trailerN = normal(trailerDir);
-    const mirrors = [
-      add(mirrorMid, tractorN, mirrorSpanM / 2),
-      add(mirrorMid, tractorN, -mirrorSpanM / 2)
-    ];
-    const rearCorners = [
-      add(trailerRear, trailerN, vehicle.widthM / 2),
-      add(trailerRear, trailerN, -vehicle.widthM / 2)
-    ];
-
-    return {
-      lane,
-      tractorPoly,
-      trailerPoly,
-      mirrors,
-      mirrorMid,
-      rearCorners,
-      trailerRear,
-      hitch,
-      trailerAxles
-    };
-  }
-
-  function solveTheta(lane, direction, mirrorSpanM, targetFrontPx) {
-    let theta = -1.495;
-    for (let i = 0; i < 10; i += 1) {
-      const model = buildVehicle(lane, direction, theta, mirrorSpanM);
-      const front = model.tractorPoly[0];
-      const other = model.tractorPoly[3];
-      const frontMidX = (front.x + other.x) / 2;
-      const globalPx = fitted.cxPx + frontMidX * fitted.pxPerM;
-      const derivative = -Math.sin(theta) * (fitted.roadRadiusM + lane * 1.5) * fitted.pxPerM;
-      theta += (targetFrontPx - globalPx) / derivative;
-    }
-    return theta;
-  }
-
-  function clearances(model) {
-    const frontR = model.mirrors.map(radius);
-    const rearR = model.rearCorners.map(radius);
-    const rc = fitted.roadRadiusM;
-    if (model.lane > 0) {
-      return {
-        frontAxis: Math.min(...frontR) - rc,
-        frontEdge: rc + 3 - Math.max(...frontR),
-        rearAxis: Math.min(...rearR) - rc,
-        rearEdge: rc + 3 - Math.max(...rearR)
-      };
-    }
-    return {
-      frontAxis: rc - Math.max(...frontR),
-      frontEdge: Math.min(...frontR) - (rc - 3),
-      rearAxis: rc - Math.max(...rearR),
-      rearEdge: Math.min(...rearR) - (rc - 3)
-    };
-  }
-
-  function drawPath(points, fill, stroke) {
-    ctx.beginPath();
-    points.map(toCanvas).forEach((p, index) => {
-      if (index === 0) ctx.moveTo(p.x, p.y);
-      else ctx.lineTo(p.x, p.y);
-    });
-    ctx.closePath();
-    ctx.globalAlpha = 0.46;
-    ctx.fillStyle = fill;
-    ctx.fill();
-    ctx.globalAlpha = 1;
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = 4;
-    ctx.stroke();
-  }
-
-  function drawArc(radiusM, stroke, dashed, width) {
-    const c = {
-      x: (fitted.cxPx - crop.x) * 2,
-      y: (fitted.cyPx - crop.y) * 2
-    };
-    ctx.beginPath();
-    ctx.setLineDash(dashed ? [18, 12] : []);
-    ctx.arc(c.x, c.y, radiusM * fitted.pxPerM * 2, -1.62, -1.42);
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = width;
-    ctx.stroke();
-    ctx.setLineDash([]);
-  }
-
-  function drawCrossSection(points, color, width) {
-    const a = toCanvas(points[0]);
-    const b = toCanvas(points[1]);
-    ctx.beginPath();
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = width;
-    ctx.stroke();
-    [a, b].forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, width * 0.9, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      ctx.fill();
-    });
-  }
-
-  function label(text, worldPoint, offsetX, offsetY) {
-    const p = toCanvas(worldPoint);
-    ctx.font = "500 22px system-ui, sans-serif";
-    const pad = 10;
-    const w = ctx.measureText(text).width + pad * 2;
-    const h = 34;
-    const x = Math.max(8, Math.min(canvas.width - w - 8, p.x + offsetX));
-    const y = Math.max(8, Math.min(canvas.height - h - 8, p.y + offsetY));
-    ctx.globalAlpha = 0.90;
-    ctx.fillStyle = css("--card") || "#ffffff";
-    ctx.fillRect(x, y, w, h);
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = css("--card-foreground") || "#111111";
-    ctx.fillText(text, x + pad, y + 24);
-  }
-
-  function render() {
-    const mirrorSpan = Number(slider.value);
-    mirrorValue.textContent = mirrorSpan.toFixed(2).replace(".", ",") + " m";
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-    ctx.globalAlpha = 0.12;
-    ctx.fillStyle = css("--background") || "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalAlpha = 1;
-
-    const foreground = css("--foreground") || "#111111";
-    const roadEdge = css("--muted-foreground") || "#555555";
-    const outerColor = css("--viz-series-1") || "#2563eb";
-    const innerColor = css("--viz-series-2") || "#f97316";
-    const mirrorColor = css("--red") || "#dc2626";
-
-    drawArc(fitted.roadRadiusM + 3, roadEdge, true, 5);
-    drawArc(fitted.roadRadiusM, foreground, true, 4);
-    drawArc(fitted.roadRadiusM - 3, roadEdge, true, 5);
-
-    const outerTheta = solveTheta(1, 1, mirrorSpan, 1060);
-    const innerTheta = solveTheta(-1, -1, mirrorSpan, 1060);
-    const outer = buildVehicle(1, 1, outerTheta, mirrorSpan);
-    const inner = buildVehicle(-1, -1, innerTheta, mirrorSpan);
-    const outerC = clearances(outer);
-    const innerC = clearances(inner);
-
-    drawPath(outer.trailerPoly, outerColor, outerColor);
-    drawPath(outer.tractorPoly, outerColor, outerColor);
-    drawPath(inner.trailerPoly, innerColor, innerColor);
-    drawPath(inner.tractorPoly, innerColor, innerColor);
-    drawCrossSection(outer.mirrors, mirrorColor, 6);
-    drawCrossSection(inner.mirrors, mirrorColor, 6);
-    drawCrossSection(outer.rearCorners, outerColor, 4);
-    drawCrossSection(inner.rearCorners, innerColor, 4);
-
-    label("CZOŁA: odstęp praktycznie 0", outer.mirrorMid, -170, -86);
-    label("KONIEC: oś " + fmt(outerC.rearAxis) + " / kraw. " + fmt(outerC.rearEdge), outer.trailerRear, -150, 48);
-    label("KONIEC: oś " + fmt(innerC.rearAxis) + " / kraw. " + fmt(innerC.rearEdge), inner.trailerRear, -250, 44);
-
-    tableBody.innerHTML = [
-      ["Górny pas - czoło (lusterka)", outerC.frontAxis, outerC.frontEdge],
-      ["Górny pas - koniec naczepy", outerC.rearAxis, outerC.rearEdge],
-      ["Dolny pas - czoło (lusterka)", innerC.frontAxis, innerC.frontEdge],
-      ["Dolny pas - koniec naczepy", innerC.rearAxis, innerC.rearEdge]
-    ].map(row => '<tr><td>' + row[0] + '</td><td class="text-end text-nowrap">' + fmt(row[1]) + '</td><td class="text-end text-nowrap">' + fmt(row[2]) + '</td></tr>').join("");
-
-    const meetingGap = outerC.frontAxis + innerC.frontAxis;
-    const criticalTrailerCabGap = outerC.rearAxis + innerC.frontAxis;
-    summary.textContent = "Przy lusterkach " + mirrorSpan.toFixed(2) + " m odstęp między lusterkami wynosi około " + fmt(meetingGap) + ", a krytyczny odstęp między naczepą na zewnętrznym pasie i kabiną na wewnętrznym pasie około " + fmt(criticalTrailerCabGap) + ".";
-    canvas.setAttribute("aria-label", summary.textContent);
-  }
-
-  slider.addEventListener("input", render);
-  image.addEventListener("load", render);
-  if (image.complete) render();
-  */
 
   const planSource = "img/plan.jpg";
-  root.querySelector("#plan-image").setAttribute("href", planSource);
+  elements.planImage.setAttribute("href", planSource);
 
   const geometry = {
     centerX: 893.552552,
@@ -789,9 +566,9 @@
   }
 
   function renderCrossSection(upper, lower, angleDegrees) {
-    const crossScale = 110;
-    const roadCenterX = 450;
-    const roadY = 470;
+    const crossScale = CROSS_SECTION.scale;
+    const roadCenterX = CROSS_SECTION.roadCenterX;
+    const roadY = CROSS_SECTION.roadY;
     const crossfallAngle = -Math.atan(geometry.crossfall) * 180 / Math.PI;
     const cabHalfPx = vehicle.cabWidth * crossScale / 2;
     const cabHeightPx = vehicle.cabHeight * crossScale;
@@ -861,8 +638,8 @@
       }
     }
 
-    drawCrossVehicle(root.querySelector("#cross-upper"), upperCenterX, "b", "");
-    drawCrossVehicle(root.querySelector("#cross-lower"), lowerCenterX, "a", "");
+    drawCrossVehicle(elements.crossUpper, upperCenterX, "b", "");
+    drawCrossVehicle(elements.crossLower, lowerCenterX, "a", "");
 
     const upperInnerOffset = Math.min(...upperMirrorRadii) - geometry.roadRadius;
     const lowerInnerOffset = Math.max(...lowerMirrorRadii) - geometry.roadRadius;
@@ -870,23 +647,22 @@
     const lowerInner = rotatedPoint(lowerCenterX, roadYAt(lowerCenterX), vehicle.mirrorSpan * crossScale / 2, -vehicle.mirrorHeight * crossScale);
     const mirrorGap = upperInnerOffset - lowerInnerOffset;
     const heightDifference = Math.abs(upperInner.y - lowerInner.y) / crossScale;
-    const gapGroup = root.querySelector("#cross-gap");
-    gapGroup.replaceChildren(svgElement("line", {
+    elements.crossGap.replaceChildren(svgElement("line", {
       x1: lowerInner.x.toFixed(1),
       y1: lowerInner.y.toFixed(1),
       x2: upperInner.x.toFixed(1),
       y2: upperInner.y.toFixed(1),
       class: "cross-gap-line"
     }));
-    root.querySelector("#cross-gap-label").textContent = "lusterka: poziomo " + formatMeters(mirrorGap) + " · Δh " + heightDifference.toFixed(2).replace(".", ",") + " m";
+    elements.crossGapLabel.textContent = "lusterka: poziomo " + formatMeters(mirrorGap) + " · Δh " + heightDifference.toFixed(2).replace(".", ",") + " m";
 
     const halfAngle = angleDegrees * Math.PI / 360;
-    const lengthPx = 80;
-    root.querySelector("#angle-line-a").setAttribute("x2", (720 + lengthPx * Math.cos(halfAngle)).toFixed(1));
-    root.querySelector("#angle-line-a").setAttribute("y2", (32 + lengthPx * Math.sin(halfAngle)).toFixed(1));
-    root.querySelector("#angle-line-b").setAttribute("x2", (720 - lengthPx * Math.cos(halfAngle)).toFixed(1));
-    root.querySelector("#angle-line-b").setAttribute("y2", (32 + lengthPx * Math.sin(halfAngle)).toFixed(1));
-    root.querySelector("#angle-label").textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
+    const lengthPx = CROSS_SECTION.angleLineLength;
+    elements.angleLineA.setAttribute("x2", (CROSS_SECTION.angleOriginX + lengthPx * Math.cos(halfAngle)).toFixed(1));
+    elements.angleLineA.setAttribute("y2", (CROSS_SECTION.angleOriginY + lengthPx * Math.sin(halfAngle)).toFixed(1));
+    elements.angleLineB.setAttribute("x2", (CROSS_SECTION.angleOriginX - lengthPx * Math.cos(halfAngle)).toFixed(1));
+    elements.angleLineB.setAttribute("y2", (CROSS_SECTION.angleOriginY + lengthPx * Math.sin(halfAngle)).toFixed(1));
+    elements.angleLabel.textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
   }
 
   const threeDefaults = { yaw: -0.88, pitch: 0.48, distance: 58 };
@@ -1137,8 +913,8 @@
       context.fillText(item.label, labelPosition.x, labelPosition.y);
     });
 
-    const stateText = gapValue < -0.0005 ? "kolizja geometryczna" : gapValue > 0.0005 ? "odstęp " + formatMeters(gapValue) : "styk obrysów";
-    threePhase.textContent = "Widok 3D · " + phase + " · " + stateText;
+    const stateText = gapValue < -COLLISION_EPSILON ? "kolizja geometryczna" : gapValue > COLLISION_EPSILON ? "odstęp " + formatMeters(gapValue) : "styk obrysów";
+    elements.threePhase.textContent = "Widok 3D · " + phase + " · " + stateText;
     threeCanvas.setAttribute("aria-label", "Model 3D, etap " + phase + ", " + stateText + ". Jezdnia sześć metrów, pobocze południowe jeden metr, separacja północna jeden metr i droga rowerowa trzy metry.");
   }
 
@@ -1151,17 +927,17 @@
   function setThreePlaying(playing) {
     threeState.playing = playing;
     threeState.previousTime = 0;
-    threePlay.setAttribute("aria-pressed", playing ? "true" : "false");
-    threePlay.textContent = playing ? "Pauza" : (Number(slider.value) >= 99.95 ? "Odtwórz ponownie" : "Odtwórz mijanie");
+    elements.threePlay.setAttribute("aria-pressed", playing ? "true" : "false");
+    elements.threePlay.textContent = playing ? "Pauza" : (Number(slider.value) >= PLAYBACK.repeatThreshold ? "Odtwórz ponownie" : "Odtwórz mijanie");
     if (playing) requestAnimationFrame(animateThree);
   }
 
   function animateThree(time) {
     if (!threeState.playing) return;
     if (!threeState.previousTime) threeState.previousTime = time;
-    const elapsed = Math.min(50, time - threeState.previousTime);
+    const elapsed = Math.min(PLAYBACK.maxFrameDelta, time - threeState.previousTime);
     threeState.previousTime = time;
-    let nextValue = Number(slider.value) + elapsed * 0.0125;
+    let nextValue = Number(slider.value) + elapsed * PLAYBACK.percentPerMillisecond;
     if (nextValue >= 100) {
       nextValue = 100;
       slider.value = nextValue.toFixed(2);
@@ -1203,18 +979,18 @@
     threeState.distance = Math.max(28, Math.min(105, threeState.distance * Math.exp(event.deltaY * 0.0012)));
     redrawThreeScene();
   }, { passive: false });
-  threeReset.addEventListener("click", () => {
+  elements.threeReset.addEventListener("click", () => {
     threeState.yaw = threeDefaults.yaw;
     threeState.pitch = threeDefaults.pitch;
     threeState.distance = threeDefaults.distance;
     redrawThreeScene();
   });
-  threePlay.addEventListener("click", () => {
+  elements.threePlay.addEventListener("click", () => {
     if (threeState.playing) {
       setThreePlaying(false);
       return;
     }
-    if (Number(slider.value) >= 99.95) slider.value = "0";
+    if (Number(slider.value) >= PLAYBACK.repeatThreshold) slider.value = "0";
     setThreePlaying(true);
   });
 
@@ -1231,23 +1007,22 @@
     const lower = buildVehicle(1, lowerStation);
     const upper = buildVehicle(-1, upperStation);
     const angleDegrees = acuteAxisAngle(lower.tractorDir, upper.tractorDir);
-    renderVehicle(root.querySelector("#upper-vehicle"), upper, "upper-part", "B");
-    renderVehicle(root.querySelector("#lower-vehicle"), lower, "lower-part", "A");
+    renderVehicle(elements.upperVehicle, upper, "upper-part", "B");
+    renderVehicle(elements.lowerVehicle, lower, "lower-part", "A");
     renderCrossSection(upper, lower, angleDegrees);
 
     const nearest = signedVehicleGap(upper, lower);
     const pointA = toPlan(nearest.pointA);
     const pointB = toPlan(nearest.pointB);
-    const mark = root.querySelector("#nearest-mark");
-    mark.style.display = Math.abs(nearest.value) <= 6 ? "" : "none";
-    root.querySelector("#nearest-line").setAttribute("x1", pointA.x.toFixed(2));
-    root.querySelector("#nearest-line").setAttribute("y1", pointA.y.toFixed(2));
-    root.querySelector("#nearest-line").setAttribute("x2", pointB.x.toFixed(2));
-    root.querySelector("#nearest-line").setAttribute("y2", pointB.y.toFixed(2));
-    root.querySelector("#nearest-a").setAttribute("cx", pointA.x.toFixed(2));
-    root.querySelector("#nearest-a").setAttribute("cy", pointA.y.toFixed(2));
-    root.querySelector("#nearest-b").setAttribute("cx", pointB.x.toFixed(2));
-    root.querySelector("#nearest-b").setAttribute("cy", pointB.y.toFixed(2));
+    elements.nearestMark.style.display = Math.abs(nearest.value) <= 6 ? "" : "none";
+    elements.nearestLine.setAttribute("x1", pointA.x.toFixed(2));
+    elements.nearestLine.setAttribute("y1", pointA.y.toFixed(2));
+    elements.nearestLine.setAttribute("x2", pointB.x.toFixed(2));
+    elements.nearestLine.setAttribute("y2", pointB.y.toFixed(2));
+    elements.nearestA.setAttribute("cx", pointA.x.toFixed(2));
+    elements.nearestA.setAttribute("cy", pointA.y.toFixed(2));
+    elements.nearestB.setAttribute("cx", pointB.x.toFixed(2));
+    elements.nearestB.setAttribute("cy", pointB.y.toFixed(2));
 
     const upperClearance = clearances(upper);
     const lowerClearance = clearances(lower);
@@ -1255,14 +1030,13 @@
     const lowerMeasurementPoints = measurementPoints(lower, "A");
     const phase = fraction < 0.33 ? "zbliżanie" : fraction <= 0.67 ? "mijanie" : "oddalanie";
     const pair = nearest.labelA + " ↔ " + nearest.labelB;
-    positionValue.textContent = slider.value.replace(".", ",") + "%";
-    relativeAngle.textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
-    currentGap.textContent = formatMeters(nearest.value);
-    currentGap.classList.toggle("text-destructive", nearest.value < -0.0005);
-    collisionState.textContent = nearest.value < -0.0005 ? "Kolizja" : nearest.value > 0.0005 ? "Odstęp" : "Styk";
-    collisionState.classList.toggle("text-destructive", nearest.value < -0.0005);
-    if (gapPair) gapPair.textContent = pair;
-    status.textContent = "Etap: " + phase + ". Kąt osi ciągników " + angleDegrees.toFixed(2).replace(".", ",") + "° wynika z geometrii R = 350 m i położenia zestawów, a nie z prędkości. Dla 50 km/h przyspieszenie boczne wynosi 0,056 g. Spadek 2% do wnętrza łuku jest pokazany w przekroju pionowym; nie zmienia obliczeń rzutu z góry. Wartość dodatnia oznacza odstęp, 0,00 m - zetknięcie, a ujemna - geometryczne wejście punktu w obrys drugiego zestawu. Punkty 1–2: czoło naczepy, 3–4: środek, 5–6: koniec; numery nieparzyste są od strony osi jezdni.";
+    elements.positionValue.textContent = slider.value.replace(".", ",") + "%";
+    elements.relativeAngle.textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
+    elements.currentGap.textContent = formatMeters(nearest.value);
+    elements.currentGap.classList.toggle("text-destructive", nearest.value < -COLLISION_EPSILON);
+    elements.collisionState.textContent = nearest.value < -COLLISION_EPSILON ? "Kolizja" : nearest.value > COLLISION_EPSILON ? "Odstęp" : "Styk";
+    elements.collisionState.classList.toggle("text-destructive", nearest.value < -COLLISION_EPSILON);
+    elements.status.textContent = "Etap: " + phase + ". Kąt osi ciągników " + angleDegrees.toFixed(2).replace(".", ",") + "° wynika z geometrii R = 350 m i położenia zestawów, a nie z prędkości. Dla 50 km/h przyspieszenie boczne wynosi 0,056 g. Spadek 2% do wnętrza łuku jest pokazany w przekroju pionowym; nie zmienia obliczeń rzutu z góry. Wartość dodatnia oznacza odstęp, 0,00 m - zetknięcie, a ujemna - geometryczne wejście punktu w obrys drugiego zestawu. Punkty 1–2: czoło naczepy, 3–4: środek, 5–6: koniec; numery nieparzyste są od strony osi jezdni.";
 
     const rows = [
       ["Górny pas B ← - czoło (lusterka)", upperClearance.frontAxis, upperClearance.frontEdge, signedPointSetToVehicle(upper.mirrorTips, lower)],
@@ -1276,11 +1050,11 @@
         return [item.id + " - A →, " + item.description, distances.axis, distances.edge, signedPointToVehicle(item.point, upper)];
       })
     ];
-    tableBody.innerHTML = rows.map(row =>
-      '<tr><td>' + row[0] + '</td><td class="text-end text-nowrap">' + formatMeters(row[1]) + '</td><td class="text-end text-nowrap">' + formatMeters(row[2]) + '</td><td class="text-end text-nowrap' + (row[3] < -0.0005 ? ' text-destructive' : '') + '">' + formatMeters(row[3]) + '</td></tr>'
+    elements.tableBody.innerHTML = rows.map(row =>
+      '<tr><td>' + row[0] + '</td><td class="text-end text-nowrap">' + formatMeters(row[1]) + '</td><td class="text-end text-nowrap">' + formatMeters(row[2]) + '</td><td class="text-end text-nowrap' + (row[3] < -COLLISION_EPSILON ? ' text-destructive' : '') + '">' + formatMeters(row[3]) + '</td></tr>'
     ).join("");
-    summary.textContent = "Położenie " + slider.value + " procent. Etap " + phase + ". Wskaźnik kolizji " + formatMeters(nearest.value) + ", stan: " + collisionState.textContent + ", para elementów: " + pair + ". Kąt osi ciągników " + angleDegrees.toFixed(2) + " stopnia.";
-    svg.setAttribute("aria-label", summary.textContent);
+    elements.summary.textContent = "Położenie " + slider.value + " procent. Etap " + phase + ". Wskaźnik kolizji " + formatMeters(nearest.value) + ", stan: " + elements.collisionState.textContent + ", para elementów: " + pair + ". Kąt osi ciągników " + angleDegrees.toFixed(2) + " stopnia.";
+    elements.svg.setAttribute("aria-label", elements.summary.textContent);
     renderThreeScene(lower, upper, phase, nearest.value);
     const collisionPoint = {
       x: (nearest.pointA.x + nearest.pointB.x) / 2,
@@ -1290,11 +1064,11 @@
     window.zeromskiegoRealistic3DLatest = threeDetail;
     window.dispatchEvent(new CustomEvent("zeromskiego-realistic-3d-update", { detail: threeDetail }));
     if (!threeState.playing) {
-      threePlay.textContent = Number(slider.value) >= 99.95 ? "Odtwórz ponownie" : "Odtwórz mijanie";
+      elements.threePlay.textContent = Number(slider.value) >= PLAYBACK.repeatThreshold ? "Odtwórz ponownie" : "Odtwórz mijanie";
     }
   }
 
-  root.querySelector("#project-axis").setAttribute("d", axisPath());
-  slider.addEventListener("input", renderDynamic);
+  elements.projectAxis.setAttribute("d", axisPath());
+  elements.slider.addEventListener("input", renderDynamic);
   renderDynamic();
 })();

@@ -10,11 +10,7 @@
     margin: 0 -0.1px;
     box-shadow: 0 4px 10px -6px rgba(7, 29, 68, 0.25);
   }
-  #zeromskiego-dynamic-pass .viz-section {
-    padding-top: 0.4rem;
-    margin-bottom: 20px;
-    border-top: 1px solid var(--border);
-  }
+  #zeromskiego-dynamic-pass .viz-section,
   #zeromskiego-dynamic-pass .viz-details {
     padding-top: 0.4rem;
     margin-bottom: 20px;
@@ -205,7 +201,6 @@
     stroke: var(--viz-series-2);
   }
   #zeromskiego-dynamic-pass .cab-detail,
-  #zeromskiego-dynamic-pass .axle-detail,
   #zeromskiego-dynamic-pass .direction-mark {
     fill: none;
     stroke: var(--foreground);
