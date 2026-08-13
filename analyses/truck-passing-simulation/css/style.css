@@ -152,6 +152,7 @@
   }
   #zeromskiego-dynamic-pass .three-help {
     margin-top: 0.35rem;
+    text-align: center;
   }
   #zeromskiego-dynamic-pass .road-legend {
     justify-content: center;
@@ -159,10 +160,10 @@
     margin-top: 0.45rem;
   }
   #zeromskiego-dynamic-pass .road-swatch {
-    background: color-mix(in srgb, var(--muted) 58%, var(--foreground));
+    background: rgb(9, 10, 11);
   }
   #zeromskiego-dynamic-pass .shoulder-swatch {
-    background: color-mix(in srgb, var(--secondary) 76%, var(--muted));
+    background: rgb(222, 223, 224);
   }
   #zeromskiego-dynamic-pass .separation-swatch {
     background: color-mix(in srgb, var(--green) 82%, var(--foreground));
