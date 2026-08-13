@@ -292,7 +292,7 @@
     travel: 34,
     crossfall: 0.02
   };
-  const activeTruckPhotoSource = "img/truck-cab.png";
+  const activeTruckPhotoSource = "img/truck-cab-outline.png";
   const vehicle = {
     width: 2.55,
     cabWidth: 2.495,
@@ -833,15 +833,13 @@
       group.replaceChildren();
       const mirrorHalf = vehicle.mirrorSpan * crossScale / 2;
       const localRoadY = roadYAt(centerX);
-      const photoScaleX = (mirrorHalf * 2) / 337;
-      const photoScaleY = cabHeightPx / 440;
       group.setAttribute("transform", "rotate(" + crossfallAngle.toFixed(4) + " " + centerX.toFixed(1) + " " + localRoadY.toFixed(1) + ")");
       group.appendChild(svgElement("image", {
         href: activeTruckPhotoSource,
-        x: (centerX - 400 * photoScaleX).toFixed(1),
-        y: (localRoadY - 472 * photoScaleY).toFixed(1),
-        width: (800 * photoScaleX).toFixed(1),
-        height: (500 * photoScaleY).toFixed(1),
+        x: (centerX - mirrorHalf).toFixed(1),
+        y: (localRoadY - cabHeightPx).toFixed(1),
+        width: (mirrorHalf * 2).toFixed(1),
+        height: cabHeightPx.toFixed(1),
         preserveAspectRatio: "none",
         class: "cross-photo"
       }));
