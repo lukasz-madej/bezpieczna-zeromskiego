@@ -283,6 +283,10 @@
   #zeromskiego-dynamic-pass .viz-stat {
     margin-top: 0.75rem;
   }
+  #zeromskiego-dynamic-pass .viz-badge {
+    margin: 0 auto;
+    background: color-mix(in srgb, currentColor 14%, transparent);
+  }
   #zeromskiego-dynamic-pass #pass-status {
     margin-top: 0.5rem;
   }
