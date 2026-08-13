@@ -612,14 +612,25 @@ ul { list-style: none; }
 
 .pull-quote {
   position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   margin: 16px 0;
-  padding: 4px 0 4px 22px;
-  border-left: 3px solid var(--green);
+  padding: 14px 18px;
+  background: var(--light);
+  border-left: 3px solid var(--border);
+  border-radius: 0 8px 8px 0;
   font-size: 1.05rem;
   font-style: italic;
   font-weight: 600;
   color: var(--navy);
   line-height: 1.5;
+}
+.pull-quote-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  opacity: .5;
+  margin-top: 2px;
 }
 
 .questions-callout {
