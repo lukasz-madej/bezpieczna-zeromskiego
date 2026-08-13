@@ -4,30 +4,64 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<title>Symulacja mijania pojazdów ciężarowych – ul. Żeromskiego w Otwocku</title>
+<title>Symulacja mijania ciężarówek — Bezpieczna Żeromskiego</title>
 <link rel="stylesheet" href="css/framework.css">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="container zeromskiego-page">
+<body>
 <section id="zeromskiego-dynamic-pass">
-  <header class="viz-page-header">
-    <span class="section-tag">Analiza techniczna</span>
-    <h1>Symulacja mijania pojazdów ciężarowych</h1>
-    <p class="text-muted viz-page-lead">ul. Żeromskiego - geometryczny model mijania dwóch zestawów, ciągnik siodłowy z naczepą, na łuku drogi.</p>
-  </header>
+  <div class="viz-controls slider-controls three-slider-controls">
+    <label class="form-label" for="pass-position-3d">Położenie w widoku 3D: <strong id="position-value-3d">48,55%</strong></label>
+    <input id="pass-position-3d" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="three-phase">
+  </div>
+  <div class="viz-controls three-controls" aria-label="Sterowanie widokiem 3D">
+    <button id="three-play" class="btn btn-primary" type="button" aria-pressed="false">Odtwórz mijanie</button>
+    <button id="three-reset" class="btn" type="button">Ustaw kamerę</button>
+    <span id="three-phase" class="text-small text-muted">Ładowanie realistycznego widoku 3D…</span>
+  </div>
+  <canvas id="three-canvas" width="1200" height="620" hidden aria-hidden="true"></canvas>
+  <canvas id="real-three-canvas" width="1200" height="620" role="img" aria-label="Realistyczny, interaktywny model 3D mijania dwóch ciągników Volvo FH z naczepami Schmitz na łuku jezdni, z południowym poboczem 1,00 m, północną separacją 1,00 m, drogą rowerową 3,00 m, pieszymi i rowerzystami">Przeglądarka nie obsługuje widoku 3D.</canvas>
+  <div class="viz-row road-legend" aria-label="Elementy drogi w widoku 3D">
+    <span><span class="legend-swatch road-swatch" aria-hidden="true"></span>jezdnia 6,00 m</span>
+    <span><span class="legend-swatch shoulder-swatch" aria-hidden="true"></span>pobocze południowe 1,00 m</span>
+    <span><span class="legend-swatch separation-swatch" aria-hidden="true"></span>separacja północna 1,00 m</span>
+    <span><span class="legend-swatch cycle-swatch" aria-hidden="true"></span>droga rowerowa 3,00 m</span>
+    <span><span class="legend-swatch terrain-swatch" aria-hidden="true"></span>teren</span>
+  </div>
+  <p class="text-small text-muted three-help">Przeciągnij, aby obrócić kamerę, i przewiń, aby przybliżyć. Łuk, północny pas separacji 1,00 m i droga rowerowa 3,00 m odpowiadają układowi widocznemu na rzucie z góry. Na drodze rowerowej pokazano pieszych i rowerzystów jako elementy sytuacyjne. Zieleń poza pasem separacji stanowi orientacyjne tło.</p>
 
-  <div class="card viz-controls-card">
-    <div class="viz-controls slider-controls">
-      <label class="form-label" for="pass-position">Położenie podczas mijania: <strong id="position-value">48,55%</strong></label>
-      <input id="pass-position" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55">
-    </div>
-    <p class="text-small text-muted viz-model-line"><strong>Model reprezentatywny:</strong> Volvo FH 420 4×2 (rozstaw osi 3,80 m) + Schmitz Cargobull S.CS Universal 13,62 m.</p>
+  <div class="viz-controls slider-controls">
+    <label class="form-label" for="pass-position">Położenie podczas mijania: <strong id="position-value">48,55%</strong></label>
+    <input id="pass-position" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="pass-status">
   </div>
 
-  <div class="viz-grid viz-grid-primary" aria-live="polite">
-    <div class="card viz-stat viz-stat-primary">
-      <span class="text-muted">Wskaźnik kolizji</span>
+  <p class="text-small"><strong>Model reprezentatywny:</strong> Volvo FH 420 4×2 (rozstaw osi 3,80 m) + Schmitz Cargobull S.CS Universal 13,62 m.</p>
+
+  <svg id="pass-svg" viewBox="360 155 1110 345" role="img" aria-labelledby="pass-svg-title pass-svg-desc">
+    <title id="pass-svg-title">Dynamiczne mijanie dwóch ciągników siodłowych z naczepami na łuku ulicy Żeromskiego</title>
+    <desc id="pass-svg-desc">Ruch prawostronny. Pojazd na górnym pasie jedzie w lewo, a pojazd na dolnym pasie jedzie w prawo. Suwak przesuwa oba zestawy aż całkowicie się miną.</desc>
+    <image id="plan-image" x="0" y="0" width="1477" height="786" preserveAspectRatio="none"></image>
+    <path id="project-axis" class="project-axis"></path>
+    <g id="upper-vehicle" aria-label="Zestaw na górnym pasie, kierunek w lewo"></g>
+    <g id="lower-vehicle" aria-label="Zestaw na dolnym pasie, kierunek w prawo"></g>
+    <g id="nearest-mark" aria-hidden="true">
+      <line id="nearest-line" class="nearest-line"></line>
+      <circle id="nearest-a" class="nearest-dot" r="4"></circle>
+      <circle id="nearest-b" class="nearest-dot" r="4"></circle>
+    </g>
+  </svg>
+  <p class="text-small text-muted">Rzut z góry pozostaje obrysem geometrycznym.</p>
+
+  <div class="viz-row direction-row" aria-label="Kierunki ruchu">
+    <span><span class="legend-swatch upper-swatch" aria-hidden="true"></span>Górny pas: B ←</span>
+    <span><span class="legend-swatch lower-swatch" aria-hidden="true"></span>Dolny pas: A →</span>
+    <span class="text-muted">ruch prawostronny</span>
+  </div>
+
+  <div class="viz-grid" aria-live="polite">
+    <div class="card viz-stat">
+      <span class="text-muted">Podpisany wskaźnik kolizji</span>
       <span class="viz-stat-value" id="current-gap">0,00 m</span>
       <span class="viz-badge" id="collision-state">Styk</span>
       <span id="gap-pair">lusterko ↔ lusterko</span>
@@ -44,81 +78,76 @@
     </div>
   </div>
 
-  <div class="viz-section">
-    <div class="viz-section-header">
-      <h2>Widok z góry</h2>
-      <div class="viz-row direction-row" aria-label="Kierunki ruchu">
-        <span><span class="legend-swatch upper-swatch" aria-hidden="true"></span>Górny pas: B ←</span>
-        <span><span class="legend-swatch lower-swatch" aria-hidden="true"></span>Dolny pas: A →</span>
-        <span class="text-muted">ruch prawostronny</span>
-      </div>
-    </div>
-    <svg id="pass-svg" viewBox="360 155 1110 345" role="img" aria-labelledby="pass-svg-title pass-svg-desc">
-      <title id="pass-svg-title">Dynamiczne mijanie dwóch ciągników siodłowych z naczepami na łuku ulicy Żeromskiego</title>
-      <desc id="pass-svg-desc">Ruch prawostronny. Pojazd na górnym pasie jedzie w lewo, a pojazd na dolnym pasie jedzie w prawo. Suwak przesuwa oba zestawy aż całkowicie się miną.</desc>
-      <image id="plan-image" x="0" y="0" width="1477" height="786" preserveAspectRatio="none"></image>
-      <path id="project-axis" class="project-axis"></path>
-      <g id="upper-vehicle" aria-label="Zestaw na górnym pasie, kierunek w lewo"></g>
-      <g id="lower-vehicle" aria-label="Zestaw na dolnym pasie, kierunek w prawo"></g>
-      <g id="nearest-mark" aria-hidden="true">
-        <line id="nearest-line" class="nearest-line"></line>
-        <circle id="nearest-a" class="nearest-dot" r="4"></circle>
-        <circle id="nearest-b" class="nearest-dot" r="4"></circle>
-      </g>
-    </svg>
-    <p class="text-small text-muted">Przekrój jest pionową projekcją poprzeczną kabin na wspólną płaszczyznę. Pokazuje zajęcie szerokości jezdni i położenie lusterek; o faktycznej kolizji decyduje wskaźnik obrysów w rzucie z góry, który uwzględnia także przesunięcie pojazdów wzdłuż drogi.</p>
+  <p id="pass-status" class="text-small"></p>
+
+  <p class="text-small text-muted"><strong>Widok czołowy — przekrój poprzeczny.</strong> Jest pionową projekcją kabin na wspólną płaszczyznę. Pokazuje zajęcie szerokości jezdni i położenie lusterek; o faktycznej kolizji decyduje wskaźnik obrysów w rzucie z góry.</p>
+
+  <svg id="cross-svg" viewBox="0 0 900 625" role="img" aria-labelledby="cross-title cross-desc">
+    <title id="cross-title">Przekrój poprzeczny przez kabiny w aktualnym położeniu</title>
+    <desc id="cross-desc">Pionowa projekcja poprzeczna jezdni szerokości sześciu metrów i dwóch poboczy po jednym metrze. Jezdnia ma spadek dwa procent do wnętrza łuku, a pobocza osiem procent na zewnątrz. Na obrysy geometryczne nałożono oficjalny render czołowy Volvo FH. Mały rzut z góry pokazuje kąt między osiami ciągników.</desc>
+    <defs>
+      <pattern id="shoulder-pattern" width="12" height="12" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="4" r="1.5" class="shoulder-grain"></circle>
+        <circle cx="9" cy="9" r="1.2" class="shoulder-grain"></circle>
+      </pattern>
+    </defs>
+    <polygon points="120,477 780,463 780,513 120,527" class="road-section"></polygon>
+    <polygon points="10,486 120,477 120,527 10,536" class="shoulder-section"></polygon>
+    <polygon points="780,463 890,472 890,522 780,513" class="shoulder-section"></polygon>
+    <polyline points="10,486 120,477 780,463 890,472" class="cross-road"></polyline>
+    <line x1="450" y1="55" x2="450" y2="532" class="cross-axis"></line>
+    <line x1="120" y1="552" x2="780" y2="552" class="cross-dimension"></line>
+    <line x1="120" y1="540" x2="120" y2="562" class="cross-dimension"></line>
+    <line x1="780" y1="540" x2="780" y2="562" class="cross-dimension"></line>
+    <line x1="10" y1="585" x2="890" y2="585" class="cross-dimension"></line>
+    <line x1="10" y1="573" x2="10" y2="595" class="cross-dimension"></line>
+    <line x1="890" y1="573" x2="890" y2="595" class="cross-dimension"></line>
+    <text x="450" y="575" class="cross-label">jezdnia 6,00 m · i = 2%</text>
+    <text x="65" y="448" class="cross-label-small"><tspan x="65">pobocze 1,00 m</tspan><tspan x="65" dy="15">i = 8% na zewnątrz</tspan></text>
+    <text x="835" y="420" class="cross-label-small"><tspan x="835">pobocze 1,00 m</tspan><tspan x="835" dy="15">i = 8% na zewnątrz</tspan></text>
+    <text x="450" y="615" class="cross-label">jezdnia z poboczami: 8,00 m</text>
+    <text x="450" y="45" class="cross-label">oś jezdni</text>
+    <text id="crossfall-label" x="450" y="455" class="cross-label">← spadek 2% do wnętrza łuku</text>
+    <g id="cross-upper" aria-label="Przekrój pojazdu B"></g>
+    <g id="cross-lower" aria-label="Przekrój pojazdu A"></g>
+    <g id="cross-gap" aria-hidden="true"></g>
+    <text id="cross-gap-label" x="265" y="24" class="cross-label">projekcja poprzeczna lusterek 0,00 m</text>
+    <g id="angle-inset" aria-hidden="true">
+      <line id="angle-line-a" x1="720" y1="78" x2="800" y2="78" class="angle-a"></line>
+      <line id="angle-line-b" x1="720" y1="78" x2="640" y2="78" class="angle-b"></line>
+      <text id="angle-label" x="720" y="50" class="cross-label">0,00°</text>
+    </g>
+  </svg>
+
+  <div class="viz-controls slider-controls table-slider-controls">
+    <label class="form-label" for="pass-position-table">Położenie dla tabeli obliczeń: <strong id="position-value-table">48,55%</strong></label>
+    <input id="pass-position-table" class="form-range pass-slider" type="range" min="0" max="100" step="0.05" value="48.55" aria-describedby="pass-status">
   </div>
 
-  <details class="viz-section" open>
-    <summary class="viz-section-summary">Przekrój poprzeczny</summary>
-    <svg id="cross-svg" viewBox="0 0 900 600" role="img" aria-labelledby="cross-title cross-desc">
-      <title id="cross-title">Przekrój poprzeczny przez kabiny w aktualnym położeniu</title>
-      <desc id="cross-desc">Pionowa projekcja poprzeczna jezdni szerokości sześciu metrów. Na obrysy geometryczne nałożono stylizowany rysunek konturowy kabiny ciężarówki. Mały rzut z góry pokazuje kąt między osiami ciągników.</desc>
-      <line id="cross-road-profile" x1="120" y1="477" x2="780" y2="463" class="cross-road"></line>
-      <line x1="450" y1="55" x2="450" y2="480" class="cross-axis"></line>
-      <line x1="120" y1="550" x2="780" y2="550" class="cross-dimension"></line>
-      <line x1="120" y1="540" x2="120" y2="560" class="cross-dimension"></line>
-      <line x1="780" y1="540" x2="780" y2="560" class="cross-dimension"></line>
-      <text x="450" y="570" class="cross-label cross-label-sub">szerokość jezdni 6,00 m</text>
-      <text x="450" y="46" class="cross-label cross-label-sub">oś jezdni</text>
-      <text id="crossfall-label" x="450" y="493" class="cross-label cross-label-sub">spadek 2% do wnętrza łuku</text>
-      <g id="cross-upper" aria-label="Przekrój pojazdu B"></g>
-      <g id="cross-lower" aria-label="Przekrój pojazdu A"></g>
-      <g id="cross-gap" aria-hidden="true"></g>
-      <text id="cross-gap-label" x="265" y="24" class="cross-label">projekcja poprzeczna lusterek 0,00 m</text>
-      <g id="angle-inset" aria-hidden="true">
-        <line id="angle-line-a" x1="720" y1="38" x2="790" y2="38" class="angle-a"></line>
-        <line id="angle-line-b" x1="720" y1="38" x2="650" y2="38" class="angle-b"></line>
-        <text id="angle-label" x="720" y="24" class="cross-label">0,00°</text>
-      </g>
-    </svg>
-  </details>
+  <div class="table-responsive">
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>Pojazd / punkt obrysu</th>
+          <th class="text-end">Do osi</th>
+          <th class="text-end">Do krawędzi</th>
+          <th class="text-end">Odległość punktu do najbliższego obrysu drugiego zestawu</th>
+        </tr>
+      </thead>
+      <tbody id="clearance-body"></tbody>
+    </table>
+  </div>
 
-  <details class="viz-details">
-    <summary class="viz-section-summary">Szczegółowe dane pomiarowe i metodologia</summary>
-    <div class="table-responsive">
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th>Pojazd / punkt obrysu</th>
-            <th class="text-end">Do osi</th>
-            <th class="text-end">Do krawędzi</th>
-            <th class="text-end">Odległość punktu do najbliższego obrysu drugiego zestawu</th>
-          </tr>
-        </thead>
-        <tbody id="clearance-body"></tbody>
-      </table>
-    </div>
-
-    <p class="text-small text-muted">Wymiary modelu: Volvo FH 4×2 - kabina 2,495 m, rozstaw osi 3,80 m, przód–oś przednia 1,555 m, oś przednia–sworzeń naczepy 3,425 m; Schmitz S.CS - szerokość 2,55 m, długość całkowita 13,72 m, sworzeń–środek zespołu osi 7,70 m. Rozstaw zewnętrzny lusterek 3,02 m oszacowano na podstawie publikowanej szerokości kabiny 2,495 m; niepewność tego parametru wynosi około ±0,05 m. Rysunek kabiny jest wyłącznie nakładką wizualną - obliczenia wykonuje model geometryczny. Przednie osie prowadzone środkiem pasów. R = 350,00 m. Pochylenie poprzeczne 2% do wnętrza łuku pokazano w przekroju: na 6,00 m daje 0,12 m różnicy wysokości. Nie zmienia ono kinematyki w rzucie z góry. Model nie uwzględnia pracy zawieszenia ani dynamicznego przechyłu; dokładność położenia względem podkładu rastrowego około ±0,05–0,10 m.</p>
-  </details>
+  <p class="text-small text-muted">Wymiary modelu: Volvo FH 4×2 — kabina 2,495 m, rozstaw osi 3,80 m, przód–oś przednia 1,555 m, oś przednia–sworzeń naczepy 3,425 m; Schmitz S.CS — szerokość 2,55 m, długość całkowita 13,72 m, sworzeń–środek zespołu osi 7,70 m. Rozstaw zewnętrzny lusterek 3,02 m oszacowano przez kalibrację widoku czołowego do publikowanej szerokości kabiny 2,495 m; niepewność tego parametru wynosi około ±0,05 m. Fotografia jest wyłącznie nakładką wizualną — obliczenia wykonuje model geometryczny. Przednie osie prowadzone środkiem pasów. R = 350,00 m. Jezdnia ma 6,00 m szerokości i spadek 2% do wnętrza łuku, czyli 0,12 m różnicy wysokości między krawędziami. Pobocza po 1,00 m pokazano ze spadkiem 8% na zewnątrz. Spadki nie zmieniają kinematyki w rzucie z góry. Model nie uwzględnia pracy zawieszenia ani dynamicznego przechyłu; dokładność położenia względem podkładu rastrowego około ±0,05–0,10 m.</p>
+  <p class="text-small text-muted">Nakładka zdjęciowa, widok czołowy: oficjalny render Volvo FH — źródło: <a href="https://www.volvotrucks.com/en-en/trucks/models/volvo-fh.html" target="_blank" rel="noopener noreferrer">Volvo Trucks</a>. Sylwetkę przeskalowano do obrysu modelu.</p>
   <p class="sr-only" id="truck-summary"></p>
 </section>
-</div>
+
 <script id="codex-visualization-floating-ui-core" src="https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js"></script>
 <script id="codex-visualization-floating-ui-dom" src="https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js"></script>
 <script id="codex-visualization-lucide" async src="https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js"></script>
 <script src="js/app.js"></script>
+<script id="zeromskiego-three-bundle" src="js/three-bundle.js"></script>
 <script id="codex-visualization-tooltip" src="js/tooltip.js"></script>
 <script id="codex-visualization-lucide-initialization" src="js/lucide-init.js"></script>
 </body>

@@ -1,4 +1,4 @@
-(() => {
+  (() => {
   const initialize = () => {
     globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
   };

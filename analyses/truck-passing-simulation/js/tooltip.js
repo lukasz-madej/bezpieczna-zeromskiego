@@ -1,4 +1,3 @@
-/* oxlint-disable typescript/no-unsafe-argument, typescript/no-unsafe-call, typescript/no-unsafe-return */
 // Runs inside the visualization sandbox, not the host webview.
 (() => {
   if (window.FloatingUIDOM == null) {
