@@ -422,7 +422,10 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
       return;
     }
     btn.textContent = 'Ładowanie…';
-    fetch(`data/news/${post.slug}.md`)
+    // cache: 'no-cache' forces the browser to revalidate with the server on every
+    // request (still cheap thanks to conditional 304s) instead of silently serving
+    // a stale cached copy of the post — otherwise readers could miss edits/updates.
+    fetch(`data/news/${post.slug}.md`, { cache: 'no-cache' })
       .then(r => r.ok ? r.text() : Promise.reject())
       .then(md => {
         body.innerHTML = marked.parse(md);
@@ -441,7 +444,17 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
       });
   }
 
-  const allPosts = (window.newsIndex || [])
+  // Fetch the news index fresh on every page load (cache: 'no-cache' forces
+  // revalidation with the server via conditional requests) instead of relying on
+  // a plain <script src> tag, whose response browsers/CDNs may cache aggressively
+  // — that was causing returning visitors to not see newly-published posts.
+  fetch('data/news/news-index.json', { cache: 'no-cache' })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .catch(() => [])
+    .then(initNews);
+
+  function initNews(newsIndex) {
+  const allPosts = (newsIndex || [])
     .slice()
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -543,6 +556,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   }
 
   renderPage(1);
+  }
 })();
 
 // ── Leaflet map – ul. Żeromskiego, Otwock ──

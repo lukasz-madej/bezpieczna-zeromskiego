@@ -1,4 +1,4 @@
-window.newsIndex = [
+[
   {
     "slug": "symulacja-mijania-pojazdow",
     "title": "Nowość: interaktywna symulacja mijania ciężarówek na Żeromskiego",
@@ -83,4 +83,4 @@ window.newsIndex = [
     "excerpt": "Zawiązaliśmy grupę mieszkańców ul. Żeromskiego, którzy chcą aktywnie uczestniczyć w procesie przebudowy i dopilnować, by inwestycja naprawdę poprawiła bezpieczeństwo.",
     "tags": ["inicjatywa"]
   }
-];
+]
