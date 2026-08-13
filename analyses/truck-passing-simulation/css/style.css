@@ -17,15 +17,32 @@
     background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
   }
   #zeromskiego-dynamic-pass .pass-slider::-webkit-slider-thumb {
-    background: darkgoldenrod;
-    border-color: color-mix(in srgb, darkgoldenrod 70%, var(--foreground));
+    width: 22px;
+    height: 22px;
+    margin-top: 3px;
+    border: 1px solid color-mix(in srgb, var(--gold) 70%, var(--foreground));
+    border-radius: var(--radius-full);
+    background-color: var(--gold);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cline x1='5' y1='12' x2='19' y2='12' stroke='%23071d44' stroke-width='2' stroke-linecap='round'/%3E%3Cpolyline points='9,7 4,12 9,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpolyline points='15,7 20,12 15,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px;
+    cursor: ew-resize;
   }
   #zeromskiego-dynamic-pass .pass-slider::-moz-range-track {
     background: linear-gradient(var(--viz-series-1), var(--viz-series-1)) center / 100% 6px no-repeat;
   }
   #zeromskiego-dynamic-pass .pass-slider::-moz-range-thumb {
-    background: darkgoldenrod;
-    border-color: color-mix(in srgb, darkgoldenrod 70%, var(--foreground));
+    width: 22px;
+    height: 22px;
+    border: 1px solid color-mix(in srgb, var(--gold) 70%, var(--foreground));
+    border-radius: var(--radius-full);
+    background-color: var(--gold);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cline x1='5' y1='12' x2='19' y2='12' stroke='%23071d44' stroke-width='2' stroke-linecap='round'/%3E%3Cpolyline points='9,7 4,12 9,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpolyline points='15,7 20,12 15,17' fill='none' stroke='%23071d44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: ew-resize;
   }
   #zeromskiego-dynamic-pass #pass-svg,
   #zeromskiego-dynamic-pass #cross-svg,
@@ -213,14 +230,14 @@
     stroke: var(--muted-foreground);
   }
   #zeromskiego-dynamic-pass .cross-label {
-    fill: var(--foreground);
-    font-size: 16px;
+    fill: var(--muted-foreground);
+    font-size: 0.8rem;
     font-weight: 500;
     text-anchor: middle;
   }
   #zeromskiego-dynamic-pass .cross-label-small {
-    fill: var(--foreground);
-    font-size: 12px;
+    fill: var(--muted-foreground);
+    font-size: 0.6rem;
     font-weight: 500;
     text-anchor: middle;
   }
