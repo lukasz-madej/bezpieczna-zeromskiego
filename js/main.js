@@ -751,14 +751,16 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
 
     // Same-origin iframe: measure its content and resize the frame to fit,
     // so there's no dead space or internal scrollbar regardless of content height.
+    // Note: once the iframe grows, its own viewport grows too, which inflates
+    // documentElement.scrollHeight to at least the current iframe height (it can
+    // never report smaller than the iframe's own viewport). body.scrollHeight
+    // reflects the actual content height and shrinks correctly, so it's used
+    // as the source of truth instead of documentElement.scrollHeight.
     const fitHeight = () => {
       try {
         const doc = iframe.contentDocument;
-        if (!doc || !doc.documentElement) return;
-        const height = Math.max(
-          doc.documentElement.scrollHeight,
-          doc.body ? doc.body.scrollHeight : 0
-        );
+        if (!doc || !doc.body) return;
+        const height = doc.body.scrollHeight;
         if (height > 0) iframe.style.height = height + 'px';
       } catch (err) {
         // Cross-origin or not yet accessible; keep the CSS fallback height.
@@ -769,9 +771,9 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
       fitHeight();
       try {
         const doc = iframe.contentDocument;
-        if (doc && doc.documentElement && 'ResizeObserver' in window) {
+        if (doc && doc.body && 'ResizeObserver' in window) {
           const observer = new ResizeObserver(fitHeight);
-          observer.observe(doc.documentElement);
+          observer.observe(doc.body);
         }
       } catch (err) {
         // Ignore; fitHeight already ran once on load.
