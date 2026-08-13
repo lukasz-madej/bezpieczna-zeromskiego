@@ -263,7 +263,8 @@
     vector-effect: non-scaling-stroke;
   }
   #zeromskiego-dynamic-pass .direction-row {
-    justify-content: space-between;
+    justify-content: center;
+    gap: 1rem;
     margin-top: 0.5rem;
   }
   #zeromskiego-dynamic-pass .legend-swatch {
