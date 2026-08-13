@@ -850,17 +850,19 @@
         y2: (localRoadY - vehicle.mirrorHeight * crossScale).toFixed(1),
         class: "cross-mirror-" + classSuffix
       }));
-      const label = svgElement("text", {
-        x: centerX.toFixed(1),
-        y: (localRoadY - 14).toFixed(1),
-        class: "cross-label"
-      });
-      label.textContent = labelText;
-      group.appendChild(label);
+      if (labelText) {
+        const label = svgElement("text", {
+          x: centerX.toFixed(1),
+          y: (localRoadY - 14).toFixed(1),
+          class: "cross-label"
+        });
+        label.textContent = labelText;
+        group.appendChild(label);
+      }
     }
 
-    drawCrossVehicle(root.querySelector("#cross-upper"), upperCenterX, "b", "B ←");
-    drawCrossVehicle(root.querySelector("#cross-lower"), lowerCenterX, "a", "A →");
+    drawCrossVehicle(root.querySelector("#cross-upper"), upperCenterX, "b", "");
+    drawCrossVehicle(root.querySelector("#cross-lower"), lowerCenterX, "a", "");
 
     const upperInnerOffset = Math.min(...upperMirrorRadii) - geometry.roadRadius;
     const lowerInnerOffset = Math.max(...lowerMirrorRadii) - geometry.roadRadius;

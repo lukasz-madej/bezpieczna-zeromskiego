@@ -330,6 +330,10 @@
     font-weight: 500;
     text-anchor: middle;
   }
+  #zeromskiego-dynamic-pass #axis-label,
+  #zeromskiego-dynamic-pass #crossfall-label {
+    font-size: 0.6rem;
+  }
   #zeromskiego-dynamic-pass .cross-cab-a,
   #zeromskiego-dynamic-pass .cross-cab-b {
     stroke-width: 2;
