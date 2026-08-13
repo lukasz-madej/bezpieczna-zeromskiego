@@ -1,5 +1,12 @@
 window.newsIndex = [
   {
+    "slug": "symulacja-mijania-pojazdow",
+    "title": "Nowość: interaktywna symulacja mijania ciężarówek na Żeromskiego",
+    "date": "2026-08-13",
+    "excerpt": "Dodaliśmy do naszej strony interaktywny model 3D pokazujący, jak dwie ciężarówki mijają się na projektowanej 6-metrowej jezdni ul. Żeromskiego.",
+    "tags": ["projekt"]
+  },
+  {
     "slug": "pisza-o-nas-przeglad-otwocki",
     "title": "Przegląd Otwocki pisze o przebudowie i naszej petycji",
     "date": "2026-08-11",
