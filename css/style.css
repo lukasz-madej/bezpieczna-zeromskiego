@@ -673,7 +673,7 @@ ul { list-style: none; }
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-top: 20px;
+  margin-top: 40px;
   flex-wrap: wrap;
 }
 .js-sim-toggle-icon {
@@ -683,14 +683,24 @@ ul { list-style: none; }
   transform: rotate(90deg);
 }
 .analysis-simulation-newtab {
+  display: inline-flex;
+  align-items: center;
   font-size: .85rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--navy);
   text-decoration: none;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 18px;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
 }
 .analysis-simulation-newtab:hover {
   color: var(--blue);
-  text-decoration: underline;
+  border-color: var(--blue);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.1);
 }
 .analysis-simulation-embed {
   margin-top: 20px;
