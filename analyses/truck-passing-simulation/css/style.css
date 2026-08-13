@@ -12,10 +12,12 @@
   }
   #zeromskiego-dynamic-pass .viz-section {
     padding-top: 0.4rem;
+    margin-bottom: 20px;
     border-top: 1px solid var(--border);
   }
   #zeromskiego-dynamic-pass .viz-details {
     padding-top: 0.4rem;
+    margin-bottom: 20px;
     border-top: 1px solid var(--border);
   }
   #zeromskiego-dynamic-pass .viz-details > summary,
@@ -37,6 +39,10 @@
   #zeromskiego-dynamic-pass .viz-details > :not(summary) + *,
   #zeromskiego-dynamic-pass details.viz-section > :not(summary) + * {
     margin-top: 0.75rem;
+  }
+  #zeromskiego-dynamic-pass .viz-details > p.text-small.text-muted,
+  #zeromskiego-dynamic-pass details.viz-section > p.text-small.text-muted {
+    text-align: center;
   }
   #zeromskiego-dynamic-pass .form-label {
     flex: 1 1 22rem;

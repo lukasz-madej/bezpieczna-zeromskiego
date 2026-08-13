@@ -2,7 +2,7 @@
   color-scheme: light;
   background-color: transparent !important;
 
-  /* Bezpieczna Żeromskiego brand tokens — kept in sync with the main site's
+  /* Bezpieczna Żeromskiego brand tokens - kept in sync with the main site's
      css/style.css so this analysis matches the website UI and can be
      dropped into it later with minimal changes. */
   --background: var(--main-surface-primary, #f5f7fa);

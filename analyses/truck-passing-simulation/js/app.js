@@ -258,10 +258,10 @@
     label("KONIEC: oś " + fmt(innerC.rearAxis) + " / kraw. " + fmt(innerC.rearEdge), inner.trailerRear, -250, 44);
 
     tableBody.innerHTML = [
-      ["Górny pas — czoło (lusterka)", outerC.frontAxis, outerC.frontEdge],
-      ["Górny pas — koniec naczepy", outerC.rearAxis, outerC.rearEdge],
-      ["Dolny pas — czoło (lusterka)", innerC.frontAxis, innerC.frontEdge],
-      ["Dolny pas — koniec naczepy", innerC.rearAxis, innerC.rearEdge]
+      ["Górny pas - czoło (lusterka)", outerC.frontAxis, outerC.frontEdge],
+      ["Górny pas - koniec naczepy", outerC.rearAxis, outerC.rearEdge],
+      ["Dolny pas - czoło (lusterka)", innerC.frontAxis, innerC.frontEdge],
+      ["Dolny pas - koniec naczepy", innerC.rearAxis, innerC.rearEdge]
     ].map(row => '<tr><td>' + row[0] + '</td><td class="text-end text-nowrap">' + fmt(row[1]) + '</td><td class="text-end text-nowrap">' + fmt(row[2]) + '</td></tr>').join("");
 
     const meetingGap = outerC.frontAxis + innerC.frontAxis;
@@ -498,7 +498,7 @@
         const outward = unit(sub(pointToMeasure, section.center));
         return {
           id: prefix + id,
-          description: section.label + " — strona " + side,
+          description: section.label + " - strona " + side,
           point: pointToMeasure,
           labelPoint: add(pointToMeasure, outward, 0.78)
         };
@@ -1260,18 +1260,18 @@
     collisionState.textContent = nearest.value < -0.0005 ? "Kolizja" : nearest.value > 0.0005 ? "Odstęp" : "Styk";
     collisionState.classList.toggle("text-destructive", nearest.value < -0.0005);
     gapPair.textContent = pair;
-    status.textContent = "Etap: " + phase + ". Kąt osi ciągników " + angleDegrees.toFixed(2).replace(".", ",") + "° wynika z geometrii R = 350 m i położenia zestawów, a nie z prędkości. Dla 50 km/h przyspieszenie boczne wynosi 0,056 g. Spadek 2% do wnętrza łuku jest pokazany w przekroju pionowym; nie zmienia obliczeń rzutu z góry. Wartość dodatnia oznacza odstęp, 0,00 m — zetknięcie, a ujemna — geometryczne wejście punktu w obrys drugiego zestawu. Punkty 1–2: czoło naczepy, 3–4: środek, 5–6: koniec; numery nieparzyste są od strony osi jezdni.";
+    status.textContent = "Etap: " + phase + ". Kąt osi ciągników " + angleDegrees.toFixed(2).replace(".", ",") + "° wynika z geometrii R = 350 m i położenia zestawów, a nie z prędkości. Dla 50 km/h przyspieszenie boczne wynosi 0,056 g. Spadek 2% do wnętrza łuku jest pokazany w przekroju pionowym; nie zmienia obliczeń rzutu z góry. Wartość dodatnia oznacza odstęp, 0,00 m - zetknięcie, a ujemna - geometryczne wejście punktu w obrys drugiego zestawu. Punkty 1–2: czoło naczepy, 3–4: środek, 5–6: koniec; numery nieparzyste są od strony osi jezdni.";
 
     const rows = [
-      ["Górny pas B ← — czoło (lusterka)", upperClearance.frontAxis, upperClearance.frontEdge, signedPointSetToVehicle(upper.mirrorTips, lower)],
+      ["Górny pas B ← - czoło (lusterka)", upperClearance.frontAxis, upperClearance.frontEdge, signedPointSetToVehicle(upper.mirrorTips, lower)],
       ...upperMeasurementPoints.map(item => {
         const distances = pointClearances(upper, item.point);
-        return [item.id + " — B ←, " + item.description, distances.axis, distances.edge, signedPointToVehicle(item.point, lower)];
+        return [item.id + " - B ←, " + item.description, distances.axis, distances.edge, signedPointToVehicle(item.point, lower)];
       }),
-      ["Dolny pas A → — czoło (lusterka)", lowerClearance.frontAxis, lowerClearance.frontEdge, signedPointSetToVehicle(lower.mirrorTips, upper)],
+      ["Dolny pas A → - czoło (lusterka)", lowerClearance.frontAxis, lowerClearance.frontEdge, signedPointSetToVehicle(lower.mirrorTips, upper)],
       ...lowerMeasurementPoints.map(item => {
         const distances = pointClearances(lower, item.point);
-        return [item.id + " — A →, " + item.description, distances.axis, distances.edge, signedPointToVehicle(item.point, upper)];
+        return [item.id + " - A →, " + item.description, distances.axis, distances.edge, signedPointToVehicle(item.point, upper)];
       })
     ];
     tableBody.innerHTML = rows.map(row =>
