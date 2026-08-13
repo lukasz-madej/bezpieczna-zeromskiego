@@ -1251,7 +1251,7 @@
     const lowerClearance = clearances(lower);
     const upperMeasurementPoints = measurementPoints(upper, "B");
     const lowerMeasurementPoints = measurementPoints(lower, "A");
-    const phase = fraction < 0.33 ? "zbliżanie" : fraction <= 0.67 ? "mijanie" : "po minięciu";
+    const phase = fraction < 0.33 ? "zbliżanie" : fraction <= 0.67 ? "mijanie" : "oddalanie";
     const pair = nearest.labelA + " ↔ " + nearest.labelB;
     positionValue.textContent = slider.value.replace(".", ",") + "%";
     relativeAngle.textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";

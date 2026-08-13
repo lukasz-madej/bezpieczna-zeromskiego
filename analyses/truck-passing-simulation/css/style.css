@@ -93,6 +93,43 @@
   }
   #zeromskiego-dynamic-pass .three-controls {
     margin-top: 0.4rem;
+    align-items: center;
+  }
+  #zeromskiego-dynamic-pass .three-controls .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 2px solid transparent;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  }
+  #zeromskiego-dynamic-pass .three-controls .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(7, 29, 68, 0.18);
+  }
+  #zeromskiego-dynamic-pass .three-controls .btn:active {
+    transform: translateY(0);
+  }
+  #zeromskiego-dynamic-pass .three-controls .btn-primary {
+    background: var(--orange);
+    color: var(--card);
+    border-color: var(--orange);
+  }
+  #zeromskiego-dynamic-pass .three-controls .btn-primary:hover {
+    background: color-mix(in srgb, var(--orange) 85%, black);
+    border-color: color-mix(in srgb, var(--orange) 85%, black);
+  }
+  #zeromskiego-dynamic-pass .three-controls .btn:not(.btn-primary) {
+    background: transparent;
+    color: var(--navy);
+    border-color: var(--border);
+  }
+  #zeromskiego-dynamic-pass .three-controls .btn:not(.btn-primary):hover {
+    background: color-mix(in srgb, var(--navy) 6%, transparent);
+    border-color: var(--navy);
   }
   #zeromskiego-dynamic-pass #three-canvas[hidden] {
     display: none;
