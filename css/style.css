@@ -65,6 +65,20 @@ ul { list-style: none; }
 .section-white  { background: var(--white); }
 .section-navy   { background: var(--navy); color: var(--white); }
 
+/* ── PROJECT SUBPAGE BREADCRUMB ── */
+.project-breadcrumb {
+  padding: 20px 24px 0;
+}
+.project-breadcrumb a {
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.project-breadcrumb a:hover {
+  color: var(--primary);
+}
+
 /* ── SECTION HEADER ── */
 .section-header {
   text-align: center;
@@ -1975,6 +1989,12 @@ a.seg-step:active { transform: translateY(0); }
   left: 0;
   color: var(--gold);
   font-weight: 700;
+}
+.segment-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 /* ── Navy outline button (for use on dark backgrounds) ── */

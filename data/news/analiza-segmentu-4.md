@@ -7,4 +7,4 @@
 - Powstanie nowe przejście dla pieszych i rowerzystów pomiędzy ul. Laskową i drogą techniczną przed wiaduktem.
 - Tak jak w częściach poprzednich: nowa ścieżka (ciąg pieszo-rowerowy) o szerokości 3m, przebudowane zjazdy oraz zwężona będzie ul. Żeromskiego do 6m.
 
-Szczegółową analizę tego segmentu znajdziecie [tutaj](#segment-4).
+Szczegółową analizę tego segmentu znajdziecie [tutaj](projekt.html#segment-4).

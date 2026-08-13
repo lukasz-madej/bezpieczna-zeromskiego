@@ -4,4 +4,4 @@ Wg projektu i zamówienia robót, na tym odcinku, wykonawca będzie miał za zad
 - zostaną przebudowane zjazdy na drogi poprzeczne i posesje.
 - częściowo zostaną uzupełnione/poprawione chodniki po stronie południowej, jednak w ograniczonym zakresie.
 
-Szczegółową analizę tego segmentu znajdziecie [tutaj](#segment-1).
+Szczegółową analizę tego segmentu znajdziecie [tutaj](projekt.html#segment-1).

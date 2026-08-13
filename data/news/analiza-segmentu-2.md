@@ -5,4 +5,4 @@
 - Powstanie przejście dla pieszych i rowerzystów na ul. Kosackiego.
 - Tak jak w części poprzedniej powstanie nowa ścieżka (ciąg pieszo-rowerowy) o szerokości 3m przebudowane zostaną zjazdy oraz zwężona będzie ul. Żeromskiego do 6m.
   
-Szczegółową analizę tego segmentu znajdziecie [tutaj](#segment-2).
+Szczegółową analizę tego segmentu znajdziecie [tutaj](projekt.html#segment-2).
