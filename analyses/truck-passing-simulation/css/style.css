@@ -43,6 +43,8 @@
   #zeromskiego-dynamic-pass .viz-details > p.text-small.text-muted,
   #zeromskiego-dynamic-pass details.viz-section > p.text-small.text-muted {
     text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
   }
   #zeromskiego-dynamic-pass .form-label {
     flex: 1 1 22rem;
@@ -331,7 +333,8 @@
     text-anchor: middle;
   }
   #zeromskiego-dynamic-pass #axis-label,
-  #zeromskiego-dynamic-pass #crossfall-label {
+  #zeromskiego-dynamic-pass #crossfall-label,
+  #zeromskiego-dynamic-pass .cross-dimension-label {
     font-size: 0.6rem;
   }
   #zeromskiego-dynamic-pass .cross-cab-a,

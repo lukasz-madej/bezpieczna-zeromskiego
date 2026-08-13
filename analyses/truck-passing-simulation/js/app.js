@@ -878,7 +878,7 @@
       y2: upperInner.y.toFixed(1),
       class: "cross-gap-line"
     }));
-    root.querySelector("#cross-gap-label").textContent = "lustra: poziomo " + formatMeters(mirrorGap) + " · Δh " + heightDifference.toFixed(2).replace(".", ",") + " m";
+    root.querySelector("#cross-gap-label").textContent = "lusterka: poziomo " + formatMeters(mirrorGap) + " · Δh " + heightDifference.toFixed(2).replace(".", ",") + " m";
 
     const halfAngle = angleDegrees * Math.PI / 360;
     const lengthPx = 80;
