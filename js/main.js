@@ -85,13 +85,16 @@ window.addEventListener('scroll', () => {
 // sticky navbar) rather than requiring a fixed % of a section's total area
 // to be visible — the latter never triggers for tall sections like #projekt.
 const sections = document.querySelectorAll('section[id]');
-const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+// Some nav links now point to a standalone subpage (e.g. "Projekt" → projekt.html)
+// instead of an in-page anchor, so they carry a data-section attribute mirroring
+// the section id they represent, in addition to the plain "#id" anchor links.
+const navAnchors = document.querySelectorAll('.nav-links a[href^="#"], .nav-links a[data-section]');
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       navAnchors.forEach(a => a.classList.remove('active'));
-      const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+      const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"], .nav-links a[data-section="${entry.target.id}"]`);
       if (active) active.classList.add('active');
     }
   });
