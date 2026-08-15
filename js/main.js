@@ -604,6 +604,8 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     { latlng: [52.127055432266054, 21.312573915062078], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
     { latlng: [52.13074837745995, 21.323004688174663], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
     { latlng: [52.13483980805939, 21.33002119315483], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
+    { latlng: [52.126059750892324, 21.309004805716377], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
+    { latlng: [52.12655091339333, 21.310653377756566], color: ORANGE, label: 'Niebezpieczne wyprzedzanie', category: 'wyprzedzanie' },
     // Rejon szkoły (zielone)
     { latlng: [52.13653646456338, 21.333757832170935], color: GREEN,  label: 'Rejon SP8 – strefa szczególnej ochrony', category: 'szkola' },
   ];
