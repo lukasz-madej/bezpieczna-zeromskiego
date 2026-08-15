@@ -84,6 +84,7 @@ ul { list-style: none; }
   text-align: center;
   margin-bottom: 52px;
 }
+.section-header h1,
 .section-header h2 {
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   font-weight: 900;
@@ -91,6 +92,7 @@ ul { list-style: none; }
   color: var(--navy);
   margin-top: 10px;
 }
+.section-header-light h1,
 .section-header-light h2 { color: var(--white); }
 .section-desc {
   max-width: 600px;
