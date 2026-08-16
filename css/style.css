@@ -786,6 +786,13 @@ ul { list-style: none; }
   opacity: 0.6;
   flex-shrink: 0;
 }
+.map-legend-hint {
+  text-align: center;
+  font-size: .78rem;
+  color: var(--text-muted);
+  opacity: .7;
+  margin: 8px 0 0;
+}
 
 /* ══════════════════════════════════════════════════════════
    PETYCJA
