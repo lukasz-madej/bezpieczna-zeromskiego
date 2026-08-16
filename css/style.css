@@ -905,7 +905,7 @@ ul { list-style: none; }
 }
 .petycja-goal.completed .petycja-goal-label,
 .petycja-goal.completed .petycja-goal-percent {
-  color: var(--green);
+  color: var(--white);
 }
 .petycja-goal.completed .petycja-goal-label::after {
   content: " 🎉";
