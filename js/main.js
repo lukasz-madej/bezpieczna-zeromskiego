@@ -273,7 +273,7 @@ Promise.all([
 });
 
 // ── Signature milestone progress bar ──
-// Three independent goals (250 / 500 / 1000), each with its own bar and
+// Four independent goals (250 / 500 / 750 / 1000), each with its own bar and
 // percentage toward that specific target — avoids any ambiguity between a
 // shared bar's fill and evenly-spaced milestone markers.
 function celebrateGoal(goalEl, milestone) {
@@ -302,6 +302,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   const goals = [
     { milestone: 250, fill: document.getElementById('goal250Fill'), percent: document.getElementById('goal250Percent'), el: document.getElementById('goal250') },
     { milestone: 500, fill: document.getElementById('goal500Fill'), percent: document.getElementById('goal500Percent'), el: document.getElementById('goal500') },
+    { milestone: 750, fill: document.getElementById('goal750Fill'), percent: document.getElementById('goal750Percent'), el: document.getElementById('goal750') },
     { milestone: 1000, fill: document.getElementById('goal1000Fill'), percent: document.getElementById('goal1000Percent'), el: document.getElementById('goal1000') }
   ];
 
