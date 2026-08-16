@@ -898,11 +898,14 @@ ul { list-style: none; }
   width: 0%;
   background: linear-gradient(90deg, var(--gold), var(--orange));
   border-radius: 999px;
-  transition: width 1s ease;
+  transition: width 1s ease, background .4s ease;
+}
+.petycja-goal.completed .petycja-goal-fill {
+  background: linear-gradient(90deg, var(--green-dark), var(--green));
 }
 .petycja-goal.completed .petycja-goal-label,
 .petycja-goal.completed .petycja-goal-percent {
-  color: var(--white);
+  color: var(--green);
 }
 .petycja-goal.completed .petycja-goal-label::after {
   content: " 🎉";
