@@ -88,7 +88,7 @@ const sections = document.querySelectorAll('section[id]');
 // Some nav links now point to a standalone subpage (e.g. "Projekt" → projekt.html)
 // instead of an in-page anchor, so they carry a data-section attribute mirroring
 // the section id they represent, in addition to the plain "#id" anchor links.
-const navAnchors = document.querySelectorAll('.nav-links a[href^="#"], .nav-links a[data-section]');
+const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]:not([href="#"]), .nav-links a[data-section]');
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -254,8 +254,8 @@ if (petycjaSection) {
 }
 
 Promise.all([
-  fetch('data/signatures.json').then(r => r.ok ? r.json() : Promise.reject()).catch(() => null),
-  fetch('data/signatures-manual.json').then(r => r.ok ? r.json() : Promise.reject()).catch(() => null)
+  fetch('data/signatures.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : Promise.reject()).catch(() => null),
+  fetch('data/signatures-manual.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : Promise.reject()).catch(() => null)
 ]).then(([online, manual]) => {
   const breakdownEl = document.getElementById('petycjaCounterBreakdown');
   const onlineCount = online && online.count != null ? online.count : null;
@@ -294,7 +294,6 @@ function celebrateGoal(goalEl, milestone) {
     burst.appendChild(piece);
   }
   goalEl.appendChild(burst);
-  burst.addEventListener('animationend', () => burst.remove(), { once: false });
   setTimeout(() => burst.remove(), 1600);
 }
 
@@ -400,24 +399,53 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
 
     body.querySelectorAll('.news-gallery img').forEach(img => { img.loading = 'lazy'; });
 
+    // Wrap each news gallery image in a <button> so the lightbox trigger has
+    // proper interactive semantics (avoids role=button on a raw <img>).
+    body.querySelectorAll('.news-gallery img').forEach(img => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'news-gallery-btn';
+      img.parentNode.insertBefore(btn, img);
+      btn.appendChild(img);
+    });
+
     // Wire the gallery into the same lightbox used by the analysis section.
     const galleryImgs = Array.from(body.querySelectorAll('.news-gallery img')).map(img => ({
       src: img.src,
       alt: img.alt,
       caption: img.alt || ''
     }));
-    body.querySelectorAll('.news-gallery img').forEach((img, i) => wireLightboxTrigger(img, galleryImgs, i));
+    body.querySelectorAll('.news-gallery-btn').forEach((btn, i) => wireLightboxTrigger(btn, galleryImgs, i));
+  }
+
+  function openBody(body) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.classList.add('open');
+    body.addEventListener('transitionend', function onEnd(e) {
+      if (e.propertyName !== 'max-height') return;
+      body.removeEventListener('transitionend', onEnd);
+      body.style.maxHeight = 'none';
+    });
+  }
+
+  function closeBody(body) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.classList.remove('open');
+    // Force a reflow so the browser registers the explicit height before
+    // the CSS transition collapses it to 0 via the non-.open rule.
+    void body.offsetHeight;
+    body.style.maxHeight = '';
   }
 
   function togglePost(post, btn, body) {
     if (body.classList.contains('open')) {
-      body.classList.remove('open');
+      closeBody(body);
       btn.textContent = 'Czytaj więcej →';
       btn.setAttribute('aria-expanded', 'false');
       return;
     }
     if (body.dataset.loaded) {
-      body.classList.add('open');
+      openBody(body);
       btn.textContent = 'Zwiń ↑';
       btn.setAttribute('aria-expanded', 'true');
       return;
@@ -432,14 +460,14 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
         body.innerHTML = marked.parse(md);
         enhanceNewsPhotos(body);
         body.dataset.loaded = '1';
-        body.classList.add('open');
+        openBody(body);
         btn.textContent = 'Zwiń ↑';
         btn.setAttribute('aria-expanded', 'true');
       })
       .catch(() => {
         body.innerHTML = `<p>${post.excerpt}</p><p class="news-error">Pełna treść dostępna po otwarciu strony przez serwer HTTP.</p>`;
         body.dataset.loaded = '1';
-        body.classList.add('open');
+        openBody(body);
         btn.textContent = 'Zwiń ↑';
         btn.setAttribute('aria-expanded', 'true');
       });
