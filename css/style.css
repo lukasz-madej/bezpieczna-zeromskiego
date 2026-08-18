@@ -76,7 +76,7 @@ ul { list-style: none; }
   text-decoration: none;
 }
 .project-breadcrumb a:hover {
-  color: var(--primary);
+  color: var(--blue);
 }
 
 /* ── SECTION HEADER ── */

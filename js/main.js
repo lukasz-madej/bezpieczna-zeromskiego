@@ -358,7 +358,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   }
 
   function tagHtml(tags) {
-    const colourMap = { petycja: 'petycja', inicjatywa: 'inicjatywa', projekt: 'projekt', przetarg: 'przetarg', analiza: 'analizy', działania: 'petycja', mieszkańcy: 'inicjatywa', powiat: 'przetarg' };
+    const colourMap = { petycja: 'petycja', inicjatywa: 'inicjatywa', projekt: 'projekt', przetarg: 'przetarg', analiza: 'analizy', działania: 'petycja', mieszkańcy: 'inicjatywa', powiat: 'przetarg', prasa: 'przetarg', finansowanie: 'projekt' };
     return (tags || []).map(t =>
       `<span class="news-tag news-tag-${colourMap[t] || ''}">${t}</span>`
     ).join('');
