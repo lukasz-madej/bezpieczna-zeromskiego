@@ -585,6 +585,11 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   }
 
   renderPage(1);
+
+  const hashTarget = location.hash && document.getElementById(location.hash.slice(1));
+  if (hashTarget && hashTarget.closest('#aktualnosci')) {
+    hashTarget.scrollIntoView();
+  }
   }
 })();
 

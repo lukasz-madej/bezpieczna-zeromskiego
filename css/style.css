@@ -305,6 +305,25 @@ ul { list-style: none; }
   text-transform: uppercase;
   margin-bottom: 16px;
 }
+.hero-now {
+  display: inline-flex;
+  align-items: center;
+  max-width: 520px;
+  margin: 0 0 18px;
+  padding: 8px 14px;
+  border-radius: 100px;
+  background: rgba(245,180,0,.18);
+  border: 1px solid rgba(245,180,0,.45);
+  color: var(--gold);
+  font-size: .88rem;
+  font-weight: 700;
+  line-height: 1.35;
+  transition: background .2s, color .2s;
+}
+.hero-now:hover {
+  background: rgba(245,180,0,.28);
+  color: var(--white);
+}
 .hero-content h1 {
   font-size: clamp(2.2rem, 5vw, 3.8rem);
   font-weight: 900;
