@@ -149,15 +149,16 @@ def sha256_of(path: Path) -> str:
 # ROOT), value = list of HTML files that reference it.
 CACHE_BUSTED_ASSETS = {
     "css/style.css": ["index.html", "projekt.html"],
+    "js/main.js": ["index.html", "projekt.html"],
 }
 
 _CACHE_BUSTER_RE_TMPL = r'({asset}\?v=)[^\s"\'>#]*'
 
 
-def bump_cache_busters():
-    """Rewrites ?v=<hash> query strings in HTML files to match the current
-    content hash of the referenced asset.  Only touches a file when the hash
-    has actually changed, so the manifest diff stays clean."""
+def bump_cache_busters(manifest):
+    """Rewrites ?v=<hash> in HTML files, but only for assets whose content
+    has changed since the last successful deploy (compared against the
+    sha256 manifest).  HTML is left untouched when CSS/JS are unchanged."""
     import re
     changed = []
     for asset_rel, html_files in CACHE_BUSTED_ASSETS.items():
@@ -165,7 +166,10 @@ def bump_cache_busters():
         if not asset_path.exists():
             print(f"  ? cache-buster: {asset_rel} not found, skipping")
             continue
-        new_hash = sha256_of(asset_path)[:12]
+        digest = sha256_of(asset_path)
+        if manifest.get(asset_rel) == digest:
+            continue
+        new_hash = digest[:12]
         pattern = re.compile(_CACHE_BUSTER_RE_TMPL.format(asset=re.escape(asset_rel)))
         for html_rel in html_files:
             html_path = ROOT / html_rel
@@ -173,10 +177,11 @@ def bump_cache_busters():
                 continue
             original = html_path.read_text(encoding="utf-8")
             updated = pattern.sub(rf"\g<1>{new_hash}", original)
-            if updated != original:
-                html_path.write_text(updated, encoding="utf-8")
-                print(f"  ↻ cache-buster updated: {html_rel}  ({asset_rel}?v={new_hash})")
-                changed.append(html_rel)
+            if updated == original:
+                continue
+            html_path.write_text(updated, encoding="utf-8")
+            print(f"  ↻ cache-buster updated: {html_rel}  ({asset_rel}?v={new_hash})")
+            changed.append(html_rel)
     return changed
 
 
@@ -272,10 +277,9 @@ def main():
         return
 
     config = load_config()
-    print("Updating CSS cache-busters…")
-    bump_cache_busters()
-    local_files = collect_local_files()
     manifest = {} if args.force else load_manifest()
+    bump_cache_busters(manifest)
+    local_files = collect_local_files()
 
     to_upload = []
     for rel_path, local_path in sorted(local_files.items()):

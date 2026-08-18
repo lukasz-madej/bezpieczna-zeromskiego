@@ -1016,6 +1016,7 @@ ul { list-style: none; }
 .news-tag-inicjatywa { background: rgba(76,175,80,.12); color: var(--green-dark); }
 .news-tag-projekt    { background: rgba(245,180,0,.15); color: var(--gold-dark); }
 .news-tag-przetarg   { background: rgba(216,38,38,.1);  color: var(--red); }
+.news-tag-powiat     { background: rgba(7,29,68,.1);    color: var(--navy); }
 .news-tag-analizy    { background: rgba(245,180,0,.15); color: var(--gold-dark); }
 
 .news-badge-new {
