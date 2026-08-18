@@ -49,18 +49,24 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 // ── Sticky petition CTA ──
-// Always visible; pins 20px above the footer once a fixed position would
-// otherwise make it overlap/cover the footer content.
+// Hidden while #petycja is on screen. Pins 20px above the footer once a
+// fixed position would otherwise overlap/cover the footer content.
 (function () {
   const stickyCta = document.getElementById('stickyCta');
   const footer = document.getElementById('kontakt');
+  const petycja = document.getElementById('petycja');
   if (!stickyCta) return;
 
   const GAP_ABOVE_FOOTER = 20;
   const FIXED_BOTTOM_OFFSET = 24; // matches `bottom` in .sticky-cta CSS
+  let petycjaInView = false;
+
+  function setHidden() {
+    stickyCta.classList.toggle('is-hidden', petycjaInView);
+  }
 
   function update() {
-    if (!footer) return;
+    if (!footer || stickyCta.classList.contains('is-hidden')) return;
     const ctaHeight = stickyCta.offsetHeight;
     const footerTopAbs = footer.getBoundingClientRect().top + window.scrollY;
     const pinnedTopAbs = footerTopAbs - GAP_ABOVE_FOOTER - ctaHeight;
@@ -75,8 +81,18 @@ window.addEventListener('scroll', () => {
     }
   }
 
+  if (petycja) {
+    const observer = new IntersectionObserver((entries) => {
+      petycjaInView = entries.some(entry => entry.isIntersecting);
+      setHidden();
+      update();
+    }, { threshold: 0.2 });
+    observer.observe(petycja);
+  }
+
   window.addEventListener('scroll', update, { passive: true });
   window.addEventListener('resize', update);
+  setHidden();
   update();
 })();
 
@@ -305,6 +321,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     { milestone: 1000, fill: document.getElementById('goal1000Fill'), percent: document.getElementById('goal1000Percent'), el: document.getElementById('goal1000') }
   ];
 
+  let nextAssigned = false;
   goals.forEach(({ milestone, fill, percent, el }) => {
     if (!fill) return;
     const pct = Math.min(100, (total / milestone) * 100);
@@ -313,7 +330,12 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     if (percent) animateNumber(percent, fromPct, pct, 1200, n => `${Math.round(n)}%`);
     const wasCompleted = el?.classList.contains('completed');
     const isCompleted = total >= milestone;
-    if (el) el.classList.toggle('completed', isCompleted);
+    if (el) {
+      el.classList.toggle('completed', isCompleted);
+      const isNext = !isCompleted && !nextAssigned;
+      el.classList.toggle('is-next', isNext);
+      if (isNext) nextAssigned = true;
+    }
     if (isCompleted && !wasCompleted) celebrateGoal(el, milestone);
   });
 }
