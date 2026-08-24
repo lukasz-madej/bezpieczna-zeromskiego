@@ -373,6 +373,38 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   const list = document.getElementById('newsList');
   if (!list) return;
 
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // Strip scripts/event handlers from markdown HTML; links/images must stay http(s) or site-relative.
+  function sanitizeNewsHtml(html) {
+    const tpl = document.createElement('template');
+    tpl.innerHTML = html;
+    const blocked = new Set(['SCRIPT', 'IFRAME', 'OBJECT', 'EMBED', 'FORM', 'INPUT', 'BUTTON', 'LINK', 'META', 'STYLE', 'BASE']);
+    const toRemove = [];
+    tpl.content.querySelectorAll('*').forEach(el => {
+      if (blocked.has(el.tagName)) {
+        toRemove.push(el);
+        return;
+      }
+      [...el.attributes].forEach(attr => {
+        const name = attr.name.toLowerCase();
+        const val = attr.value.trim().toLowerCase();
+        if (name.startsWith('on') || ((name === 'href' || name === 'src') && (val.startsWith('javascript:') || val.startsWith('data:text/html')))) {
+          el.removeAttribute(attr.name);
+        }
+      });
+    });
+    toRemove.forEach(el => el.remove());
+    return tpl.innerHTML;
+  }
+
   function formatDate(iso) {
     const d = new Date(iso);
     return d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -380,9 +412,10 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
 
   function tagHtml(tags) {
     const colourMap = { petycja: 'petycja', inicjatywa: 'inicjatywa', projekt: 'projekt', przetarg: 'przetarg', analiza: 'analizy', działania: 'petycja', mieszkańcy: 'inicjatywa', powiat: 'powiat', prasa: 'przetarg', finansowanie: 'projekt' };
-    return (tags || []).map(t =>
-      `<span class="news-tag news-tag-${colourMap[t] || ''}">${t}</span>`
-    ).join('');
+    return (tags || []).map(t => {
+      const colour = colourMap[t] ? ` news-tag-${colourMap[t]}` : '';
+      return `<span class="news-tag${colour}">${escapeHtml(t)}</span>`;
+    }).join('');
   }
 
   // Groups consecutive "image-only" paragraphs (produced by markdown like
@@ -479,7 +512,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     fetch(`data/news/${post.slug}.md`, { cache: 'no-cache' })
       .then(r => r.ok ? r.text() : Promise.reject())
       .then(md => {
-        body.innerHTML = marked.parse(md);
+        body.innerHTML = sanitizeNewsHtml(marked.parse(md));
         enhanceNewsPhotos(body);
         body.dataset.loaded = '1';
         openBody(body);
@@ -487,7 +520,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
         btn.setAttribute('aria-expanded', 'true');
       })
       .catch(() => {
-        body.innerHTML = `<p>${post.excerpt}</p><p class="news-error">Pełna treść dostępna po otwarciu strony przez serwer HTTP.</p>`;
+        body.innerHTML = `<p>${escapeHtml(post.excerpt)}</p><p class="news-error">Pełna treść dostępna po otwarciu strony przez serwer HTTP.</p>`;
         body.dataset.loaded = '1';
         openBody(body);
         btn.textContent = 'Zwiń ↑';
@@ -514,7 +547,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     return;
   }
 
-  // "Nowe" badge for posts published within the last 2 weeks.
+  // "Nowe" badge for posts published within the last day.
   const NEW_BADGE_DAYS = 1;
   const now = new Date();
   function isRecent(dateStr) {
@@ -531,7 +564,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     if (!filtersEl || !allTags.length) return;
     filtersEl.innerHTML = [
       `<button type="button" class="news-filter-btn${activeTag === null ? ' active' : ''}" data-tag="" aria-pressed="${activeTag === null}">Wszystkie</button>`,
-      ...allTags.map(t => `<button type="button" class="news-filter-btn${activeTag === t ? ' active' : ''}" data-tag="${t}" aria-pressed="${activeTag === t}">${t}</button>`)
+      ...allTags.map(t => `<button type="button" class="news-filter-btn${activeTag === t ? ' active' : ''}" data-tag="${escapeHtml(t)}" aria-pressed="${activeTag === t}">${escapeHtml(t)}</button>`)
     ].join('');
 
     filtersEl.querySelectorAll('.news-filter-btn').forEach(btn => {
@@ -561,14 +594,14 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     }
 
     list.innerHTML = pagePosts.map((post, i) => `
-      <article class="news-card${isRecent(post.date) ? ' news-card--new' : ''}" id="news-${post.slug}" data-category="${(post.tags || [])[0] || ''}">
+      <article class="news-card${isRecent(post.date) ? ' news-card--new' : ''}" id="news-${escapeHtml(post.slug)}" data-category="${escapeHtml((post.tags || [])[0] || '')}">
         <div class="news-card-inner">
           <div class="news-meta">
-            <time class="news-date" datetime="${post.date}">${formatDate(post.date)}</time>
+            <time class="news-date" datetime="${escapeHtml(post.date)}">${formatDate(post.date)}</time>
             <div class="news-tags">${tagHtml(post.tags)}${isRecent(post.date) ? '<span class="news-badge-new">Nowe</span>' : ''}</div>
           </div>
-          <h3 class="news-title">${post.title}</h3>
-          <p class="news-excerpt">${post.excerpt}</p>
+          <h3 class="news-title">${escapeHtml(post.title)}</h3>
+          <p class="news-excerpt">${escapeHtml(post.excerpt)}</p>
           <div class="news-body"></div>
           <div class="news-footer">
             <button class="news-toggle" aria-expanded="false">Czytaj więcej →</button>
@@ -606,12 +639,26 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     </nav>`;
   }
 
-  renderPage(1);
-
-  const hashTarget = location.hash && document.getElementById(location.hash.slice(1));
-  if (hashTarget && hashTarget.closest('#aktualnosci')) {
-    hashTarget.scrollIntoView();
+  function pageForNewsSlug(slug) {
+    const idx = filteredPosts().findIndex(p => p.slug === slug);
+    if (idx === -1) return null;
+    return Math.floor(idx / PER_PAGE) + 1;
   }
+
+  function navigateToNewsHash() {
+    const hash = location.hash;
+    if (!hash.startsWith('#news-')) return;
+    const slug = decodeURIComponent(hash.slice('#news-'.length));
+    const page = pageForNewsSlug(slug);
+    if (!page) return;
+    if (page !== currentPage) renderPage(page);
+    const target = document.getElementById(`news-${slug}`);
+    if (target) target.scrollIntoView();
+  }
+
+  renderPage(1);
+  navigateToNewsHash();
+  window.addEventListener('hashchange', navigateToNewsHash);
   }
 })();
 
