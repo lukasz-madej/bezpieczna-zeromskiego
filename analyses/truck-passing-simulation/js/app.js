@@ -4,15 +4,10 @@
   const root = document.getElementById("zeromskiego-dynamic-pass");
   const svg = root.querySelector("#pass-svg");
   const slider = root.querySelector("#pass-position");
-  const threeCanvas = root.querySelector("#three-canvas");
-  const threeContext = threeCanvas.getContext("2d");
   const elements = {
     slider,
     svg,
-    threeCanvas,
     threePlay: root.querySelector("#three-play"),
-    threeReset: root.querySelector("#three-reset"),
-    threePhase: root.querySelector("#three-phase"),
     positionValue: root.querySelector("#position-value"),
     currentGap: root.querySelector("#current-gap"),
     relativeAngle: root.querySelector("#relative-angle"),
@@ -665,278 +660,21 @@
     elements.angleLabel.textContent = angleDegrees.toFixed(2).replace(".", ",") + "°";
   }
 
-  const threeDefaults = { yaw: -0.88, pitch: 0.48, distance: 58 };
-  const threeState = {
-    yaw: threeDefaults.yaw,
-    pitch: threeDefaults.pitch,
-    distance: threeDefaults.distance,
-    dragging: false,
-    pointerX: 0,
-    pointerY: 0,
-    lower: null,
-    upper: null,
-    phase: "mijanie",
-    gap: 0,
-    playing: false,
-    previousTime: 0
-  };
-
-  const v3Sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y, z: a.z - b.z });
-  const v3Dot = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z;
-  const v3Cross = (a, b) => ({
-    x: a.y * b.z - a.z * b.y,
-    y: a.z * b.x - a.x * b.z,
-    z: a.x * b.y - a.y * b.x
-  });
-  const v3Unit = value => {
-    const size = Math.hypot(value.x, value.y, value.z) || 1;
-    return { x: value.x / size, y: value.y / size, z: value.z / size };
-  };
-
-  function themeColor(name, fallback) {
-    const value = getComputedStyle(root).getPropertyValue(name).trim();
-    return value || fallback;
-  }
-
-  function roadElevation(lateral) {
-    if (lateral > geometry.roadHalfWidth) {
-      return geometry.crossfall * geometry.roadHalfWidth - 0.08 * (lateral - geometry.roadHalfWidth);
-    }
-    if (lateral < -geometry.roadHalfWidth) {
-      return -geometry.crossfall * geometry.roadHalfWidth - 0.08 * (-geometry.roadHalfWidth - lateral);
-    }
-    return geometry.crossfall * lateral;
-  }
-
-  function roadPlanPoint(station, lateral) {
-    return point(geometry.roadRadius + lateral, geometry.thetaCenter + station / geometry.roadRadius);
-  }
-
-  function scenePoint(planPoint, height = 0) {
-    const origin = point(geometry.roadRadius, geometry.thetaCenter);
-    const tangent = { x: -Math.sin(geometry.thetaCenter), y: Math.cos(geometry.thetaCenter) };
-    const outward = { x: Math.cos(geometry.thetaCenter), y: Math.sin(geometry.thetaCenter) };
-    const delta = sub(planPoint, origin);
-    const lateral = radius(planPoint) - geometry.roadRadius;
-    return {
-      x: dot(delta, tangent),
-      y: dot(delta, outward),
-      z: roadElevation(lateral) + height
-    };
-  }
-
-  function addFace(faces, points, color, alpha = 1, stroke = true) {
-    faces.push({ points, color, alpha, stroke });
-  }
-
-  function addPrism(faces, polygon, baseHeight, height, color) {
-    const bottom = polygon.map(planPoint => scenePoint(planPoint, baseHeight));
-    const top = polygon.map(planPoint => scenePoint(planPoint, baseHeight + height));
-    addFace(faces, top, color, 0.96);
-    polygon.forEach((unused, index) => {
-      const next = (index + 1) % polygon.length;
-      addFace(faces, [bottom[index], bottom[next], top[next], top[index]], color, index % 2 ? 0.78 : 0.88);
-    });
-  }
-
-  function addRoadFaces(faces, startStation, endStation) {
-    const roadColor = themeColor("--muted", "#777");
-    const shoulderColor = themeColor("--secondary", "#aaa");
-    for (let station = startStation; station < endStation; station += 4) {
-      const nextStation = Math.min(endStation, station + 4);
-      addFace(faces, [
-        scenePoint(roadPlanPoint(station, -3), 0),
-        scenePoint(roadPlanPoint(nextStation, -3), 0),
-        scenePoint(roadPlanPoint(nextStation, 3), 0),
-        scenePoint(roadPlanPoint(station, 3), 0)
-      ], roadColor, 0.92, false);
-      addFace(faces, [
-        scenePoint(roadPlanPoint(station, -4), 0),
-        scenePoint(roadPlanPoint(nextStation, -4), 0),
-        scenePoint(roadPlanPoint(nextStation, -3), 0),
-        scenePoint(roadPlanPoint(station, -3), 0)
-      ], shoulderColor, 0.88, false);
-      addFace(faces, [
-        scenePoint(roadPlanPoint(station, 3), 0),
-        scenePoint(roadPlanPoint(nextStation, 3), 0),
-        scenePoint(roadPlanPoint(nextStation, 4), 0),
-        scenePoint(roadPlanPoint(station, 4), 0)
-      ], shoulderColor, 0.88, false);
-    }
-
-    const lineColor = themeColor("--foreground", "#111");
-    for (let station = startStation; station < endStation; station += 8) {
-      const nextStation = Math.min(endStation, station + 4);
-      addFace(faces, [
-        scenePoint(roadPlanPoint(station, -0.055), 0.025),
-        scenePoint(roadPlanPoint(nextStation, -0.055), 0.025),
-        scenePoint(roadPlanPoint(nextStation, 0.055), 0.025),
-        scenePoint(roadPlanPoint(station, 0.055), 0.025)
-      ], lineColor, 0.7, false);
-    }
-    [-3, 3].forEach(lateral => {
-      for (let station = startStation; station < endStation; station += 4) {
-        const nextStation = Math.min(endStation, station + 4);
-        addFace(faces, [
-          scenePoint(roadPlanPoint(station, lateral - 0.035), 0.02),
-          scenePoint(roadPlanPoint(nextStation, lateral - 0.035), 0.02),
-          scenePoint(roadPlanPoint(nextStation, lateral + 0.035), 0.02),
-          scenePoint(roadPlanPoint(station, lateral + 0.035), 0.02)
-        ], lineColor, 0.52, false);
-      }
-    });
-  }
-
-  function addWheelPair3D(faces, center, direction) {
-    const wheelColor = themeColor("--foreground", "#111");
-    const wheelNormal = normal(direction);
-    [-1, 1].forEach(side => {
-      const wheelCenter = add(center, wheelNormal, side * 1.22);
-      const wheelPoly = box(
-        add(wheelCenter, direction, 0.36),
-        add(wheelCenter, direction, -0.36),
-        0.15,
-        direction
-      );
-      addPrism(faces, wheelPoly, 0.05, 0.68, wheelColor);
-    });
-  }
-
-  function addTruck3D(faces, model, color) {
-    addPrism(faces, model.trailerPoly, 1.0, 3.0, color);
-    addPrism(faces, model.tractorPoly, 0.18, vehicle.cabHeight - 0.18, color);
-    model.mirrorBodies.forEach(mirrorBody => addPrism(faces, mirrorBody, vehicle.mirrorHeight - 0.2, 0.4, themeColor("--red", "#b00020")));
-    addWheelPair3D(faces, model.frontAxle, model.tractorDir);
-    addWheelPair3D(faces, add(model.hitch, model.tractorDir, -0.42), model.tractorDir);
-    [-0.65, 0, 0.65].forEach(offset => addWheelPair3D(faces, add(model.trailerAxles, model.trailerDir, offset), model.trailerDir));
-
-    const frontA = model.tractorPoly[0];
-    const frontB = model.tractorPoly[model.tractorPoly.length - 1];
-    addFace(faces, [
-      scenePoint(frontA, 2.05),
-      scenePoint(frontB, 2.05),
-      scenePoint(frontB, 3.35),
-      scenePoint(frontA, 3.35)
-    ], themeColor("--background", "#eee"), 0.72);
-  }
-
-  function cameraProjector(width, height) {
-    const target = { x: 0, y: 0, z: 1.35 };
-    const horizontalDistance = threeState.distance * Math.cos(threeState.pitch);
-    const camera = {
-      x: target.x + horizontalDistance * Math.cos(threeState.yaw),
-      y: target.y + horizontalDistance * Math.sin(threeState.yaw),
-      z: target.z + threeState.distance * Math.sin(threeState.pitch)
-    };
-    const forward = v3Unit(v3Sub(target, camera));
-    const right = v3Unit(v3Cross(forward, { x: 0, y: 0, z: 1 }));
-    const up = v3Unit(v3Cross(right, forward));
-    const focal = Math.min(width, height) * 1.16;
-    return point3D => {
-      const relative = v3Sub(point3D, camera);
-      const depth = v3Dot(relative, forward);
-      return {
-        x: width / 2 + v3Dot(relative, right) * focal / depth,
-        y: height * 0.54 - v3Dot(relative, up) * focal / depth,
-        depth
-      };
-    };
-  }
-
-  function renderThreeScene(lower, upper, phase, gapValue) {
-    threeState.lower = lower;
-    threeState.upper = upper;
-    threeState.phase = phase;
-    threeState.gap = gapValue;
-    if (threeCanvas.hidden) return;
-    const bounds = threeCanvas.getBoundingClientRect();
-    const density = Math.min(window.devicePixelRatio || 1, 2);
-    const width = Math.max(640, Math.round(bounds.width * density));
-    const height = Math.max(330, Math.round(bounds.width * 31 / 60 * density));
-    if (threeCanvas.width !== width || threeCanvas.height !== height) {
-      threeCanvas.width = width;
-      threeCanvas.height = height;
-    }
-
-    const context = threeContext;
-    context.clearRect(0, 0, width, height);
-    context.fillStyle = themeColor("--background", "#fff");
-    context.fillRect(0, 0, width, height);
-
-    const faces = [];
-    addRoadFaces(faces, -48, 48);
-    addTruck3D(faces, lower, themeColor("--viz-series-2", "#1f77b4"));
-    addTruck3D(faces, upper, themeColor("--viz-series-1", "#d28b00"));
-    const project3D = cameraProjector(width, height);
-    const projectedFaces = faces.map(face => {
-      const points = face.points.map(project3D);
-      return {
-        ...face,
-        projected: points,
-        depth: points.reduce((sum, item) => sum + item.depth, 0) / points.length
-      };
-    }).filter(face => face.projected.every(item => item.depth > 0.5));
-
-    projectedFaces.sort((a, b) => b.depth - a.depth);
-    projectedFaces.forEach(face => {
-      context.beginPath();
-      face.projected.forEach((screenPoint, index) => {
-        if (index === 0) context.moveTo(screenPoint.x, screenPoint.y);
-        else context.lineTo(screenPoint.x, screenPoint.y);
-      });
-      context.closePath();
-      context.globalAlpha = face.alpha;
-      context.fillStyle = face.color;
-      context.fill();
-      if (face.stroke) {
-        context.globalAlpha = 0.5;
-        context.strokeStyle = themeColor("--foreground", "#111");
-        context.lineWidth = Math.max(1, density);
-        context.stroke();
-      }
-    });
-    context.globalAlpha = 1;
-
-    [
-      { model: lower, label: "A →" },
-      { model: upper, label: "B ←" }
-    ].forEach(item => {
-      const labelPosition = project3D(scenePoint(item.model.front, vehicle.cabHeight + 0.45));
-      if (labelPosition.depth <= 0.5) return;
-      context.font = Math.round(14 * density) + "px system-ui, sans-serif";
-      context.textAlign = "center";
-      context.textBaseline = "middle";
-      context.lineWidth = 4 * density;
-      context.strokeStyle = themeColor("--background", "#fff");
-      context.strokeText(item.label, labelPosition.x, labelPosition.y);
-      context.fillStyle = themeColor("--foreground", "#111");
-      context.fillText(item.label, labelPosition.x, labelPosition.y);
-    });
-
-    const stateText = gapValue < -COLLISION_EPSILON ? "kolizja geometryczna" : gapValue > COLLISION_EPSILON ? "odstęp " + formatMeters(gapValue) : "styk obrysów";
-    elements.threePhase.textContent = "Widok 3D · " + phase + " · " + stateText;
-    threeCanvas.setAttribute("aria-label", "Model 3D, etap " + phase + ", " + stateText + ". Jezdnia sześć metrów, pobocze południowe jeden metr, separacja północna jeden metr i droga rowerowa trzy metry.");
-  }
-
-  function redrawThreeScene() {
-    if (threeState.lower && threeState.upper) {
-      renderThreeScene(threeState.lower, threeState.upper, threeState.phase, threeState.gap);
-    }
-  }
+  const playbackState = { playing: false, previousTime: 0 };
 
   function setThreePlaying(playing) {
-    threeState.playing = playing;
-    threeState.previousTime = 0;
+    playbackState.playing = playing;
+    playbackState.previousTime = 0;
     elements.threePlay.setAttribute("aria-pressed", playing ? "true" : "false");
     elements.threePlay.textContent = playing ? "Pauza" : (Number(slider.value) >= PLAYBACK.repeatThreshold ? "Odtwórz ponownie" : "Odtwórz mijanie");
     if (playing) requestAnimationFrame(animateThree);
   }
 
   function animateThree(time) {
-    if (!threeState.playing) return;
-    if (!threeState.previousTime) threeState.previousTime = time;
-    const elapsed = Math.min(PLAYBACK.maxFrameDelta, time - threeState.previousTime);
-    threeState.previousTime = time;
+    if (!playbackState.playing) return;
+    if (!playbackState.previousTime) playbackState.previousTime = time;
+    const elapsed = Math.min(PLAYBACK.maxFrameDelta, time - playbackState.previousTime);
+    playbackState.previousTime = time;
     let nextValue = Number(slider.value) + elapsed * PLAYBACK.percentPerMillisecond;
     if (nextValue >= 100) {
       nextValue = 100;
@@ -950,55 +688,14 @@
     requestAnimationFrame(animateThree);
   }
 
-  threeCanvas.addEventListener("pointerdown", event => {
-    threeState.dragging = true;
-    threeState.pointerX = event.clientX;
-    threeState.pointerY = event.clientY;
-    threeCanvas.classList.add("is-dragging");
-    threeCanvas.setPointerCapture(event.pointerId);
-  });
-  threeCanvas.addEventListener("pointermove", event => {
-    if (!threeState.dragging) return;
-    const deltaX = event.clientX - threeState.pointerX;
-    const deltaY = event.clientY - threeState.pointerY;
-    threeState.pointerX = event.clientX;
-    threeState.pointerY = event.clientY;
-    threeState.yaw -= deltaX * 0.008;
-    threeState.pitch = Math.max(0.16, Math.min(1.25, threeState.pitch + deltaY * 0.006));
-    redrawThreeScene();
-  });
-  function stopThreeDrag(event) {
-    threeState.dragging = false;
-    threeCanvas.classList.remove("is-dragging");
-    if (event.pointerId !== undefined && threeCanvas.hasPointerCapture(event.pointerId)) threeCanvas.releasePointerCapture(event.pointerId);
-  }
-  threeCanvas.addEventListener("pointerup", stopThreeDrag);
-  threeCanvas.addEventListener("pointercancel", stopThreeDrag);
-  threeCanvas.addEventListener("wheel", event => {
-    event.preventDefault();
-    threeState.distance = Math.max(28, Math.min(105, threeState.distance * Math.exp(event.deltaY * 0.0012)));
-    redrawThreeScene();
-  }, { passive: false });
-  elements.threeReset.addEventListener("click", () => {
-    threeState.yaw = threeDefaults.yaw;
-    threeState.pitch = threeDefaults.pitch;
-    threeState.distance = threeDefaults.distance;
-    redrawThreeScene();
-  });
   elements.threePlay.addEventListener("click", () => {
-    if (threeState.playing) {
+    if (playbackState.playing) {
       setThreePlaying(false);
       return;
     }
     if (Number(slider.value) >= PLAYBACK.repeatThreshold) slider.value = "0";
     setThreePlaying(true);
   });
-
-  if ("ResizeObserver" in window) {
-    new ResizeObserver(redrawThreeScene).observe(threeCanvas);
-  } else {
-    window.addEventListener("resize", redrawThreeScene);
-  }
 
   function renderDynamic() {
     const fraction = Number(slider.value) / 100;
@@ -1055,7 +752,6 @@
     ).join("");
     elements.summary.textContent = "Położenie " + slider.value + " procent. Etap " + phase + ". Wskaźnik kolizji " + formatMeters(nearest.value) + ", stan: " + elements.collisionState.textContent + ", para elementów: " + pair + ". Kąt osi ciągników " + angleDegrees.toFixed(2) + " stopnia.";
     elements.svg.setAttribute("aria-label", elements.summary.textContent);
-    renderThreeScene(lower, upper, phase, nearest.value);
     const collisionPoint = {
       x: (nearest.pointA.x + nearest.pointB.x) / 2,
       y: (nearest.pointA.y + nearest.pointB.y) / 2
@@ -1063,7 +759,7 @@
     const threeDetail = { lower, upper, phase, gap: nearest.value, collisionPoint, progress: fraction };
     window.zeromskiegoRealistic3DLatest = threeDetail;
     window.dispatchEvent(new CustomEvent("zeromskiego-realistic-3d-update", { detail: threeDetail }));
-    if (!threeState.playing) {
+    if (!playbackState.playing) {
       elements.threePlay.textContent = Number(slider.value) >= PLAYBACK.repeatThreshold ? "Odtwórz ponownie" : "Odtwórz mijanie";
     }
   }

@@ -36,7 +36,6 @@
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
     monospace;
   --font-size-normal: max(11px, var(--font-size-base));
-  --font-size-tooltip: calc(var(--font-size-base) - 1px);
   --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
   --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
   --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
@@ -44,7 +43,6 @@
   --font-weight-normal: 430;
   --font-weight-medium: 500;
   --line-height-normal: calc(var(--font-size-normal) * 1.5);
-  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
   --line-height-small: calc(var(--font-size-small) + 4px);
   --radius: 14px;
   --radius-sm: calc(var(--radius) * 0.6);
@@ -276,41 +274,6 @@ code:not(pre code) {
   box-shadow: none !important;
 }
 
-.tooltip {
-  position: fixed;
-  z-index: 50;
-  top: 0;
-  left: 0;
-  width: max-content;
-  max-width: min(
-    20rem,
-    var(--tooltip-available-width, calc(100vw - 10px)),
-    calc(100vw - 10px)
-  );
-  max-height: min(
-    var(--tooltip-available-height, calc(100vh - 10px)),
-    calc(100vh - 10px)
-  );
-  padding: 4px 8px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  color: var(--popover-foreground);
-  background: var(--popover);
-  box-shadow: none;
-  font-size: var(--font-size-tooltip);
-  line-height: var(--line-height-tooltip);
-  overflow-wrap: break-word;
-  white-space: normal;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* The bundled tooltip runtime owns [data-tooltip]. AppBlock's CSS-only
-   pseudo-tooltip can widen dense grids even while hidden. */
-main [data-tooltip]::after {
-  content: none;
-}
-
 .viz-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
@@ -472,10 +435,6 @@ a.btn {
 .btn:disabled {
   cursor: not-allowed;
   opacity: 0.4;
-}
-
-[data-lucide] {
-  stroke-width: 1.6;
 }
 
 .form-label {

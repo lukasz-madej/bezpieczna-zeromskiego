@@ -141,9 +141,6 @@
     margin-left: auto;
     text-align: right;
   }
-  #zeromskiego-dynamic-pass #three-canvas[hidden] {
-    display: none;
-  }
   #zeromskiego-dynamic-pass #real-three-canvas {
     aspect-ratio: 60 / 31;
     margin-top: 0.5rem;

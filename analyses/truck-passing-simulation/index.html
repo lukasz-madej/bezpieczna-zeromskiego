@@ -26,7 +26,6 @@
       <button id="three-reset" class="btn" type="button">Resetuj kamerę</button>
       <span id="three-phase" class="text-small text-muted three-phase">Ładowanie realistycznego widoku 3D…</span>
     </div>
-    <canvas id="three-canvas" width="1200" height="620" hidden aria-hidden="true"></canvas>
     <canvas id="real-three-canvas" width="1200" height="620" role="img" aria-label="Realistyczny, interaktywny model 3D mijania dwóch ciągników Volvo FH z naczepami Schmitz na łuku jezdni, z południowym poboczem 1,00 m, północną separacją 1,00 m, drogą rowerową 3,00 m, pieszymi i rowerzystami">Przeglądarka nie obsługuje widoku 3D.</canvas>
     <div class="viz-row road-legend" aria-label="Elementy drogi w widoku 3D">
       <span><span class="legend-swatch road-swatch" aria-hidden="true"></span>jezdnia 6,00 m</span>
@@ -145,12 +144,7 @@
   <p class="sr-only" id="truck-summary"></p>
 </section>
 
-<script id="codex-visualization-floating-ui-core" src="https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js"></script>
-<script id="codex-visualization-floating-ui-dom" src="https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js"></script>
-<script id="codex-visualization-lucide" async src="https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js"></script>
 <script src="js/app.js"></script>
 <script id="zeromskiego-three-bundle" src="js/three-bundle.js"></script>
-<script id="codex-visualization-tooltip" src="js/tooltip.js"></script>
-<script id="codex-visualization-lucide-initialization" src="js/lucide-init.js"></script>
 </body>
 </html>
