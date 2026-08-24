@@ -5,6 +5,48 @@
 // ── Respect the user's motion preference site-wide ──
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+function loadScript(src, { integrity } = {}) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+      resolve();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.crossOrigin = 'anonymous';
+    if (integrity) script.integrity = integrity;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error(`Failed to load ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+function loadStylesheet(href, { integrity } = {}) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`link[href="${href}"]`)) {
+      resolve();
+      return;
+    }
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.crossOrigin = 'anonymous';
+    if (integrity) link.integrity = integrity;
+    link.onload = () => resolve();
+    link.onerror = () => reject(new Error(`Failed to load ${href}`));
+    document.head.appendChild(link);
+  });
+}
+
+const MARKED_SRC = 'https://unpkg.com/marked@9.1.6/marked.min.js';
+const MARKED_SRI = 'sha256-YAKvY0hbBD+mDdq6GzQ2O5jSqLLGO2BwBPOiQFqKBTo=';
+let markedReady = null;
+function ensureMarked() {
+  if (window.marked) return Promise.resolve();
+  if (!markedReady) markedReady = loadScript(MARKED_SRC, { integrity: MARKED_SRI });
+  return markedReady;
+}
+
 // ── Footer year ──
 const footerYear = document.getElementById('footerYear');
 if (footerYear) footerYear.textContent = new Date().getFullYear();
@@ -42,11 +84,21 @@ document.addEventListener('keydown', e => {
 
 // ── Navbar scroll shadow ──
 const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.style.boxShadow = window.scrollY > 10
-    ? '0 4px 24px rgba(0,0,0,.45)'
-    : '0 2px 16px rgba(0,0,0,.35)';
-}, { passive: true });
+if (navbar) {
+  let navShadowTicking = false;
+  const updateNavShadow = () => {
+    navShadowTicking = false;
+    navbar.style.boxShadow = window.scrollY > 10
+      ? '0 4px 24px rgba(0,0,0,.45)'
+      : '0 2px 16px rgba(0,0,0,.35)';
+  };
+  window.addEventListener('scroll', () => {
+    if (navShadowTicking) return;
+    navShadowTicking = true;
+    requestAnimationFrame(updateNavShadow);
+  }, { passive: true });
+  updateNavShadow();
+}
 
 // ── Sticky petition CTA ──
 // Hidden while #petycja is on screen. Pins 20px above the footer once a
@@ -511,6 +563,7 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     // a stale cached copy of the post — otherwise readers could miss edits/updates.
     fetch(`data/news/${post.slug}.md`, { cache: 'no-cache' })
       .then(r => r.ok ? r.text() : Promise.reject())
+      .then(md => ensureMarked().then(() => md))
       .then(md => {
         body.innerHTML = sanitizeNewsHtml(marked.parse(md));
         enhanceNewsPhotos(body);
@@ -667,6 +720,13 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   const mapEl = document.getElementById('zeromskiego-map');
   if (!mapEl) return;
 
+  const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  const LEAFLET_JS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  const LEAFLET_CSS_SRI = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+  const LEAFLET_JS_SRI = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+  let mapStarted = false;
+
+  function initMap() {
   const map = L.map('zeromskiego-map', { scrollWheelZoom: false }).setView([52.13055215122221, 21.31194908202746], 15);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -790,6 +850,31 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
       });
     });
   });
+  }
+
+  function startMap() {
+    if (mapStarted) return;
+    mapStarted = true;
+    Promise.all([
+      loadStylesheet(LEAFLET_CSS, { integrity: LEAFLET_CSS_SRI }),
+      loadScript(LEAFLET_JS, { integrity: LEAFLET_JS_SRI })
+    ]).then(initMap).catch(() => { mapStarted = false; });
+  }
+
+  const mapSection = document.getElementById('mapa');
+  if (location.hash === '#mapa') {
+    startMap();
+  } else if (mapSection && 'IntersectionObserver' in window) {
+    const mapObserver = new IntersectionObserver((entries) => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        mapObserver.disconnect();
+        startMap();
+      }
+    }, { rootMargin: '320px 0px' });
+    mapObserver.observe(mapSection);
+  } else {
+    startMap();
+  }
 })();
 
 // ── Supporters: truncated bios with "read more" modal ──
