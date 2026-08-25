@@ -185,6 +185,36 @@ def bump_cache_busters(manifest):
     return changed
 
 
+def commit_cache_buster_changes(changed_files):
+    """Commits HTML files rewritten by bump_cache_busters so the repo stays
+    in sync with the ?v= hashes that were just deployed."""
+    unique = list(dict.fromkeys(changed_files))
+    if not unique:
+        return
+    try:
+        subprocess.run(
+            ["git", "add", "--", *unique],
+            cwd=ROOT, check=True, capture_output=True, text=True,
+        )
+        staged = subprocess.run(
+            ["git", "diff", "--cached", "--name-only", "--", *unique],
+            cwd=ROOT, check=True, capture_output=True, text=True,
+        )
+        if not staged.stdout.strip():
+            return
+        message = "Bump cache-buster hashes after deploy"
+        subprocess.run(
+            ["git", "commit", "-m", message],
+            cwd=ROOT, check=True, capture_output=True, text=True,
+        )
+        print(f"✓ Committed cache-buster updates: {', '.join(unique)}")
+    except subprocess.CalledProcessError as exc:
+        err = (exc.stderr or exc.stdout or str(exc)).strip()
+        print(f"  ! could not commit cache-buster changes: {err}")
+    except FileNotFoundError:
+        print("  ! could not commit cache-buster changes: git not found")
+
+
 def collect_local_files():
     """Returns {relative_posix_path: Path} for every file that should be deployed."""
     files = {}
@@ -278,7 +308,7 @@ def main():
 
     config = load_config()
     manifest = {} if args.force else load_manifest()
-    bump_cache_busters(manifest)
+    cache_buster_files = bump_cache_busters(manifest)
     local_files = collect_local_files()
 
     to_upload = []
@@ -326,6 +356,7 @@ def main():
 
     save_manifest(new_manifest)
     print(f"\n✓ Deployed {len(to_upload)} file(s)" + (f", deleted {len(to_delete)}" if to_delete else ""))
+    commit_cache_buster_changes(cache_buster_files)
 
 
 if __name__ == "__main__":
