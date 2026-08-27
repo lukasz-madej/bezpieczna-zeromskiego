@@ -891,26 +891,53 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   const modalClose = document.getElementById('supporterModalClose');
 
   function openModal(card) {
-    const logoHtml = card.querySelector('.supporter-logo').innerHTML;
+    const logoEl = card.querySelector('.supporter-logo');
     const name = card.querySelector('.supporter-info strong')?.textContent || '';
     const details = card.querySelector('.supporter-details')?.textContent || '';
     const bioParagraphs = Array.from(card.querySelectorAll('.supporter-info p:not(.supporter-details)'));
 
-    modalLogo.innerHTML = logoHtml;
+    // Mirror the card logo box (initials letter, background, padding), not just
+    // its innerHTML — otherwise Trax/Bodex letters and tinted logos break.
+    modalLogo.className = 'supporter-modal-logo';
+    if (logoEl.classList.contains('supporter-logo--initials')) {
+      modalLogo.classList.add('supporter-modal-logo--initials');
+    }
+    const logoStyle = logoEl.getAttribute('style');
+    if (logoStyle) modalLogo.setAttribute('style', logoStyle);
+    else modalLogo.removeAttribute('style');
+    modalLogo.innerHTML = logoEl.innerHTML;
+
     modalName.textContent = name;
     modalDetails.textContent = details;
-    modalBody.innerHTML = bioParagraphs.map(p => `<p>${p.textContent}</p>`).join('');
+    modalBody.innerHTML = bioParagraphs.map(p => `<p>${p.innerHTML}</p>`).join('');
 
     modal.showModal();
   }
 
-  modalClose.addEventListener('click', () => modal.close());
-  modal.addEventListener('click', e => {
-    if (e.target === modal) modal.close(); // click on backdrop
+  function ensureMoreBtn(card, afterEl) {
+    let btn = card.querySelector(':scope > .supporter-info > .supporter-more-btn');
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'supporter-more-btn';
+      btn.textContent = 'Czytaj więcej →';
+      btn.addEventListener('click', () => openModal(card));
+      afterEl.insertAdjacentElement('afterend', btn);
+    }
+    return btn;
+  }
+
+  // Full-width letter cards: preview is fixed in HTML (content before
+  // .supporter-bio-more); always offer "read more" for the remainder.
+  document.querySelectorAll('.supporters-grid.columns .supporter-card--full').forEach(card => {
+    const bio = card.querySelector('.supporter-bio');
+    const more = card.querySelector('.supporter-bio-more');
+    if (!bio || !more) return;
+    ensureMoreBtn(card, bio);
   });
 
-  document.querySelectorAll('.supporters-grid.columns .supporter-card').forEach(card => {
-    const bioParagraphs = card.querySelectorAll('.supporter-info p:not(.supporter-details)');
+  document.querySelectorAll('.supporters-grid.columns .supporter-card:not(.supporter-card--full)').forEach(card => {
+    const bioParagraphs = card.querySelectorAll('.supporter-info > p:not(.supporter-details)');
     if (!bioParagraphs.length) return;
     const bio = bioParagraphs[bioParagraphs.length - 1];
 
@@ -919,13 +946,13 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
     // for the "read more" link, so it reads as a natural continuation.
     if (bio.scrollHeight - bio.clientHeight > 1) {
       bio.classList.add('supporter-bio--clamped');
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'supporter-more-btn';
-      btn.textContent = 'Czytaj więcej →';
-      btn.addEventListener('click', () => openModal(card));
-      bio.insertAdjacentElement('afterend', btn);
+      ensureMoreBtn(card, bio);
     }
+  });
+
+  modalClose.addEventListener('click', () => modal.close());
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.close(); // click on backdrop
   });
 })();
 
