@@ -435,12 +435,26 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   }
 
   // Strip scripts/event handlers from markdown HTML; links/images must stay http(s) or site-relative.
+  // Trusted Facebook plugin embeds (video/post) are allowed — used in news for live streams etc.
   function sanitizeNewsHtml(html) {
     const tpl = document.createElement('template');
     tpl.innerHTML = html;
-    const blocked = new Set(['SCRIPT', 'IFRAME', 'OBJECT', 'EMBED', 'FORM', 'INPUT', 'BUTTON', 'LINK', 'META', 'STYLE', 'BASE']);
+    const blocked = new Set(['SCRIPT', 'OBJECT', 'EMBED', 'FORM', 'INPUT', 'BUTTON', 'LINK', 'META', 'STYLE', 'BASE']);
+    const fbPluginSrc = /^https:\/\/www\.facebook\.com\/plugins\/(video|post)\.php/i;
+    const iframeAllowedAttrs = new Set(['src', 'width', 'height', 'style', 'allow', 'allowfullscreen', 'scrolling', 'frameborder', 'title', 'loading']);
     const toRemove = [];
     tpl.content.querySelectorAll('*').forEach(el => {
+      if (el.tagName === 'IFRAME') {
+        const src = (el.getAttribute('src') || '').trim();
+        if (!fbPluginSrc.test(src)) {
+          toRemove.push(el);
+          return;
+        }
+        [...el.attributes].forEach(attr => {
+          if (!iframeAllowedAttrs.has(attr.name.toLowerCase())) el.removeAttribute(attr.name);
+        });
+        return;
+      }
       if (blocked.has(el.tagName)) {
         toRemove.push(el);
         return;
