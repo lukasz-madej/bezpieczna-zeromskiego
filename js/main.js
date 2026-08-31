@@ -233,6 +233,7 @@ function lbClose() {
 // the static analysis-section galleries and the dynamically-injected news
 // galleries, so the click + keyboard-activation logic only lives in one place.
 function wireLightboxTrigger(el, images, index) {
+  if (!lightbox) return;
   if (el.tabIndex < 0 || !el.hasAttribute('tabindex')) el.tabIndex = 0;
   if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
   if (!el.hasAttribute('aria-label')) {
@@ -248,28 +249,31 @@ function wireLightboxTrigger(el, images, index) {
   });
 }
 
-document.querySelectorAll('[data-gallery]').forEach(gallery => {
+function wireGallery(gallery) {
   const thumbs = gallery.querySelectorAll('.gallery-thumb');
   const imgs = Array.from(thumbs).map(t => ({
     src:     t.querySelector('img').src,
     alt:     t.querySelector('img').alt,
-    caption: t.querySelector('figcaption')?.textContent || ''
+    caption: t.querySelector('figcaption')?.textContent || t.querySelector('img').alt || ''
   }));
-
   thumbs.forEach((thumb, i) => wireLightboxTrigger(thumb, imgs, i));
-});
+}
 
-document.getElementById('lbClose').addEventListener('click', lbClose);
-document.getElementById('lbPrev').addEventListener('click', () => lbShow(lbIndex - 1));
-document.getElementById('lbNext').addEventListener('click', () => lbShow(lbIndex + 1));
-lightbox.addEventListener('click', e => { if (e.target === lightbox) lbClose(); });
+document.querySelectorAll('[data-gallery]').forEach(wireGallery);
 
-document.addEventListener('keydown', e => {
-  if (!lightbox.classList.contains('open')) return;
-  if (e.key === 'Escape')      lbClose();
-  if (e.key === 'ArrowLeft')   lbShow(lbIndex - 1);
-  if (e.key === 'ArrowRight')  lbShow(lbIndex + 1);
-});
+if (lightbox) {
+  document.getElementById('lbClose').addEventListener('click', lbClose);
+  document.getElementById('lbPrev').addEventListener('click', () => lbShow(lbIndex - 1));
+  document.getElementById('lbNext').addEventListener('click', () => lbShow(lbIndex + 1));
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) lbClose(); });
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape')      lbClose();
+    if (e.key === 'ArrowLeft')   lbShow(lbIndex - 1);
+    if (e.key === 'ArrowRight')  lbShow(lbIndex + 1);
+  });
+}
 
 // ── Petition signature counter ──
 // Total = signatures collected online (petycjeonline.com, scraped by cron)
@@ -485,11 +489,8 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
   }
 
   // Groups consecutive "image-only" paragraphs (produced by markdown like
-  // `![alt](data/news/photos/<slug>/foo.jpg)`) into a responsive gallery grid,
-  // and adds lazy-loading + a lightbox click-to-enlarge behaviour.
-  // Handles both authoring styles: one image per paragraph (blank line
-  // between each `![]()`) and several images crammed into one paragraph
-  // (no blank lines between them) — both end up in the same gallery markup.
+  // `![alt](data/news/photos/<slug>/foo.jpg)`) into the same gallery markup
+  // used in the project analysis sections, with lightbox on click.
   function enhanceNewsPhotos(body) {
     const paragraphs = Array.from(body.querySelectorAll('p'));
     let group = [];
@@ -498,12 +499,18 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
       if (group.length === 0) return;
       const images = group.flatMap(p => Array.from(p.querySelectorAll('img')));
       const gallery = document.createElement('div');
-      gallery.className = 'news-gallery';
-      if (images.length === 1) gallery.classList.add('news-gallery--single');
+      gallery.className = 'analysis-gallery';
       group[0].parentNode.insertBefore(gallery, group[0]);
-      images.forEach(img => gallery.appendChild(img));
+      images.forEach(img => {
+        img.loading = 'lazy';
+        const figure = document.createElement('figure');
+        figure.className = 'gallery-thumb';
+        figure.appendChild(img);
+        gallery.appendChild(figure);
+      });
       group.forEach(p => p.remove());
       group = [];
+      wireGallery(gallery);
     }
 
     paragraphs.forEach(p => {
@@ -517,26 +524,6 @@ function updatePetycjaProgress(total, { animate = false } = {}) {
       }
     });
     if (group.length) flushGroup();
-
-    body.querySelectorAll('.news-gallery img').forEach(img => { img.loading = 'lazy'; });
-
-    // Wrap each news gallery image in a <button> so the lightbox trigger has
-    // proper interactive semantics (avoids role=button on a raw <img>).
-    body.querySelectorAll('.news-gallery img').forEach(img => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'news-gallery-btn';
-      img.parentNode.insertBefore(btn, img);
-      btn.appendChild(img);
-    });
-
-    // Wire the gallery into the same lightbox used by the analysis section.
-    const galleryImgs = Array.from(body.querySelectorAll('.news-gallery img')).map(img => ({
-      src: img.src,
-      alt: img.alt,
-      caption: img.alt || ''
-    }));
-    body.querySelectorAll('.news-gallery-btn').forEach((btn, i) => wireLightboxTrigger(btn, galleryImgs, i));
   }
 
   function openBody(body) {
